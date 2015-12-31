@@ -36,6 +36,10 @@ public class PlayerController : MonoBehaviour {
         if (Input.touchCount == 0)
         {
             //forceBuildUp++;
+            isTeleportGesture = true;
+        }
+        else if (Input.touchCount >= 2)
+        {
             isTeleportGesture = false;
         }
         if (Input.touchCount > 0)
@@ -70,6 +74,7 @@ public class PlayerController : MonoBehaviour {
             //new Vector3(Camera.current.pixelWidth / 2, Camera.current.pixelHeight / 2);
             }
         }
+    }
 
     void OnCollisionEnter2D(Collision2D coll)
     {

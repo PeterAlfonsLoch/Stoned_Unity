@@ -19,30 +19,57 @@ public class PlayerController : MonoBehaviour {
     private Rigidbody2D rb2d;
     ArrayList grounds;
 
-	// Use this for initialization
-	void Start () {
+    private bool isTeleportGesture;
+
     public AudioClip teleportSound;
+
+    // Use this for initialization
+    void Start () {
         grounds = new ArrayList();
         rb2d = GetComponent<Rigidbody2D>();
+        Input.simulateMouseWithTouches = false;
 	}
 	
 	// Update is called once per frame
 	void Update () {
-        if (Input.GetMouseButtonDown(0))
+
+        if (Input.touchCount == 0)
         {
             //forceBuildUp++;
+            isTeleportGesture = false;
         }
-        else if (Input.GetMouseButtonUp(0)) { 
-            teleport();
+        if (Input.touchCount > 0)
+        {
+            if (Input.GetTouch(0).phase == TouchPhase.Began)
+            {
+                //forceBuildUp++;
+            }
+            else if (Input.GetTouch(0).phase == TouchPhase.Ended)
+            {
+                if (isTeleportGesture)//don't let the pinch zoom gesture count as a teleport gesture
+                {
+                    teleport(false);
+                }
+            }
+        }
+        else
+        {
+            if (Input.GetMouseButtonDown(0))
+            {
+                //forceBuildUp++;
+            }
+            else if (Input.GetMouseButtonUp(0))
+            {
+                teleport(true);
 
-            //Camera.main.GetComponent<Camera>().orthographicSize += 0.1f;
+                //Camera.main.GetComponent<Camera>().orthographicSize += 0.1f;
 
             //Vector3 campos = Camera.current.transform.position;
             //Camera main = GameObject.FindGameObjectWithTag("Main Camera");
             //transform.position = Input.mousePosition;// - new Vector3(Screen.width/2, Screen.height/2);
             //new Vector3(Camera.current.pixelWidth / 2, Camera.current.pixelHeight / 2);
+            }
         }
-	}
 
     void OnCollisionEnter2D(Collision2D coll)
     {
@@ -57,9 +84,16 @@ public class PlayerController : MonoBehaviour {
         //isGroundedCount--;
     }
 
-    void teleport()
+    void teleport(bool mouseInput)
     {
-        Vector3 click = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        Vector3 click;
+        if (mouseInput) {
+            click = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        }
+        else
+        {
+            click = Camera.main.ScreenToWorldPoint(Input.GetTouch(0).position);
+        }
         Vector3 newPos = new Vector3(click.x, click.y);
         if (Vector3.Distance(newPos, transform.position) <= range)
         {

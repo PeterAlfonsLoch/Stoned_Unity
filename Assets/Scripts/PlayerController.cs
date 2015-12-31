@@ -63,58 +63,18 @@ public class PlayerController : MonoBehaviour {
         if (Vector3.Distance(newPos, transform.position) <= range)
         {
             Vector3 oldPos = transform.position;
-            //
-            //Pre-Check for Collision
-            //2015-12-30: still doesn't seem to work properly :/
-            //
-            Vector3[] dirs = new Vector3[]
+            transform.position = newPos;
+            showStreak(oldPos, newPos);
+            //rb2d.MovePosition(newPos);
+            grounds.Clear();
+            teleportXP++;
+            if (teleportXP == txpLevelUpRequirement)
             {
-                Vector3.up,
-                Vector3.down,
-                Vector3.left,
-                Vector3.right,
-                new Vector3(1,1),
-                new Vector3(-1,1),
-                new Vector3(1,-1),
-                new Vector3(-1,-1),
-
-                new Vector3(1,.5f),
-                new Vector3(-1,.5f),
-                new Vector3(1,-.5f),
-                new Vector3(-1,-.5f),
-                new Vector3(.5f,1),
-                new Vector3(-.5f,1),
-                new Vector3(.5f,-1),
-                new Vector3(-.5f,-1),
-            };
-            bool canTeleport = true;
-            foreach (Vector3 dir in dirs)
-            {
-                Ray ray = new Ray(newPos, dir);
-                if (Physics.Raycast(ray, 200.0f))
-                {
-                    canTeleport = false;
-                    break;
-                }
-            }
-            //
-            //
-            //
-            if (canTeleport)
-            {
-                transform.position = newPos;
-                showStreak(oldPos, newPos);
-                //rb2d.MovePosition(newPos);
-                grounds.Clear();
-                teleportXP++;
-                if (teleportXP == txpLevelUpRequirement)
-                {
-                    int lls = txpLevelUpRequirement;
-                    txpLevelUpRequirement += txpLevelUpRequirement - lastLevel + 1;
-                    lastLevel = lls;
-                    baseRange += 0.1f;
-                    setRange(baseRange);
-                }
+                int lls = txpLevelUpRequirement;
+                txpLevelUpRequirement += txpLevelUpRequirement - lastLevel + 1;
+                lastLevel = lls;
+                baseRange += 0.1f;
+                setRange(baseRange);
             }
             //if (forceBuildUp > 10)
             //{

@@ -31,6 +31,11 @@ public class CameraController : MonoBehaviour {
                 cam.orthographicSize -= 1f;
             }
         }
+
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            Application.Quit();
+        }
     }
 	
 	// Update is called once per frame, after all other objects have moved that frame

@@ -14,8 +14,6 @@ public class PlayerController : MonoBehaviour {
     public GameObject teleportStreak;
 
     private int airPorts = 0;
-    //public int forceBuildUp = 0;
-    //public int isGroundedCount = 0;
     private Rigidbody2D rb2d;
     ArrayList grounds;
 
@@ -35,7 +33,6 @@ public class PlayerController : MonoBehaviour {
 
         if (Input.touchCount == 0)
         {
-            //forceBuildUp++;
             isTeleportGesture = true;
         }
         else if (Input.touchCount >= 2)
@@ -46,7 +43,6 @@ public class PlayerController : MonoBehaviour {
         {
             if (Input.GetTouch(0).phase == TouchPhase.Began)
             {
-                //forceBuildUp++;
             }
             else if (Input.GetTouch(0).phase == TouchPhase.Ended)
             {
@@ -60,25 +56,16 @@ public class PlayerController : MonoBehaviour {
         {
             if (Input.GetMouseButtonDown(0))
             {
-                //forceBuildUp++;
             }
             else if (Input.GetMouseButtonUp(0))
             {
-                teleport(true);
-
-                //Camera.main.GetComponent<Camera>().orthographicSize += 0.1f;
-
-            //Vector3 campos = Camera.current.transform.position;
-            //Camera main = GameObject.FindGameObjectWithTag("Main Camera");
-            //transform.position = Input.mousePosition;// - new Vector3(Screen.width/2, Screen.height/2);
-            //new Vector3(Camera.current.pixelWidth / 2, Camera.current.pixelHeight / 2);
+                teleport(true);                
             }
         }
     }
 
     void OnCollisionEnter2D(Collision2D coll)
     {
-        //isGroundedCount++;
         grounds.Add(coll.collider.gameObject);
         airPorts = 0;
         setRange(baseRange);
@@ -86,7 +73,6 @@ public class PlayerController : MonoBehaviour {
     void OnCollisionExit2D(Collision2D coll)
     {
         grounds.Remove(coll.collider.gameObject);
-        //isGroundedCount--;
     }
 
     void teleport(bool mouseInput)
@@ -106,7 +92,6 @@ public class PlayerController : MonoBehaviour {
             transform.position = newPos;
             showStreak(oldPos, newPos);
             AudioSource.PlayClipAtPoint(teleportSound, oldPos);
-            //rb2d.MovePosition(newPos);
             grounds.Clear();
             teleportXP++;
             if (teleportXP == txpLevelUpRequirement)
@@ -117,15 +102,7 @@ public class PlayerController : MonoBehaviour {
                 baseRange += 0.1f;
                 setRange(baseRange);
             }
-            //if (forceBuildUp > 10)
-            //{
-            //    foreach(GameObject obj in grounds)
-            //    {
-            //        ExplosionOrbController.addExplosionForce(obj.GetComponent<Rigidbody2D>(), forceBuildUp*10, transform.position, forceBuildUp);
-            //    }
-            //}
         }
-        //if (isGroundedCount <= 0)
         if (grounds.Count <= 0)
         {
             airPorts++;
@@ -151,13 +128,4 @@ public class PlayerController : MonoBehaviour {
         TeleportRangeIndicatorUpdater tri = GetComponentInChildren<TeleportRangeIndicatorUpdater>();
         tri.updateRange();
     }
-
-    //Checks to make sure everything in the grounds array is still touching it
-    //void checkGrounds()
-    //{
-    //    foreach (GameObject obj in grounds)
-    //    {
-    //        if obj.collider2D.rigidbody2D.
-    //    }
-    //}
 }

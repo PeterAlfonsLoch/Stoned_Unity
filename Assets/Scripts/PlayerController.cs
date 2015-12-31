@@ -21,6 +21,7 @@ public class PlayerController : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
+    public AudioClip teleportSound;
         grounds = new ArrayList();
         rb2d = GetComponent<Rigidbody2D>();
 	}
@@ -65,6 +66,7 @@ public class PlayerController : MonoBehaviour {
             Vector3 oldPos = transform.position;
             transform.position = newPos;
             showStreak(oldPos, newPos);
+            AudioSource.PlayClipAtPoint(teleportSound, oldPos);
             //rb2d.MovePosition(newPos);
             grounds.Clear();
             teleportXP++;

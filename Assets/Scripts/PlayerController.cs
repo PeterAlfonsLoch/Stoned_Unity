@@ -91,7 +91,9 @@ public class PlayerController : MonoBehaviour {
             foreach (Vector3 dir in dirs)
             {
                 Ray ray = new Ray(newPos, dir);
-                if (Physics.Raycast(ray, 200.0f))
+                Vector2 newPos2 = new Vector2(newPos.x, newPos.y);
+                Vector2 dir2 = new Vector2(dir.x, dir.y);
+                if (Physics2D.Raycast(newPos2, dir2, 1f))
                 {
                     canTeleport = false;
                     break;

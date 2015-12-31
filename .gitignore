@@ -54,3 +54,4 @@ Temporary Items
 .apdisk
 *.csproj
 *.sln
+.vs/Stoned/v14/.suo

@@ -15,7 +15,6 @@ public class PlayerController : MonoBehaviour {
 
     private int airPorts = 0;
     private Rigidbody2D rb2d;
-    ArrayList grounds;
 
     private bool isTeleportGesture;
 
@@ -23,7 +22,6 @@ public class PlayerController : MonoBehaviour {
 
     // Use this for initialization
     void Start () {
-        grounds = new ArrayList();
         rb2d = GetComponent<Rigidbody2D>();
         Input.simulateMouseWithTouches = false;
 	}
@@ -66,17 +64,30 @@ public class PlayerController : MonoBehaviour {
 
     void OnCollisionEnter2D(Collision2D coll)
     {
-        grounds.Add(coll.collider.gameObject);
         airPorts = 0;
         setRange(baseRange);
     }
     void OnCollisionExit2D(Collision2D coll)
     {
-        grounds.Remove(coll.collider.gameObject);
     }
 
     void teleport(bool mouseInput)
     {
+        //check grounded state
+        if (isGrounded())
+        {
+            airPorts = 0;
+            setRange(baseRange);
+        }
+        else {
+            airPorts++;
+            if (airPorts > maxAirPorts)
+            {
+                setRange(5);
+            }
+        }
+
+        //Get new position
         Vector3 click;
         if (mouseInput) {
             click = Camera.main.ScreenToWorldPoint(Input.mousePosition);
@@ -85,9 +96,9 @@ public class PlayerController : MonoBehaviour {
         {
             click = Camera.main.ScreenToWorldPoint(Input.GetTouch(0).position);
         }
-
-        Vector3 oldPos = transform.position;
         Vector3 newPos = new Vector3(click.x, click.y);
+        //Determine if new position is in range
+        Vector3 oldPos = transform.position;
         int bonusTXP = 0;
         if (Vector3.Distance(newPos, transform.position) <= range)
         {
@@ -107,27 +118,19 @@ public class PlayerController : MonoBehaviour {
             }
             newPos = ((newPos - oldPos).normalized * range) + oldPos;
         }
-            transform.position = newPos;
-            showStreak(oldPos, newPos);
-            AudioSource.PlayClipAtPoint(teleportSound, oldPos);
-            grounds.Clear();
-            teleportXP += 1 + bonusTXP;
-            if (teleportXP >= txpLevelUpRequirement)
-            {
-                int lls = txpLevelUpRequirement;
-                txpLevelUpRequirement += txpLevelUpRequirement - lastLevel + 1;
-                lastLevel = lls;
-                baseRange += 0.1f;
-                setRange(baseRange);
-            }        
-        if (grounds.Count <= 0)
+        transform.position = newPos;
+        showStreak(oldPos, newPos);
+        AudioSource.PlayClipAtPoint(teleportSound, oldPos);
+        //Give teleport xp
+        teleportXP += 1 + bonusTXP;
+        if (teleportXP >= txpLevelUpRequirement)
         {
-            airPorts++;
-            if (airPorts > maxAirPorts)
-            {
-                setRange(5);
-            }
-        }
+            int lls = txpLevelUpRequirement;
+            txpLevelUpRequirement += txpLevelUpRequirement - lastLevel + 1;
+            lastLevel = lls;
+            baseRange += 0.1f;
+            //setRange(baseRange);
+        }   
     }
 
     void showStreak(Vector3 oldp, Vector3 newp)
@@ -144,5 +147,48 @@ public class PlayerController : MonoBehaviour {
         range = newRange;
         TeleportRangeIndicatorUpdater tri = GetComponentInChildren<TeleportRangeIndicatorUpdater>();
         tri.updateRange();
+    }
+
+    bool isGrounded()
+    {
+        bool isGrounded = false;
+        Vector3[] dirs = new Vector3[]
+            {
+                Vector3.up,
+                Vector3.down,
+                Vector3.left,
+                Vector3.right,
+                new Vector3(1,1),
+                new Vector3(-1,1),
+                new Vector3(1,-1),
+                new Vector3(-1,-1),
+
+                //new Vector3(1,.5f),
+                //new Vector3(-1,.5f),
+                //new Vector3(1,-.5f),
+                //new Vector3(-1,-.5f),
+                //new Vector3(.5f,1),
+                //new Vector3(-.5f,1),
+                //new Vector3(.5f,-1),
+                //new Vector3(-.5f,-1),
+            };
+        Vector3 pos = transform.position;
+        Vector2 pos2 = new Vector2(pos.x, pos.y);
+        foreach (Vector3 dir in dirs)
+        {
+            Vector2 dir2 = new Vector2(dir.x, dir.y);
+            Vector2 start = (pos2 + dir2);
+            RaycastHit2D rch2d = Physics2D.Raycast(start, -1*(start), 1f);
+            if (rch2d && rch2d.collider != null)
+            {
+                GameObject ground = rch2d.collider.gameObject;
+                if (ground != null && ! ground.Equals(transform.gameObject))
+                {
+                    isGrounded = true;
+                    break;
+                }
+            }
+        }
+        return isGrounded;
     }
 }

@@ -1806,7 +1806,7 @@ GameObject:
   - 212: {fileID: 627045197}
   - 61: {fileID: 627045200}
   - 114: {fileID: 627045199}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: sky
   m_TagString: Untagged
   m_Icon: {fileID: 0}

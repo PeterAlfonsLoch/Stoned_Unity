@@ -85,24 +85,41 @@ public class PlayerController : MonoBehaviour {
         {
             click = Camera.main.ScreenToWorldPoint(Input.GetTouch(0).position);
         }
+
+        Vector3 oldPos = transform.position;
         Vector3 newPos = new Vector3(click.x, click.y);
+        int bonusTXP = 0;
         if (Vector3.Distance(newPos, transform.position) <= range)
         {
-            Vector3 oldPos = transform.position;
+        }
+        else
+        {
+            if (range >= baseRange)
+            {
+                if (Vector3.Distance(newPos, transform.position) <= range + 2)
+                {
+                    bonusTXP = 1;
+                }
+            }
+            else //teleporting under confinements, such as used up the airports
+            {
+                bonusTXP = -1;//don't give any txp for teleporting beyond max air ports
+            }
+            newPos = ((newPos - oldPos).normalized * range) + oldPos;
+        }
             transform.position = newPos;
             showStreak(oldPos, newPos);
             AudioSource.PlayClipAtPoint(teleportSound, oldPos);
             grounds.Clear();
-            teleportXP++;
-            if (teleportXP == txpLevelUpRequirement)
+            teleportXP += 1 + bonusTXP;
+            if (teleportXP >= txpLevelUpRequirement)
             {
                 int lls = txpLevelUpRequirement;
                 txpLevelUpRequirement += txpLevelUpRequirement - lastLevel + 1;
                 lastLevel = lls;
                 baseRange += 0.1f;
                 setRange(baseRange);
-            }
-        }
+            }        
         if (grounds.Count <= 0)
         {
             airPorts++;

@@ -829,6 +829,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   range: 10
   baseRange: 10
+  exhaustRange: 3
   maxAirPorts: 3
   teleportXP: 0
   txpLevelUpRequirement: 1

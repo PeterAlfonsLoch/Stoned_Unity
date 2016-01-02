@@ -5,6 +5,7 @@ public class PlayerController : MonoBehaviour {
 
     public float range = 15;
     public float baseRange = 15;
+    public float exhaustRange = 2.5f;
     public int maxAirPorts = 3;
 
     public int teleportXP = 0;
@@ -83,7 +84,7 @@ public class PlayerController : MonoBehaviour {
             airPorts++;
             if (airPorts > maxAirPorts)
             {
-                setRange(5);
+                setRange(exhaustRange);
             }
         }
 

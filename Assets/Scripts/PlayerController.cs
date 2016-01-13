@@ -14,7 +14,7 @@ public class PlayerController : MonoBehaviour {
 
     public GameObject teleportStreak;
 
-    public int airPorts = 0;
+    private int airPorts = 0;
     private Rigidbody2D rb2d;
 
     private bool isTeleportGesture;
@@ -74,7 +74,19 @@ public class PlayerController : MonoBehaviour {
 
     void teleport(bool mouseInput)
     {
-        checkGroundedState(false);
+        //check grounded state
+        if (isGrounded())
+        {
+            airPorts = 0;
+            setRange(baseRange);
+        }
+        else {
+            airPorts++;
+            if (airPorts > maxAirPorts)
+            {
+                setRange(exhaustRange);
+            }
+        }
 
         //Get new position
         Vector3 click;
@@ -119,8 +131,7 @@ public class PlayerController : MonoBehaviour {
             lastLevel = lls;
             baseRange += 0.1f;
             //setRange(baseRange);
-        }
-        checkGroundedState(true);
+        }   
     }
 
     void showStreak(Vector3 oldp, Vector3 newp)
@@ -139,37 +150,17 @@ public class PlayerController : MonoBehaviour {
         tri.updateRange();
     }
 
-    void checkGroundedState(bool update)
-    {        
-        if (isGrounded())
-        {
-            airPorts = 0;
-            setRange(baseRange);
-        }
-        else {
-            if (update)
-            {
-                airPorts++;
-                if (airPorts > maxAirPorts)
-                {
-                    setRange(exhaustRange);
-                }
-            }
-        }
-
-    }
-
     bool isGrounded()
     {
         bool isGrounded = false;
         Vector3[] dirs = new Vector3[]
             {
-                //Vector3.up,
+                Vector3.up,
                 Vector3.down,
-                //Vector3.left,
-                //Vector3.right,
-                //new Vector3(1,1),
-                //new Vector3(-1,1),
+                Vector3.left,
+                Vector3.right,
+                new Vector3(1,1),
+                new Vector3(-1,1),
                 new Vector3(1,-1),
                 new Vector3(-1,-1),
 
@@ -187,11 +178,8 @@ public class PlayerController : MonoBehaviour {
         foreach (Vector3 dir in dirs)
         {
             Vector2 dir2 = new Vector2(dir.x, dir.y);
-            float length = 1.3f;
-            dir2 = dir2.normalized * length;
             Vector2 start = (pos2 + dir2);
-            Debug.DrawLine(pos2, start,Color.black,1);
-            RaycastHit2D rch2d = Physics2D.Raycast(start, -1*dir2, length);// -1*(start), 1f);
+            RaycastHit2D rch2d = Physics2D.Raycast(start, -1*(start), 1f);
             if (rch2d && rch2d.collider != null)
             {
                 GameObject ground = rch2d.collider.gameObject;

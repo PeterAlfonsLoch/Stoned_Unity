@@ -13,6 +13,7 @@ public class FogGenerator : MonoBehaviour {
         for (int i = 0; i < maxNumberOfClouds; i++)
         {
             GameObject newC = (GameObject)Instantiate(sampleCloud);
+            newC.GetComponent<CloudDrifter>().init(sampleCloud);
             newC.transform.position = sampleCloud.transform.position + new Vector3(Random.Range(-range, range), Random.Range(-range, range));
             float diff = Vector3.Distance(sampleCloud.transform.position, newC.transform.position);
             float alpha = 1f - (diff / maxDiff);

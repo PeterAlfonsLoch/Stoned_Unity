@@ -7,6 +7,8 @@ public class PlayerController : MonoBehaviour {
     public float baseRange = 15;
     public float exhaustRange = 2.5f;
     public int maxAirPorts = 3;
+    public float exhaustCoolDownTime = 0.5f;//the cool down time for teleporting while exhausted in seconds
+    public float teleportTime = 0f;//the earliest time that Merky can teleport
 
     public int teleportXP = 0;
     public int txpLevelUpRequirement = 1;
@@ -16,19 +18,67 @@ public class PlayerController : MonoBehaviour {
 
     public int airPorts = 0;
     private Rigidbody2D rb2d;
+    private int exceptionFrame = 0;//true if this frame it should not count grounded (CODE HAZARD)
 
     private bool isTeleportGesture;
 
     public AudioClip teleportSound;
+
+    Vector3[] dirs = new Vector3[]
+            {
+                //Vector3.up,
+                Vector3.down,
+                //Vector3.left,
+                //Vector3.right,
+                //new Vector3(1,1),
+                //new Vector3(-1,1),
+                new Vector3(0.75f,-1),
+                new Vector3(-0.75f,-1),
+
+                //new Vector3(1,.5f),
+                //new Vector3(-1,.5f),
+                //new Vector3(1,-.5f),
+                //new Vector3(-1,-.5f),
+                //new Vector3(.5f,1),
+                //new Vector3(-.5f,1),
+                //new Vector3(.5f,-1),
+                //new Vector3(-.5f,-1),
+            };
 
     // Use this for initialization
     void Start () {
         rb2d = GetComponent<Rigidbody2D>();
         Input.simulateMouseWithTouches = false;
 	}
+
+    void FixedUpdate()
+    {
+        Vector3 pos = transform.position;
+        Vector2 pos2 = new Vector2(pos.x, pos.y);
+        foreach (Vector3 dir in dirs)
+        {
+            Vector2 dir2 = new Vector2(dir.x, dir.y);
+            float length = 1.3f;
+            dir2 = dir2.normalized * length;
+            Vector2 start = (pos2 + dir2);
+            Debug.DrawLine(pos2, start, Color.black);
+        }
+        if (exceptionFrame <= 0)
+        {
+            checkGroundedState();
+        }
+        //else
+        //{
+        //    exceptionFrame--;
+        //}
+    }
 	
 	// Update is called once per frame
 	void Update () {
+        if (exceptionFrame > 0)
+        {
+            exceptionFrame--;
+        }
 
         if (Input.touchCount == 0)
         {
@@ -65,8 +115,8 @@ public class PlayerController : MonoBehaviour {
 
     void OnCollisionEnter2D(Collision2D coll)
     {
-        airPorts = 0;
-        setRange(baseRange);
+        //airPorts = 0;
+        //setRange(baseRange);
     }
     void OnCollisionExit2D(Collision2D coll)
     {
@@ -74,53 +124,63 @@ public class PlayerController : MonoBehaviour {
 
     void teleport(bool mouseInput)
     {
-        checkGroundedState(false);
-
-        //Get new position
-        Vector3 click;
-        if (mouseInput) {
-            click = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        }
-        else
+        if (teleportTime <= Time.time)
         {
-            click = Camera.main.ScreenToWorldPoint(Input.GetTouch(0).position);
-        }
-        Vector3 newPos = new Vector3(click.x, click.y);
-        //Determine if new position is in range
-        Vector3 oldPos = transform.position;
-        int bonusTXP = 0;
-        if (Vector3.Distance(newPos, transform.position) <= range)
-        {
-        }
-        else
-        {
-            if (range >= baseRange)
+            if (airPorts > maxAirPorts)
             {
-                if (Vector3.Distance(newPos, transform.position) <= range + 2)
+                teleportTime = Time.time + exhaustCoolDownTime;
+            }
+            //Get new position
+            Vector3 click;
+            if (mouseInput)
+            {
+                click = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            }
+            else
+            {
+                click = Camera.main.ScreenToWorldPoint(Input.GetTouch(0).position);
+            }
+            Vector3 newPos = new Vector3(click.x, click.y);
+            //Determine if new position is in range
+            Vector3 oldPos = transform.position;
+            int bonusTXP = 0;
+            if (Vector3.Distance(newPos, transform.position) <= range)
+            {
+            }
+            else
+            {
+                if (range >= baseRange)
                 {
-                    bonusTXP = 1;
+                    if (Vector3.Distance(newPos, transform.position) <= range + 2)
+                    {
+                        bonusTXP = 1;
+                    }
                 }
+                else //teleporting under confinements, such as used up the airports
+                {
+                    bonusTXP = -1;//don't give any txp for teleporting beyond max air ports
+                }
+                newPos = ((newPos - oldPos).normalized * range) + oldPos;
             }
-            else //teleporting under confinements, such as used up the airports
+            transform.position = newPos;
+            showStreak(oldPos, newPos);
+            AudioSource.PlayClipAtPoint(teleportSound, oldPos);
+            //Give teleport xp
+            teleportXP += 1 + bonusTXP;
+            if (teleportXP >= txpLevelUpRequirement)
             {
-                bonusTXP = -1;//don't give any txp for teleporting beyond max air ports
+                int lls = txpLevelUpRequirement;
+                txpLevelUpRequirement += txpLevelUpRequirement - lastLevel + 1;
+                lastLevel = lls;
+                baseRange += 0.1f;
+                //setRange(baseRange);
             }
-            newPos = ((newPos - oldPos).normalized * range) + oldPos;
         }
-        transform.position = newPos;
-        showStreak(oldPos, newPos);
-        AudioSource.PlayClipAtPoint(teleportSound, oldPos);
-        //Give teleport xp
-        teleportXP += 1 + bonusTXP;
-        if (teleportXP >= txpLevelUpRequirement)
+        if ( ! isGrounded())
         {
-            int lls = txpLevelUpRequirement;
-            txpLevelUpRequirement += txpLevelUpRequirement - lastLevel + 1;
-            lastLevel = lls;
-            baseRange += 0.1f;
-            //setRange(baseRange);
+            airPorts++;
         }
-        checkGroundedState(true);
+        exceptionFrame = 5;
     }
 
     void showStreak(Vector3 oldp, Vector3 newp)
@@ -139,7 +199,7 @@ public class PlayerController : MonoBehaviour {
         tri.updateRange();
     }
 
-    void checkGroundedState(bool update)
+    void checkGroundedState()
     {        
         if (isGrounded())
         {
@@ -147,13 +207,9 @@ public class PlayerController : MonoBehaviour {
             setRange(baseRange);
         }
         else {
-            if (update)
+            if (airPorts >= maxAirPorts)
             {
-                airPorts++;
-                if (airPorts > maxAirPorts)
-                {
-                    setRange(exhaustRange);
-                }
+                setRange(exhaustRange);
             }
         }
 
@@ -162,32 +218,13 @@ public class PlayerController : MonoBehaviour {
     bool isGrounded()
     {
         bool isGrounded = false;
-        Vector3[] dirs = new Vector3[]
-            {
-                //Vector3.up,
-                Vector3.down,
-                //Vector3.left,
-                //Vector3.right,
-                //new Vector3(1,1),
-                //new Vector3(-1,1),
-                new Vector3(1,-1),
-                new Vector3(-1,-1),
-
-                //new Vector3(1,.5f),
-                //new Vector3(-1,.5f),
-                //new Vector3(1,-.5f),
-                //new Vector3(-1,-.5f),
-                //new Vector3(.5f,1),
-                //new Vector3(-.5f,1),
-                //new Vector3(.5f,-1),
-                //new Vector3(-.5f,-1),
-            };
+        
         Vector3 pos = transform.position;
         Vector2 pos2 = new Vector2(pos.x, pos.y);
         foreach (Vector3 dir in dirs)
         {
             Vector2 dir2 = new Vector2(dir.x, dir.y);
-            float length = 1.3f;
+            float length = 1.7f;
             dir2 = dir2.normalized * length;
             Vector2 start = (pos2 + dir2);
             Debug.DrawLine(pos2, start,Color.black,1);

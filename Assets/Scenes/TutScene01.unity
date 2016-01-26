@@ -347,6 +347,10 @@ Prefab:
       propertyPath: maxNumberOfClouds
       value: 100
       objectReference: {fileID: 0}
+    - target: {fileID: 21239118, guid: 932a83cb40b2eba419d46a4253d3d73f, type: 2}
+      propertyPath: m_SortingLayerID
+      value: 1813193563
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 932a83cb40b2eba419d46a4253d3d73f, type: 2}
   m_IsPrefabParent: 0
@@ -482,6 +486,18 @@ Prefab:
     - target: {fileID: 11477714, guid: 5913bd1e88aefff4988c7dfee6595611, type: 2}
       propertyPath: maxAirPorts
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 139140, guid: 5913bd1e88aefff4988c7dfee6595611, type: 2}
+      propertyPath: m_Layer
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 21209056, guid: 5913bd1e88aefff4988c7dfee6595611, type: 2}
+      propertyPath: m_SortingLayerID
+      value: -1013862959
+      objectReference: {fileID: 0}
+    - target: {fileID: 21235352, guid: 5913bd1e88aefff4988c7dfee6595611, type: 2}
+      propertyPath: m_SortingOrder
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 5913bd1e88aefff4988c7dfee6595611, type: 2}

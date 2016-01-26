@@ -141,6 +141,48 @@ public class PlayerController : MonoBehaviour {
                 click = Camera.main.ScreenToWorldPoint(Input.GetTouch(0).position);
             }
             Vector3 newPos = new Vector3(click.x, click.y);
+            //Determine if you can even teleport to the position (i.e. is it occupied or not?)
+            {
+                Vector3[] checkDirs = new Vector3[]
+                {
+                Vector3.up,
+                Vector3.down,
+                Vector3.left,
+                Vector3.right,
+                new Vector3(1,1),
+                new Vector3(-1,1),
+                new Vector3(1,-1),
+                new Vector3(-1,-1),
+
+                new Vector3(1,.5f),
+                new Vector3(-1,.5f),
+                new Vector3(1,-.5f),
+                new Vector3(-1,-.5f),
+                new Vector3(.5f,1),
+                new Vector3(-.5f,1),
+                new Vector3(.5f,-1),
+                new Vector3(-.5f,-1),
+                };
+                Vector2 pos2 = new Vector2(newPos.x, newPos.y);
+                foreach (Vector3 checkDir in checkDirs)
+                {
+                    Vector2 dir2 = new Vector2(checkDir.x, checkDir.y);
+                    float length = 0.1f;// 1.7f;
+                    dir2 = dir2.normalized * length;
+                    Vector2 start = (pos2 + dir2);
+                    //Debug.DrawLine(pos2, start, Color.black, 1);
+                    RaycastHit2D rch2d = Physics2D.Raycast(start, -1 * dir2, length);// -1*(start), 1f);
+                    if (rch2d && rch2d.collider != null)
+                    {
+                        GameObject ground = rch2d.collider.gameObject;
+                        if (ground != null && !ground.Equals(transform.gameObject))
+                        {
+                            return;//nope, can't teleport here
+                        }
+                    }
+                }
+            }
+
             //Determine if new position is in range
             Vector3 oldPos = transform.position;
             int bonusTXP = 0;

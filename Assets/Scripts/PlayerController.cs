@@ -55,14 +55,14 @@ public class PlayerController : MonoBehaviour {
     {
         Vector3 pos = transform.position;
         Vector2 pos2 = new Vector2(pos.x, pos.y);
-        foreach (Vector3 dir in dirs)
-        {
-            Vector2 dir2 = new Vector2(dir.x, dir.y);
-            float length = 1.3f;
-            dir2 = dir2.normalized * length;
-            Vector2 start = (pos2 + dir2);
-            Debug.DrawLine(pos2, start, Color.black);
-        }
+        //foreach (Vector3 dir in dirs)
+        //{
+        //    Vector2 dir2 = new Vector2(dir.x, dir.y);
+        //    float length = 1.3f;
+        //    dir2 = dir2.normalized * length;
+        //    Vector2 start = (pos2 + dir2);
+        //    Debug.DrawLine(pos2, start, Color.black);
+        //}
         if (exceptionFrame <= 0)
         {
             checkGroundedState();
@@ -260,21 +260,25 @@ public class PlayerController : MonoBehaviour {
     bool isGrounded()
     {
         bool isGrounded = false;
-        
+
         Vector3 pos = transform.position;
         Vector2 pos2 = new Vector2(pos.x, pos.y);
-        foreach (Vector3 dir in dirs)
+        int numberOfLines = 5;
+        Bounds bounds = GetComponent<PolygonCollider2D>().bounds;
+        float width = bounds.max.x - bounds.min.x;
+        float increment = width / (numberOfLines-1);//-1 because the last one doesn't take up any space
+        Vector3 startV = bounds.min;
+        float length = 1.7f;
+        for (int i = 0; i < numberOfLines; i++)
         {
-            Vector2 dir2 = new Vector2(dir.x, dir.y);
-            float length = 1.7f;
-            dir2 = dir2.normalized * length;
-            Vector2 start = (pos2 + dir2);
-            Debug.DrawLine(pos2, start,Color.black,1);
-            RaycastHit2D rch2d = Physics2D.Raycast(start, -1*dir2, length);// -1*(start), 1f);
+            Vector2 start = new Vector2(startV.x + i*increment, pos.y-length);
+            Vector2 dir2 = new Vector2(0, length);
+            Debug.DrawLine(start, start+dir2, Color.black, 0.1f);
+            RaycastHit2D rch2d = Physics2D.Raycast(start, dir2, length);// -1*(start), 1f);
             if (rch2d && rch2d.collider != null)
             {
                 GameObject ground = rch2d.collider.gameObject;
-                if (ground != null && ! ground.Equals(transform.gameObject))
+                if (ground != null && !ground.Equals(transform.gameObject))
                 {
                     isGrounded = true;
                     break;

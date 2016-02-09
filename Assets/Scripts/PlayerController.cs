@@ -186,37 +186,60 @@ public class PlayerController : MonoBehaviour {
 
             //Determine if you can even teleport to the position (i.e. is it occupied or not?)
             {
-                if (isOccupied(newPos))
+                if (isOccupied(newPos))//test the current newPos first
                 {
-                    //now, I have to figure out which cardinal direction is closest to the one they're trying to go to: up, down, left, or right
-                    Vector3 newVector = new Vector3(0, 0);
+                    //Back-tracking
                     float distance = Vector3.Distance(oldPos, newPos);
-                    //whichever difference is less, is the one that's closer
-                    if (Mathf.Abs(oldPos.x - newPos.x) < Mathf.Abs(oldPos.y - newPos.y))
-                    {//it is closer in x direction, go up or down
-                        if (oldPos.y > newPos.y)
-                        {//go down
-                            newPos = oldPos + Vector3.down * distance;
-                        }
-                        else if (oldPos.y < newPos.y)
-                        {//go up
-                            newPos = oldPos + Vector3.up * distance;
-                        }
-                    }
-                    else if (Mathf.Abs(oldPos.x - newPos.x) >= Mathf.Abs(oldPos.y - newPos.y))//default: left or right
-                    {//it is closer in y direction, go left or right
-                        if (oldPos.x > newPos.x)
-                        {//go left
-                            newPos = oldPos + Vector3.left * distance;
-                        }
-                        else if (oldPos.x < newPos.x)
-                        {//go right
-                            newPos = oldPos + Vector3.right * distance;
-                        }
-                    }
-                    if (isOccupied(newPos))
+                    int pointsToTry = 10;//default to trying 10 points along the line at first
+                    float difference = -1 * 1.00f / pointsToTry;//how much the previous jump was different by
+                    float percent = 1.00f;
+                    bool keepTrying = true;
+                    Vector3 norm = (newPos - oldPos).normalized;
+                    while (keepTrying)
                     {
-                        return;//the back up plan failed, just return, can't teleport
+                        percent += difference;//actually subtraction in usual case, b/c "difference" is usually negative
+                        Vector3 testPos =  (norm * distance * percent) + oldPos;
+                        if (isOccupied(testPos))
+                        {
+                        }
+                        else
+                        {
+                            //found an open spot (tho it might not be optimal)
+                            keepTrying = false;
+                            newPos = testPos;
+                        }
+                    }
+
+                    if (isOccupied(newPos))
+                    {//backtracking didn't work, try a cardinal direction
+                        //Figure out which cardinal direction is closest to the one they're trying to go to: up, down, left, or right
+                        //whichever difference is less, is the one that's closer
+                        if (Mathf.Abs(oldPos.x - newPos.x) < Mathf.Abs(oldPos.y - newPos.y))
+                        {//it is closer in x direction, go up or down
+                            if (oldPos.y > newPos.y)
+                            {//go down
+                                newPos = oldPos + Vector3.down * distance;
+                            }
+                            else if (oldPos.y < newPos.y)
+                            {//go up
+                                newPos = oldPos + Vector3.up * distance;
+                            }
+                        }
+                        else if (Mathf.Abs(oldPos.x - newPos.x) >= Mathf.Abs(oldPos.y - newPos.y))//default: left or right
+                        {//it is closer in y direction, go left or right
+                            if (oldPos.x > newPos.x)
+                            {//go left
+                                newPos = oldPos + Vector3.left * distance;
+                            }
+                            else if (oldPos.x < newPos.x)
+                            {//go right
+                                newPos = oldPos + Vector3.right * distance;
+                            }
+                        }
+                        if (isOccupied(newPos))
+                        {
+                            return;//the back up plan failed, just return, can't teleport
+                        }
                     }
                 }
             }

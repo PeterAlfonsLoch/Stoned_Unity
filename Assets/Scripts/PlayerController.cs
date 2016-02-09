@@ -25,7 +25,7 @@ public class PlayerController : MonoBehaviour {
     public AudioClip teleportSound;
 
     Vector3[] dirs = new Vector3[]
-            {
+            {//for checking if Merky is grounded
                 //Vector3.up,
                 Vector3.down,
                 //Vector3.left,
@@ -44,6 +44,26 @@ public class PlayerController : MonoBehaviour {
                 //new Vector3(.5f,-1),
                 //new Vector3(-.5f,-1),
             };
+    Vector3[] checkDirs = new Vector3[]
+                {//for checking area around teleport target point
+                Vector3.up,
+                Vector3.down,
+                Vector3.left,
+                Vector3.right,
+                new Vector3(1,1),
+                new Vector3(-1,1),
+                new Vector3(1,-1),
+                new Vector3(-1,-1),
+
+                new Vector3(1,.5f),
+                new Vector3(-1,.5f),
+                new Vector3(1,-.5f),
+                new Vector3(-1,-.5f),
+                new Vector3(.5f,1),
+                new Vector3(-.5f,1),
+                new Vector3(.5f,-1),
+                new Vector3(-.5f,-1),
+                };
 
     // Use this for initialization
     void Start () {
@@ -113,14 +133,14 @@ public class PlayerController : MonoBehaviour {
         }
     }
 
-    void OnCollisionEnter2D(Collision2D coll)
-    {
-        //airPorts = 0;
-        //setRange(baseRange);
-    }
-    void OnCollisionExit2D(Collision2D coll)
-    {
-    }
+    //void OnCollisionEnter2D(Collision2D coll)
+    //{
+    //    //airPorts = 0;
+    //    //setRange(baseRange);
+    //}
+    //void OnCollisionExit2D(Collision2D coll)
+    //{
+    //}
 
     void teleport(bool mouseInput)
     {
@@ -166,46 +186,40 @@ public class PlayerController : MonoBehaviour {
 
             //Determine if you can even teleport to the position (i.e. is it occupied or not?)
             {
-                Vector3[] checkDirs = new Vector3[]
+                if (isOccupied(newPos))
                 {
-                Vector3.up,
-                Vector3.down,
-                Vector3.left,
-                Vector3.right,
-                new Vector3(1,1),
-                new Vector3(-1,1),
-                new Vector3(1,-1),
-                new Vector3(-1,-1),
-
-                new Vector3(1,.5f),
-                new Vector3(-1,.5f),
-                new Vector3(1,-.5f),
-                new Vector3(-1,-.5f),
-                new Vector3(.5f,1),
-                new Vector3(-.5f,1),
-                new Vector3(.5f,-1),
-                new Vector3(-.5f,-1),
-                };
-                Vector2 pos2 = new Vector2(newPos.x, newPos.y);
-                foreach (Vector3 checkDir in checkDirs)
-                {
-                    Vector2 dir2 = new Vector2(checkDir.x, checkDir.y);
-                    float length = 0.1f;// 1.7f;
-                    dir2 = dir2.normalized * length;
-                    Vector2 start = (pos2 + dir2);
-                    //Debug.DrawLine(pos2, start, Color.black, 1);
-                    RaycastHit2D rch2d = Physics2D.Raycast(start, -1 * dir2, length);// -1*(start), 1f);
-                    if (rch2d && rch2d.collider != null)
-                    {
-                        GameObject ground = rch2d.collider.gameObject;
-                        if (ground != null && !ground.Equals(transform.gameObject))
-                        {
-                            return;//nope, can't teleport here
+                    //now, I have to figure out which cardinal direction is closest to the one they're trying to go to: up, down, left, or right
+                    Vector3 newVector = new Vector3(0, 0);
+                    float distance = Vector3.Distance(oldPos, newPos);
+                    //whichever difference is less, is the one that's closer
+                    if (Mathf.Abs(oldPos.x - newPos.x) < Mathf.Abs(oldPos.y - newPos.y))
+                    {//it is closer in x direction, go up or down
+                        if (oldPos.y > newPos.y)
+                        {//go down
+                            newPos = oldPos + Vector3.down * distance;
                         }
+                        else if (oldPos.y < newPos.y)
+                        {//go up
+                            newPos = oldPos + Vector3.up * distance;
+                        }
+                    }
+                    else if (Mathf.Abs(oldPos.x - newPos.x) >= Mathf.Abs(oldPos.y - newPos.y))//default: left or right
+                    {//it is closer in y direction, go left or right
+                        if (oldPos.x > newPos.x)
+                        {//go left
+                            newPos = oldPos + Vector3.left * distance;
+                        }
+                        else if (oldPos.x < newPos.x)
+                        {//go right
+                            newPos = oldPos + Vector3.right * distance;
+                        }
+                    }
+                    if (isOccupied(newPos))
+                    {
+                        return;//the back up plan failed, just return, can't teleport
                     }
                 }
             }
-
             
             //Actually Teleport
             transform.position = newPos;
@@ -290,5 +304,31 @@ public class PlayerController : MonoBehaviour {
             }
         }
         return isGrounded;
+    }
+
+    /**
+    * Determines whether the given position is occupied or not
+    */
+    bool isOccupied(Vector3 pos)
+    {
+        Vector2 pos2 = new Vector2(pos.x, pos.y);
+        foreach (Vector3 checkDir in checkDirs)
+        {
+            Vector2 dir2 = new Vector2(checkDir.x, checkDir.y);
+            float length = 0.1f;// 1.7f;
+            dir2 = dir2.normalized * length;
+            Vector2 start = (pos2 + dir2);
+            //Debug.DrawLine(pos2, start, Color.black, 1);
+            RaycastHit2D rch2d = Physics2D.Raycast(start, -1 * dir2, length);// -1*(start), 1f);
+            if (rch2d && rch2d.collider != null)
+            {
+                GameObject ground = rch2d.collider.gameObject;
+                if (ground != null && !ground.Equals(transform.gameObject))
+                {
+                    return true;//yep, it's occupied
+                }
+            }
+        }
+        return false;//nope, it's not occupied
     }
 }

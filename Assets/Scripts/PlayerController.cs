@@ -189,6 +189,7 @@ public class PlayerController : MonoBehaviour {
                 if (isOccupied(newPos))//test the current newPos first
                 {
                     //Back-tracking
+                    Vector3 btNewPos = newPos;
                     float distance = Vector3.Distance(oldPos, newPos);
                     int pointsToTry = 10;//default to trying 10 points along the line at first
                     float difference = -1 * 1.00f / pointsToTry;//how much the previous jump was different by
@@ -198,7 +199,7 @@ public class PlayerController : MonoBehaviour {
                     while (keepTrying)
                     {
                         percent += difference;//actually subtraction in usual case, b/c "difference" is usually negative
-                        Vector3 testPos =  (norm * distance * percent) + oldPos;
+                        Vector3 testPos = (norm * distance * percent) + oldPos;
                         if (isOccupied(testPos))
                         {
                         }
@@ -206,40 +207,67 @@ public class PlayerController : MonoBehaviour {
                         {
                             //found an open spot (tho it might not be optimal)
                             keepTrying = false;
-                            newPos = testPos;
+                            btNewPos = testPos;
                         }
                     }
 
-                    if (isOccupied(newPos))
-                    {//backtracking didn't work, try a cardinal direction
-                        //Figure out which cardinal direction is closest to the one they're trying to go to: up, down, left, or right
-                        //whichever difference is less, is the one that's closer
-                        if (Mathf.Abs(oldPos.x - newPos.x) < Mathf.Abs(oldPos.y - newPos.y))
-                        {//it is closer in x direction, go up or down
-                            if (oldPos.y > newPos.y)
-                            {//go down
-                                newPos = oldPos + Vector3.down * distance;
-                            }
-                            else if (oldPos.y < newPos.y)
-                            {//go up
-                                newPos = oldPos + Vector3.up * distance;
-                            }
+                    //Try a cardinal direction
+                    //Figure out which cardinal direction is closest to the one they're trying to go to: up, down, left, or right
+                    //whichever difference is less, is the one that's closer
+                    Vector3 cdNewPos = newPos;
+                    if (Mathf.Abs(oldPos.x - newPos.x) < Mathf.Abs(oldPos.y - newPos.y))
+                    {//it is closer in x direction, go up or down
+                        if (oldPos.y > newPos.y)
+                        {//go down
+                            cdNewPos = oldPos + Vector3.down * distance;
                         }
-                        else if (Mathf.Abs(oldPos.x - newPos.x) >= Mathf.Abs(oldPos.y - newPos.y))//default: left or right
-                        {//it is closer in y direction, go left or right
-                            if (oldPos.x > newPos.x)
-                            {//go left
-                                newPos = oldPos + Vector3.left * distance;
-                            }
-                            else if (oldPos.x < newPos.x)
-                            {//go right
-                                newPos = oldPos + Vector3.right * distance;
-                            }
+                        else if (oldPos.y < newPos.y)
+                        {//go up
+                            cdNewPos = oldPos + Vector3.up * distance;
                         }
-                        if (isOccupied(newPos))
+                    }
+                    else if (Mathf.Abs(oldPos.x - newPos.x) >= Mathf.Abs(oldPos.y - newPos.y))//default: left or right
+                    {//it is closer in y direction, go left or right
+                        if (oldPos.x > newPos.x)
+                        {//go left
+                            cdNewPos = oldPos + Vector3.left * distance;
+                        }
+                        else if (oldPos.x < newPos.x)
+                        {//go right
+                            cdNewPos = oldPos + Vector3.right * distance;
+                        }
+                    }
+                    bool btOcc = isOccupied(btNewPos);
+                    bool cdOcc = isOccupied(cdNewPos);
+                    if (btOcc && ! cdOcc)
+                    {
+                        newPos = cdNewPos;
+                    }
+                    else if ( ! btOcc && cdOcc)
+                    {
+                        newPos = btNewPos;
+                    }
+                    else if (btOcc && cdOcc)
+                    {
+                        return;//the back up plan failed, just return, can't teleport
+                    }
+                    else if ( ! btOcc && ! cdOcc)
+                    {
+                        //Whichever new pos goes further is the winner.
+                        float btDist = Vector3.Distance(oldPos, btNewPos);
+                        float cdDist = Vector3.Distance(oldPos, cdNewPos);
+                        if (cdDist > btDist)
                         {
-                            return;//the back up plan failed, just return, can't teleport
+                            newPos = cdNewPos;
                         }
+                        else //default to btNewPos
+                        {
+                            newPos = btNewPos;
+                        }
+                    }
+                    else
+                    {
+                        //ERROR! It should not be able to come here!
                     }
                 }
             }

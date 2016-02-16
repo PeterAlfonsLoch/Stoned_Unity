@@ -3,10 +3,10 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour {
 
-    public float range = 15;
-    public float baseRange = 15;
-    public float exhaustRange = 2.5f;
-    public int maxAirPorts = 3;
+    public float range = 3;
+    public float baseRange = 3;
+    public float exhaustRange = 1;
+    public int maxAirPorts = 0;
     public float exhaustCoolDownTime = 0.5f;//the cool down time for teleporting while exhausted in seconds
     public float teleportTime = 0f;//the earliest time that Merky can teleport
 

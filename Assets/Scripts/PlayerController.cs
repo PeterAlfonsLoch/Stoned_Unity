@@ -337,12 +337,12 @@ public class PlayerController : MonoBehaviour {
         float width = bounds.max.x - bounds.min.x;
         float increment = width / (numberOfLines-1);//-1 because the last one doesn't take up any space
         Vector3 startV = bounds.min;
-        float length = 1.7f;
+        float length = 0.75f;
         for (int i = 0; i < numberOfLines; i++)
         {
             Vector2 start = new Vector2(startV.x + i*increment, pos.y-length);
             Vector2 dir2 = new Vector2(0, length);
-            Debug.DrawLine(start, start+dir2, Color.black, 0.1f);
+            Debug.DrawLine(start, start+dir2, Color.black);
             RaycastHit2D rch2d = Physics2D.Raycast(start, dir2, length);// -1*(start), 1f);
             if (rch2d && rch2d.collider != null)
             {
@@ -366,7 +366,7 @@ public class PlayerController : MonoBehaviour {
         foreach (Vector3 checkDir in checkDirs)
         {
             Vector2 dir2 = new Vector2(checkDir.x, checkDir.y);
-            float length = 0.1f;// 1.7f;
+            float length = 0.01f;// 1.7f;
             dir2 = dir2.normalized * length;
             Vector2 start = (pos2 + dir2);
             //Debug.DrawLine(pos2, start, Color.black, 1);

@@ -15,6 +15,9 @@ public class PlayerController : MonoBehaviour {
     public int lastLevel = 1;
 
     public GameObject teleportStreak;
+    public GameObject teleportStar;
+    public bool useStreak = false;
+    public bool useStar = true;
 
     public int airPorts = 0;
     private Rigidbody2D rb2d;
@@ -274,7 +277,7 @@ public class PlayerController : MonoBehaviour {
             
             //Actually Teleport
             transform.position = newPos;
-            showStreak(oldPos, newPos);
+            showTeleportEffect(oldPos, newPos);
             AudioSource.PlayClipAtPoint(teleportSound, oldPos);
             //Give teleport xp
             teleportXP += 1 + bonusTXP;
@@ -294,6 +297,17 @@ public class PlayerController : MonoBehaviour {
         exceptionFrame = 5;
     }
 
+    void showTeleportEffect(Vector3 oldp, Vector3 newp)
+    {
+        if (useStreak)
+        {
+            showStreak(oldp, newp);
+        }
+        if (useStar)
+        {
+            showTeleportStar(oldp, newp);
+        }
+    }
     void showStreak(Vector3 oldp, Vector3 newp)
     {
         GameObject newTS = (GameObject)Instantiate(teleportStreak);
@@ -301,6 +315,14 @@ public class PlayerController : MonoBehaviour {
         newTS.GetComponent<TeleportStreakUpdater>().end = newp;
         newTS.GetComponent<TeleportStreakUpdater>().position();
         newTS.GetComponent<TeleportStreakUpdater>().turnOn(true);
+    }
+    void showTeleportStar(Vector3 oldp, Vector3 newp)
+    {
+        GameObject newTS = (GameObject)Instantiate(teleportStar);
+        newTS.GetComponent<TeleportStarUpdater>().start = oldp;
+        newTS.GetComponent<TeleportStarUpdater>().end = newp;
+        newTS.GetComponent<TeleportStarUpdater>().position();
+        newTS.GetComponent<TeleportStarUpdater>().turnOn(true);
     }
 
     void setRange(float newRange)

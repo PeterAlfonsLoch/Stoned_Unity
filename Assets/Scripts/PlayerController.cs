@@ -280,15 +280,15 @@ public class PlayerController : MonoBehaviour {
             showTeleportEffect(oldPos, newPos);
             AudioSource.PlayClipAtPoint(teleportSound, oldPos);
             //Give teleport xp
-            teleportXP += 1 + bonusTXP;
-            if (teleportXP >= txpLevelUpRequirement)
-            {
-                int lls = txpLevelUpRequirement;
-                txpLevelUpRequirement += txpLevelUpRequirement - lastLevel + 1;
-                lastLevel = lls;
-                baseRange += 0.1f;
-                //setRange(baseRange);
-            }
+            //teleportXP += 1 + bonusTXP;
+            //if (teleportXP >= txpLevelUpRequirement)
+            //{
+            //    int lls = txpLevelUpRequirement;
+            //    txpLevelUpRequirement += txpLevelUpRequirement - lastLevel + 1;
+            //    lastLevel = lls;
+            //    baseRange += 0.1f;
+            //    //setRange(baseRange);
+            //}
         }
         if ( ! isGrounded())
         {

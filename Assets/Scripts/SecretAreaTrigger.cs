@@ -21,7 +21,7 @@ public class SecretAreaTrigger : MonoBehaviour {
         //FUTURE CODE: check to make sure the player is the one who collided before destroying the secret hider
         if (coll.gameObject.Equals(playerObject))
         {
-            GameObject.Destroy(secretHider);
+            secretHider.AddComponent<Fader>();
         }
     }
 }

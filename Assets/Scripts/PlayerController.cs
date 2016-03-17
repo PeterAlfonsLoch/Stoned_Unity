@@ -388,7 +388,7 @@ public class PlayerController : MonoBehaviour {
         foreach (Vector3 checkDir in checkDirs)
         {
             Vector2 dir2 = new Vector2(checkDir.x, checkDir.y);
-            float length = 0.01f;// 1.7f;
+            float length = 0.4f;// 1.7f;
             dir2 = dir2.normalized * length;
             Vector2 start = (pos2 + dir2);
             //Debug.DrawLine(pos2, start, Color.black, 1);
@@ -398,7 +398,19 @@ public class PlayerController : MonoBehaviour {
                 GameObject ground = rch2d.collider.gameObject;
                 if (ground != null && !ground.Equals(transform.gameObject))
                 {
-                    return true;//yep, it's occupied
+                    //test opposite direction
+                    start = (pos2 + -1*dir2);
+                    rch2d = Physics2D.Raycast(start, dir2, length);
+                    Debug.DrawLine(start, start+dir2, Color.black, 1);
+                    if (rch2d && rch2d.collider != null)
+                    {
+                        ground = rch2d.collider.gameObject;
+                        if (ground != null && !ground.Equals(transform.gameObject))
+                        {
+                            return true;//yep, it's occupied on both sides
+                        }
+                        //nope, it's occupied on one side but not the other
+                    }
                 }
             }
         }

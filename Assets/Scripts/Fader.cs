@@ -19,6 +19,10 @@ public class Fader : MonoBehaviour {
         srs = new ArrayList();
         srs.Add(GetComponent<SpriteRenderer>());
         srs.AddRange(GetComponentsInChildren<SpriteRenderer>());
+        foreach (BoxCollider2D bc in GetComponentsInChildren<BoxCollider2D>())
+        {
+            bc.enabled = false;
+        }
     }
 
     // Update is called once per frame

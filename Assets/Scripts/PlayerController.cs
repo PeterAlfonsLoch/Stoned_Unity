@@ -149,6 +149,10 @@ public class PlayerController : MonoBehaviour {
     {
         if (teleportTime <= Time.time)
         {
+            if (!isGrounded())
+            {
+                airPorts++;
+            }
             if (airPorts > maxAirPorts)
             {
                 teleportTime = Time.time + exhaustCoolDownTime;
@@ -279,20 +283,6 @@ public class PlayerController : MonoBehaviour {
             transform.position = newPos;
             showTeleportEffect(oldPos, newPos);
             AudioSource.PlayClipAtPoint(teleportSound, oldPos);
-            //Give teleport xp
-            //teleportXP += 1 + bonusTXP;
-            //if (teleportXP >= txpLevelUpRequirement)
-            //{
-            //    int lls = txpLevelUpRequirement;
-            //    txpLevelUpRequirement += txpLevelUpRequirement - lastLevel + 1;
-            //    lastLevel = lls;
-            //    baseRange += 0.1f;
-            //    //setRange(baseRange);
-            //}
-        }
-        if ( ! isGrounded())
-        {
-            airPorts++;
         }
         exceptionFrame = 5;
     }

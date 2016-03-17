@@ -1,7 +1,8 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class MilestoneActivator : MonoBehaviour {
+public class MilestoneActivatorRange : MonoBehaviour
+{//2016-03-17: copied from MilestoneActivator
 
     public int incrementAmount = 1;
 
@@ -19,7 +20,7 @@ public class MilestoneActivator : MonoBehaviour {
         if ( ! used && coll.gameObject.Equals(playerObject))
         {
             used = true;
-            playerObject.GetComponent<PlayerController>().maxAirPorts += incrementAmount;
+            playerObject.GetComponent<PlayerController>().baseRange += incrementAmount;
             Destroy(this);//makes sure it can only be used once
         }
     }

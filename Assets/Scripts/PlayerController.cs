@@ -3,10 +3,10 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour {
 
-    public float range = 15;
-    public float baseRange = 15;
-    public float exhaustRange = 2.5f;
-    public int maxAirPorts = 3;
+    public float range = 3;
+    public float baseRange = 3;
+    public float exhaustRange = 1;
+    public int maxAirPorts = 0;
     public float exhaustCoolDownTime = 0.5f;//the cool down time for teleporting while exhausted in seconds
     public float teleportTime = 0f;//the earliest time that Merky can teleport
 
@@ -15,6 +15,9 @@ public class PlayerController : MonoBehaviour {
     public int lastLevel = 1;
 
     public GameObject teleportStreak;
+    public GameObject teleportStar;
+    public bool useStreak = false;
+    public bool useStar = true;
 
     public int airPorts = 0;
     private Rigidbody2D rb2d;
@@ -189,6 +192,7 @@ public class PlayerController : MonoBehaviour {
                 if (isOccupied(newPos))//test the current newPos first
                 {
                     //Back-tracking
+                    Vector3 btNewPos = newPos;
                     float distance = Vector3.Distance(oldPos, newPos);
                     int pointsToTry = 10;//default to trying 10 points along the line at first
                     float difference = -1 * 1.00f / pointsToTry;//how much the previous jump was different by
@@ -198,7 +202,7 @@ public class PlayerController : MonoBehaviour {
                     while (keepTrying)
                     {
                         percent += difference;//actually subtraction in usual case, b/c "difference" is usually negative
-                        Vector3 testPos =  (norm * distance * percent) + oldPos;
+                        Vector3 testPos = (norm * distance * percent) + oldPos;
                         if (isOccupied(testPos))
                         {
                         }
@@ -206,58 +210,85 @@ public class PlayerController : MonoBehaviour {
                         {
                             //found an open spot (tho it might not be optimal)
                             keepTrying = false;
-                            newPos = testPos;
+                            btNewPos = testPos;
                         }
                     }
 
-                    if (isOccupied(newPos))
-                    {//backtracking didn't work, try a cardinal direction
-                        //Figure out which cardinal direction is closest to the one they're trying to go to: up, down, left, or right
-                        //whichever difference is less, is the one that's closer
-                        if (Mathf.Abs(oldPos.x - newPos.x) < Mathf.Abs(oldPos.y - newPos.y))
-                        {//it is closer in x direction, go up or down
-                            if (oldPos.y > newPos.y)
-                            {//go down
-                                newPos = oldPos + Vector3.down * distance;
-                            }
-                            else if (oldPos.y < newPos.y)
-                            {//go up
-                                newPos = oldPos + Vector3.up * distance;
-                            }
+                    //Try a cardinal direction
+                    //Figure out which cardinal direction is closest to the one they're trying to go to: up, down, left, or right
+                    //whichever difference is less, is the one that's closer
+                    Vector3 cdNewPos = newPos;
+                    if (Mathf.Abs(oldPos.x - newPos.x) < Mathf.Abs(oldPos.y - newPos.y))
+                    {//it is closer in x direction, go up or down
+                        if (oldPos.y > newPos.y)
+                        {//go down
+                            cdNewPos = oldPos + Vector3.down * distance;
                         }
-                        else if (Mathf.Abs(oldPos.x - newPos.x) >= Mathf.Abs(oldPos.y - newPos.y))//default: left or right
-                        {//it is closer in y direction, go left or right
-                            if (oldPos.x > newPos.x)
-                            {//go left
-                                newPos = oldPos + Vector3.left * distance;
-                            }
-                            else if (oldPos.x < newPos.x)
-                            {//go right
-                                newPos = oldPos + Vector3.right * distance;
-                            }
+                        else if (oldPos.y < newPos.y)
+                        {//go up
+                            cdNewPos = oldPos + Vector3.up * distance;
                         }
-                        if (isOccupied(newPos))
+                    }
+                    else if (Mathf.Abs(oldPos.x - newPos.x) >= Mathf.Abs(oldPos.y - newPos.y))//default: left or right
+                    {//it is closer in y direction, go left or right
+                        if (oldPos.x > newPos.x)
+                        {//go left
+                            cdNewPos = oldPos + Vector3.left * distance;
+                        }
+                        else if (oldPos.x < newPos.x)
+                        {//go right
+                            cdNewPos = oldPos + Vector3.right * distance;
+                        }
+                    }
+                    bool btOcc = isOccupied(btNewPos);
+                    bool cdOcc = isOccupied(cdNewPos);
+                    if (btOcc && ! cdOcc)
+                    {
+                        newPos = cdNewPos;
+                    }
+                    else if ( ! btOcc && cdOcc)
+                    {
+                        newPos = btNewPos;
+                    }
+                    else if (btOcc && cdOcc)
+                    {
+                        return;//the back up plan failed, just return, can't teleport
+                    }
+                    else if ( ! btOcc && ! cdOcc)
+                    {
+                        //Whichever new pos goes further is the winner.
+                        float btDist = Vector3.Distance(oldPos, btNewPos);
+                        float cdDist = Vector3.Distance(oldPos, cdNewPos);
+                        if (cdDist > btDist)
                         {
-                            return;//the back up plan failed, just return, can't teleport
+                            newPos = cdNewPos;
                         }
+                        else //default to btNewPos
+                        {
+                            newPos = btNewPos;
+                        }
+                    }
+                    else
+                    {
+                        //ERROR! It should not be able to come here!
                     }
                 }
             }
             
             //Actually Teleport
             transform.position = newPos;
-            showStreak(oldPos, newPos);
+            showTeleportEffect(oldPos, newPos);
             AudioSource.PlayClipAtPoint(teleportSound, oldPos);
             //Give teleport xp
-            teleportXP += 1 + bonusTXP;
-            if (teleportXP >= txpLevelUpRequirement)
-            {
-                int lls = txpLevelUpRequirement;
-                txpLevelUpRequirement += txpLevelUpRequirement - lastLevel + 1;
-                lastLevel = lls;
-                baseRange += 0.1f;
-                //setRange(baseRange);
-            }
+            //teleportXP += 1 + bonusTXP;
+            //if (teleportXP >= txpLevelUpRequirement)
+            //{
+            //    int lls = txpLevelUpRequirement;
+            //    txpLevelUpRequirement += txpLevelUpRequirement - lastLevel + 1;
+            //    lastLevel = lls;
+            //    baseRange += 0.1f;
+            //    //setRange(baseRange);
+            //}
         }
         if ( ! isGrounded())
         {
@@ -266,6 +297,17 @@ public class PlayerController : MonoBehaviour {
         exceptionFrame = 5;
     }
 
+    void showTeleportEffect(Vector3 oldp, Vector3 newp)
+    {
+        if (useStreak)
+        {
+            showStreak(oldp, newp);
+        }
+        if (useStar)
+        {
+            showTeleportStar(oldp, newp);
+        }
+    }
     void showStreak(Vector3 oldp, Vector3 newp)
     {
         GameObject newTS = (GameObject)Instantiate(teleportStreak);
@@ -273,6 +315,14 @@ public class PlayerController : MonoBehaviour {
         newTS.GetComponent<TeleportStreakUpdater>().end = newp;
         newTS.GetComponent<TeleportStreakUpdater>().position();
         newTS.GetComponent<TeleportStreakUpdater>().turnOn(true);
+    }
+    void showTeleportStar(Vector3 oldp, Vector3 newp)
+    {
+        GameObject newTS = (GameObject)Instantiate(teleportStar);
+        newTS.GetComponent<TeleportStarUpdater>().start = oldp;
+        newTS.GetComponent<TeleportStarUpdater>().end = newp;
+        newTS.GetComponent<TeleportStarUpdater>().position();
+        newTS.GetComponent<TeleportStarUpdater>().turnOn(true);
     }
 
     void setRange(float newRange)
@@ -309,12 +359,12 @@ public class PlayerController : MonoBehaviour {
         float width = bounds.max.x - bounds.min.x;
         float increment = width / (numberOfLines-1);//-1 because the last one doesn't take up any space
         Vector3 startV = bounds.min;
-        float length = 1.7f;
+        float length = 0.75f;
         for (int i = 0; i < numberOfLines; i++)
         {
             Vector2 start = new Vector2(startV.x + i*increment, pos.y-length);
             Vector2 dir2 = new Vector2(0, length);
-            Debug.DrawLine(start, start+dir2, Color.black, 0.1f);
+            Debug.DrawLine(start, start+dir2, Color.black);
             RaycastHit2D rch2d = Physics2D.Raycast(start, dir2, length);// -1*(start), 1f);
             if (rch2d && rch2d.collider != null)
             {
@@ -338,7 +388,7 @@ public class PlayerController : MonoBehaviour {
         foreach (Vector3 checkDir in checkDirs)
         {
             Vector2 dir2 = new Vector2(checkDir.x, checkDir.y);
-            float length = 0.1f;// 1.7f;
+            float length = 0.01f;// 1.7f;
             dir2 = dir2.normalized * length;
             Vector2 start = (pos2 + dir2);
             //Debug.DrawLine(pos2, start, Color.black, 1);

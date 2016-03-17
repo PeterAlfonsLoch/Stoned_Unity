@@ -9930,6 +9930,10 @@ Prefab:
       propertyPath: useStreak
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 100086, guid: 5913bd1e88aefff4988c7dfee6595611, type: 2}
+      propertyPath: m_TagString
+      value: Player
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 5913bd1e88aefff4988c7dfee6595611, type: 2}
   m_IsPrefabParent: 0

@@ -256,10 +256,10 @@ public class PlayerController : MonoBehaviour {
                     }
                     else if ( ! btOcc && ! cdOcc)
                     {
-                        //Whichever new pos goes further is the winner.
-                        float btDist = Vector3.Distance(oldPos, btNewPos);
-                        float cdDist = Vector3.Distance(oldPos, cdNewPos);
-                        if (cdDist > btDist)
+                        //Whichever new pos is closer to the original new pos is the winner
+                        float btDist = Vector3.Distance(newPos, btNewPos);
+                        float cdDist = Vector3.Distance(newPos, cdNewPos);
+                        if (cdDist < btDist)
                         {
                             newPos = cdNewPos;
                         }

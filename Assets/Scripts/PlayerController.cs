@@ -11,6 +11,8 @@ public class PlayerController : MonoBehaviour {
     public float teleportTime = 0f;//the earliest time that Merky can teleport
     public float gravityImmuneTime = 0f;//Merky is immune to gravity until this time
     public float gravityImmuneTimeAmount = 0.2f;//amount of time Merky is immune to gravity after landing (in seconds)
+    private int giveGravityImmunityDelayCounter = -1;//used to delay granting gravity immunity until the next cycle
+    public int gGIDCinit = 2;
 
     public GameObject teleportStreak;
     public GameObject teleportStar;
@@ -91,6 +93,10 @@ public class PlayerController : MonoBehaviour {
         checkGroundedState();
         if (wasInAir && grounded)//just landed on something
         {
+            giveGravityImmunityDelayCounter = gGIDCinit;
+        }
+        if (giveGravityImmunityDelayCounter == 0 && grounded) {
+            giveGravityImmunityDelayCounter = -1;
             gravityImmuneTime = Time.time + gravityImmuneTimeAmount;
             savedVelocity = rb2d.velocity;
             savedAngularVelocity = rb2d.angularVelocity;
@@ -98,10 +104,14 @@ public class PlayerController : MonoBehaviour {
             rb2d.isKinematic = true;
             velocityNeedsReloaded = true;
         }
+        else if (giveGravityImmunityDelayCounter > 0)
+        {
+            giveGravityImmunityDelayCounter--;
+        }
         if (gravityImmuneTime > Time.time)
         {
         }
-        else{
+        else {
             rb2d.isKinematic = false;
             if (velocityNeedsReloaded)
             {

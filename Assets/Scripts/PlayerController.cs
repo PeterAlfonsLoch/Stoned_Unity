@@ -10,10 +10,6 @@ public class PlayerController : MonoBehaviour {
     public float exhaustCoolDownTime = 0.5f;//the cool down time for teleporting while exhausted in seconds
     public float teleportTime = 0f;//the earliest time that Merky can teleport
 
-    public int teleportXP = 0;
-    public int txpLevelUpRequirement = 1;
-    public int lastLevel = 1;
-
     public GameObject teleportStreak;
     public GameObject teleportStar;
     public bool useStreak = false;
@@ -21,7 +17,6 @@ public class PlayerController : MonoBehaviour {
 
     public int airPorts = 0;
     private Rigidbody2D rb2d;
-    private int exceptionFrame = 0;//true if this frame it should not count grounded (CODE HAZARD)
 
     private bool isTeleportGesture;
 
@@ -86,22 +81,11 @@ public class PlayerController : MonoBehaviour {
         //    Vector2 start = (pos2 + dir2);
         //    Debug.DrawLine(pos2, start, Color.black);
         //}
-        if (exceptionFrame <= 0)
-        {
-            checkGroundedState();
-        }
-        //else
-        //{
-        //    exceptionFrame--;
-        //}
+        checkGroundedState();
     }
 	
 	// Update is called once per frame
 	void Update () {
-        if (exceptionFrame > 0)
-        {
-            exceptionFrame--;
-        }
 
         if (Input.touchCount == 0)
         {
@@ -171,7 +155,6 @@ public class PlayerController : MonoBehaviour {
 
             //Determine if new position is in range
             Vector3 oldPos = transform.position;
-            int bonusTXP = 0;
             if (Vector3.Distance(newPos, transform.position) <= range)
             {
             }
@@ -181,12 +164,10 @@ public class PlayerController : MonoBehaviour {
                 {
                     if (Vector3.Distance(newPos, transform.position) <= range + 2)
                     {
-                        bonusTXP = 1;
                     }
                 }
                 else //teleporting under confinements, such as used up the airports
                 {
-                    bonusTXP = -1;//don't give any txp for teleporting beyond max air ports
                 }
                 newPos = ((newPos - oldPos).normalized * range) + oldPos;
             }
@@ -284,7 +265,6 @@ public class PlayerController : MonoBehaviour {
             showTeleportEffect(oldPos, newPos);
             AudioSource.PlayClipAtPoint(teleportSound, oldPos);
         }
-        exceptionFrame = 5;
     }
 
     void showTeleportEffect(Vector3 oldp, Vector3 newp)

@@ -1043,11 +1043,11 @@ Prefab:
     m_Modifications:
     - target: {fileID: 446986, guid: 0b3255d4b4dc0a443a420e93fb27f62b, type: 2}
       propertyPath: m_LocalPosition.x
-      value: 153.89
+      value: -0.005
       objectReference: {fileID: 0}
     - target: {fileID: 446986, guid: 0b3255d4b4dc0a443a420e93fb27f62b, type: 2}
       propertyPath: m_LocalPosition.y
-      value: 32.6
+      value: -0.041
       objectReference: {fileID: 0}
     - target: {fileID: 446986, guid: 0b3255d4b4dc0a443a420e93fb27f62b, type: 2}
       propertyPath: m_LocalPosition.z
@@ -13850,11 +13850,11 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 464668, guid: 5913bd1e88aefff4988c7dfee6595611, type: 2}
       propertyPath: m_LocalPosition.x
-      value: 153.89
+      value: -0.005
       objectReference: {fileID: 0}
     - target: {fileID: 464668, guid: 5913bd1e88aefff4988c7dfee6595611, type: 2}
       propertyPath: m_LocalPosition.y
-      value: 32.6
+      value: -0.041
       objectReference: {fileID: 0}
     - target: {fileID: 464668, guid: 5913bd1e88aefff4988c7dfee6595611, type: 2}
       propertyPath: m_LocalPosition.z
@@ -18614,7 +18614,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 409136, guid: 61d77a5c634a9db4186a94e82dca7230, type: 2}
       propertyPath: m_LocalPosition.y
-      value: -1.0900003
+      value: -3.03
       objectReference: {fileID: 0}
     - target: {fileID: 409136, guid: 61d77a5c634a9db4186a94e82dca7230, type: 2}
       propertyPath: m_LocalPosition.z
@@ -18650,7 +18650,11 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 409136, guid: 61d77a5c634a9db4186a94e82dca7230, type: 2}
       propertyPath: m_LocalScale.y
-      value: 0.26607183
+      value: 4.0789766
+      objectReference: {fileID: 0}
+    - target: {fileID: 21210666, guid: 61d77a5c634a9db4186a94e82dca7230, type: 2}
+      propertyPath: m_SortingOrder
+      value: -1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 61d77a5c634a9db4186a94e82dca7230, type: 2}

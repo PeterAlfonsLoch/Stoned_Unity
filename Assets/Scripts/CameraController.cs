@@ -7,6 +7,7 @@ public class CameraController : MonoBehaviour {
 
 	private Vector3 offset;
     private Camera cam;
+    private Rigidbody2D playerRB2D;
 
     public float perspectiveZoomSpeed = 0.5f; 
     public float orthoZoomSpeed = 0.5f;
@@ -15,7 +16,7 @@ public class CameraController : MonoBehaviour {
     void Start () {
 		offset = transform.position - player.transform.position;
         cam = GetComponent<Camera>();
-
+        playerRB2D = player.GetComponent<Rigidbody2D>();
     }
 
     void Update()
@@ -100,9 +101,9 @@ public class CameraController : MonoBehaviour {
         transform.position = Vector3.MoveTowards(
             transform.position, 
             player.transform.position + offset, 
-            Vector3.Distance(
+            (Vector3.Distance(
                 transform.position, 
-                player.transform.position) * 2
+                player.transform.position) * 2 + playerRB2D.velocity.magnitude)
                 * Time.deltaTime);
 	}
 }

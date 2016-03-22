@@ -12,7 +12,7 @@ public class PlayerController : MonoBehaviour {
     public float gravityImmuneTime = 0f;//Merky is immune to gravity until this time
     public float gravityImmuneTimeAmount = 0.2f;//amount of time Merky is immune to gravity after landing (in seconds)
     private int giveGravityImmunityDelayCounter = -1;//used to delay granting gravity immunity until the next cycle
-    public int gGIDCinit = 2;
+    public int gGIDCinit = 2;//note: this may go away once the teleport lookahead detector is improved
 
     public GameObject teleportStreak;
     public GameObject teleportStar;

@@ -14550,7 +14550,11 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 11477714, guid: 5913bd1e88aefff4988c7dfee6595611, type: 2}
       propertyPath: gravityImmuneTimeAmount
-      value: 0.2
+      value: 0.15
+      objectReference: {fileID: 0}
+    - target: {fileID: 11477714, guid: 5913bd1e88aefff4988c7dfee6595611, type: 2}
+      propertyPath: gGIDCinit
+      value: 2
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 5913bd1e88aefff4988c7dfee6595611, type: 2}

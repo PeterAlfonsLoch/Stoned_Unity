@@ -9,6 +9,8 @@ public class PlayerController : MonoBehaviour {
     public int maxAirPorts = 0;
     public float exhaustCoolDownTime = 0.5f;//the cool down time for teleporting while exhausted in seconds
     public float teleportTime = 0f;//the earliest time that Merky can teleport
+    public float gravityImmuneTime = 0f;//Merky is immune to gravity until this time
+    public float gravityImmuneTimeAmount = 0.2f;//amount of time Merky is immune to gravity after landing (in seconds)
 
     public GameObject teleportStreak;
     public GameObject teleportStar;
@@ -16,7 +18,11 @@ public class PlayerController : MonoBehaviour {
     public bool useStar = true;
 
     public int airPorts = 0;
+    private bool grounded = true;//set in isGrounded()
     private Rigidbody2D rb2d;
+    private Vector2 savedVelocity;
+    private float savedAngularVelocity;
+    private bool velocityNeedsReloaded = false;//because you can't set a Vector2 to null, using this to see when the velocity needs reloaded
 
     private bool isTeleportGesture;
 
@@ -81,7 +87,31 @@ public class PlayerController : MonoBehaviour {
         //    Vector2 start = (pos2 + dir2);
         //    Debug.DrawLine(pos2, start, Color.black);
         //}
+        bool wasInAir = ! grounded;
         checkGroundedState();
+        if (wasInAir && grounded)//just landed on something
+        {
+            gravityImmuneTime = Time.time + gravityImmuneTimeAmount;
+            savedVelocity = rb2d.velocity;
+            savedAngularVelocity = rb2d.angularVelocity;
+            //Debug.Log("Just Landed" + savedVelocity);
+            rb2d.isKinematic = true;
+            velocityNeedsReloaded = true;
+        }
+        if (gravityImmuneTime > Time.time)
+        {
+        }
+        else{
+            rb2d.isKinematic = false;
+            if (velocityNeedsReloaded)
+            {
+                //Debug.Log("Immunity over1 "+savedVelocity);
+                rb2d.velocity = savedVelocity;
+                rb2d.angularVelocity = savedAngularVelocity;
+                //Debug.Log("Immunity over2 " + rb2d.velocity);
+                velocityNeedsReloaded = false;
+            }
+        }
     }
 	
 	// Update is called once per frame
@@ -264,6 +294,10 @@ public class PlayerController : MonoBehaviour {
             transform.position = newPos;
             showTeleportEffect(oldPos, newPos);
             AudioSource.PlayClipAtPoint(teleportSound, oldPos);
+            //Gravity Immunity
+            grounded = false;
+            velocityNeedsReloaded = false;//discards previous velocity if was in gravity immunity bubble
+            gravityImmuneTime = 0f;
         }
     }
 
@@ -346,6 +380,7 @@ public class PlayerController : MonoBehaviour {
                 }
             }
         }
+        grounded = isGrounded;
         return isGrounded;
     }
 

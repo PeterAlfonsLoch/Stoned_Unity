@@ -27,6 +27,8 @@ public class PlayerController : MonoBehaviour {
     private bool velocityNeedsReloaded = false;//because you can't set a Vector2 to null, using this to see when the velocity needs reloaded
 
     private bool isTeleportGesture;
+    private float maxMouseMovement = 0f;//how far the mouse has moved since the last mouse down (or tap down) event
+    private Vector3 origMP;//"original mouse position": the mouse position at the last mouse down (or tap down) event
 
     public AudioClip teleportSound;
 
@@ -130,10 +132,11 @@ public class PlayerController : MonoBehaviour {
             mainCamCtr.discardMovementDelay();
         }
     }
-	
-	// Update is called once per frame
-	void Update () {
 
+    // Update is called once per frame
+    void Update()
+    {
+        float dragThreshold = 10;
         if (Input.touchCount == 0)
         {
             isTeleportGesture = true;
@@ -146,23 +149,55 @@ public class PlayerController : MonoBehaviour {
         {
             if (Input.GetTouch(0).phase == TouchPhase.Began)
             {
+                maxMouseMovement = 0;
+                origMP = Input.GetTouch(0).position;
             }
             else if (Input.GetTouch(0).phase == TouchPhase.Ended)
             {
+                if (dragThreshold == 0 && maxMouseMovement < 50)
+                {
+                    dragThreshold = maxMouseMovement;
+                }
                 if (isTeleportGesture)//don't let the pinch zoom gesture count as a teleport gesture
                 {
                     teleport(false);
                 }
             }
+            float mm = Vector3.Distance(Input.GetTouch(0).position, origMP);
+            if (mm > maxMouseMovement)
+            {
+                maxMouseMovement = mm;
+            }
+            if (maxMouseMovement > dragThreshold)
+            {
+                isTeleportGesture = false;
+            }
         }
         else
         {
+            if (Input.GetMouseButton(0))
+            {
+                float mm = Vector3.Distance(Input.mousePosition, origMP);
+                if (mm > maxMouseMovement)
+                {
+                    maxMouseMovement = mm;
+                }
+            }
             if (Input.GetMouseButtonDown(0))
             {
+                maxMouseMovement = 0;
+                origMP = Input.mousePosition;
             }
             else if (Input.GetMouseButtonUp(0))
             {
-                teleport(true);                
+                if (dragThreshold == 0 && maxMouseMovement < 50)
+                {
+                    dragThreshold = maxMouseMovement;
+                }
+                if (isTeleportGesture && maxMouseMovement <= dragThreshold)
+                {
+                    teleport(true);
+                }
             }
         }
     }

@@ -7,6 +7,7 @@ public class TeleportStarUpdater : MonoBehaviour {
     public int maxTimeShown = 50;
     public Vector3 start;
     public Vector3 end;
+    public int waitTime = 0;
 
     private float distance;
     private Vector3 newV;
@@ -32,6 +33,17 @@ public class TeleportStarUpdater : MonoBehaviour {
             //{
             //    position();
             //}
+            if (waitTime > 0)
+            {
+                GetComponent<SpriteRenderer>().enabled = false; //color = new Color(prevColor.r, prevColor.g, prevColor.b, 0);
+                waitTime--;
+                return;
+            }
+            else if (waitTime == 0)
+            {
+                GetComponent<SpriteRenderer>().enabled = true; // color = new Color(prevColor.r, prevColor.g, prevColor.b, 1f);
+                    waitTime--;
+            }
             timeShown++;
             Color prevColor = GetComponent<SpriteRenderer>().color;
             GetComponent<SpriteRenderer>().color = new Color(prevColor.r, prevColor.g, prevColor.b, prevColor.a - shrinkRate);

@@ -9,6 +9,10 @@ public class CameraController : MonoBehaviour {
     private Camera cam;
     private Rigidbody2D playerRB2D;
     private float moveTime = 0f;//used to delay the camera refocusing on the player
+    private float maxMouseMovement = 0f;//how far the mouse has moved since the last mouse down (or tap down) event
+    private Vector3 origMP;//"original mouse position": the mouse position at the last mouse down (or tap down) event
+    private Vector3 origCP;//"original camera position": the camera position (in world coordinates) at the last mouse down (or tap down) event
+    private bool cameraDragInProgress = false;
 
     public float perspectiveZoomSpeed = 0.5f; 
     public float orthoZoomSpeed = 0.5f;
@@ -87,6 +91,68 @@ public class CameraController : MonoBehaviour {
         cam.orthographicSize = Mathf.Min(cam.orthographicSize, maxZoom);
 
         //
+        //Manual Camera Movement
+        //
+        float dragThreshold = 10;
+        if (Input.touchCount == 1)
+        {
+            if (Input.GetTouch(0).phase == TouchPhase.Began)
+            {
+                maxMouseMovement = 0;
+                origCP = transform.position;
+                origMP = Input.GetTouch(0).position;
+            }
+            else if (Input.GetTouch(0).phase == TouchPhase.Ended)
+            {
+                cameraDragInProgress = false;
+                offset = transform.position - player.transform.position;
+            }
+            else
+            {
+                if (maxMouseMovement > dragThreshold)
+                {
+                    cameraDragInProgress = true;
+                    Vector3 delta = Camera.main.ScreenToWorldPoint(origMP) - Camera.main.ScreenToWorldPoint((Vector3)Input.GetTouch(0).position);
+                    transform.position = origCP + delta;
+                }
+            }
+            float mm = Vector3.Distance(Input.GetTouch(0).position, origMP);
+            if (mm > maxMouseMovement)
+            {
+                maxMouseMovement = mm;
+            }
+        }
+        else if (Input.GetMouseButton(0))
+        {
+            float mm = Vector3.Distance(Input.mousePosition, origMP);
+            if (mm > maxMouseMovement)
+            {
+                maxMouseMovement = mm;
+            }
+            if (Input.GetMouseButtonDown(0))
+            {
+                maxMouseMovement = 0;
+                origCP = transform.position;
+                origMP = Input.mousePosition;
+            }
+            
+            else
+            {
+                if (maxMouseMovement > dragThreshold)
+                {
+                    cameraDragInProgress = true;
+                    Vector3 delta = Camera.main.ScreenToWorldPoint(origMP) - Camera.main.ScreenToWorldPoint(Input.mousePosition);
+                    transform.position = origCP + delta;
+                }
+            }
+        }
+        else if (Input.GetMouseButtonUp(0))
+        {
+            cameraDragInProgress = false;
+            offset = transform.position - player.transform.position;
+        }
+
+        //
         //Application closing
         //
         if (Input.GetKeyDown(KeyCode.Escape))
@@ -94,12 +160,12 @@ public class CameraController : MonoBehaviour {
             Application.Quit();
         }
     }
-	
-	// Update is called once per frame, after all other objects have moved that frame
-	void LateUpdate ()
+
+    // Update is called once per frame, after all other objects have moved that frame
+    void LateUpdate()
     {
         //transform.position = player.transform.position + offset;
-        if (moveTime <= Time.time)
+        if (moveTime <= Time.time && !cameraDragInProgress)
         {
             transform.position = Vector3.MoveTowards(
                 transform.position,
@@ -109,7 +175,7 @@ public class CameraController : MonoBehaviour {
                     player.transform.position) * 2 + playerRB2D.velocity.magnitude)
                     * Time.deltaTime);
         }
-	}
+    }
 
     /**
     * @param delayAmount How much to delay camera movement by in seconds

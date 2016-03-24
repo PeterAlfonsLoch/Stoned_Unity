@@ -308,6 +308,10 @@ public class PlayerController : MonoBehaviour {
             grounded = false;
             velocityNeedsReloaded = false;//discards previous velocity if was in gravity immunity bubble
             gravityImmuneTime = 0f;
+            //if (!isGrounded())//have to call it again because state has changed
+            //{
+                Camera.main.GetComponent<CameraController>().delayMovement(0.3f);
+            //}
         }
     }
 

@@ -8,6 +8,7 @@ public class CameraController : MonoBehaviour {
 	private Vector3 offset;
     private Camera cam;
     private Rigidbody2D playerRB2D;
+    private float moveTime = 0f;//used to delay the camera refocusing on the player
 
     public float perspectiveZoomSpeed = 0.5f; 
     public float orthoZoomSpeed = 0.5f;
@@ -98,12 +99,27 @@ public class CameraController : MonoBehaviour {
 	void LateUpdate ()
     {
         //transform.position = player.transform.position + offset;
-        transform.position = Vector3.MoveTowards(
-            transform.position, 
-            player.transform.position + offset, 
-            (Vector3.Distance(
-                transform.position, 
-                player.transform.position) * 2 + playerRB2D.velocity.magnitude)
-                * Time.deltaTime);
+        if (moveTime < Time.time)
+        {
+            transform.position = Vector3.MoveTowards(
+                transform.position,
+                player.transform.position + offset,
+                (Vector3.Distance(
+                    transform.position,
+                    player.transform.position) * 2 + playerRB2D.velocity.magnitude)
+                    * Time.deltaTime);
+        }
 	}
+
+    /**
+    * @param delayAmount How much to delay camera movement by in seconds
+    */
+    public void delayMovement(float delayAmount)
+    {
+        if (moveTime < Time.time)
+        {
+            moveTime = Time.time;
+        }
+        moveTime += delayAmount;
+    }
 }

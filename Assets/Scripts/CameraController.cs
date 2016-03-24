@@ -99,7 +99,7 @@ public class CameraController : MonoBehaviour {
 	void LateUpdate ()
     {
         //transform.position = player.transform.position + offset;
-        if (moveTime < Time.time)
+        if (moveTime <= Time.time)
         {
             transform.position = Vector3.MoveTowards(
                 transform.position,
@@ -121,5 +121,10 @@ public class CameraController : MonoBehaviour {
             moveTime = Time.time;
         }
         moveTime += delayAmount;
+    }
+
+    public void discardMovementDelay()
+    {
+        moveTime = Time.time;
     }
 }

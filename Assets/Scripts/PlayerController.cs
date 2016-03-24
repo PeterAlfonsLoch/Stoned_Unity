@@ -30,6 +30,8 @@ public class PlayerController : MonoBehaviour {
 
     public AudioClip teleportSound;
 
+    private CameraController mainCamCtr;//the camera controller for the main camera
+
     Vector3[] dirs = new Vector3[]
             {//for checking if Merky is grounded
                 //Vector3.up,
@@ -75,6 +77,7 @@ public class PlayerController : MonoBehaviour {
     void Start () {
         rb2d = GetComponent<Rigidbody2D>();
         Input.simulateMouseWithTouches = false;
+        mainCamCtr = Camera.main.GetComponent<CameraController>();
 	}
 
     void FixedUpdate()
@@ -121,6 +124,10 @@ public class PlayerController : MonoBehaviour {
                 //Debug.Log("Immunity over2 " + rb2d.velocity);
                 velocityNeedsReloaded = false;
             }
+        }
+        if (grounded && ! rb2d.isKinematic && rb2d.velocity.magnitude < 0.1f)
+        {
+            mainCamCtr.discardMovementDelay();
         }
     }
 	
@@ -267,11 +274,11 @@ public class PlayerController : MonoBehaviour {
                     }
                     bool btOcc = isOccupied(btNewPos);
                     bool cdOcc = isOccupied(cdNewPos);
-                    if (btOcc && ! cdOcc)
+                    if (btOcc && !cdOcc)
                     {
                         newPos = cdNewPos;
                     }
-                    else if ( ! btOcc && cdOcc)
+                    else if (!btOcc && cdOcc)
                     {
                         newPos = btNewPos;
                     }
@@ -279,7 +286,7 @@ public class PlayerController : MonoBehaviour {
                     {
                         return;//the back up plan failed, just return, can't teleport
                     }
-                    else if ( ! btOcc && ! cdOcc)
+                    else if (!btOcc && !cdOcc)
                     {
                         //Whichever new pos is closer to the original new pos is the winner
                         float btDist = Vector3.Distance(newPos, btNewPos);
@@ -299,7 +306,7 @@ public class PlayerController : MonoBehaviour {
                     }
                 }
             }
-            
+
             //Actually Teleport
             transform.position = newPos;
             showTeleportEffect(oldPos, newPos);
@@ -310,7 +317,7 @@ public class PlayerController : MonoBehaviour {
             gravityImmuneTime = 0f;
             //if (!isGrounded())//have to call it again because state has changed
             //{
-                Camera.main.GetComponent<CameraController>().delayMovement(0.3f);
+            mainCamCtr.delayMovement(0.3f);
             //}
         }
     }

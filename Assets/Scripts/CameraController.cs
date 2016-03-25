@@ -116,7 +116,13 @@ public class CameraController : MonoBehaviour {
                 {
                     cameraDragInProgress = true;
                     Vector3 delta = Camera.main.ScreenToWorldPoint(origMP) - Camera.main.ScreenToWorldPoint((Vector3)Input.GetTouch(0).position);
-                        transform.position = player.transform.position + origCP + delta;
+                    Vector3 newPos = player.transform.position + origCP + delta;
+                    Vector3 size = Camera.main.ScreenToWorldPoint(new Vector3(Camera.main.pixelWidth, Camera.main.pixelHeight)) - Camera.main.ScreenToWorldPoint(new Vector3(0, 0)) + new Vector3(0, 0, 20);
+                    Bounds b = new Bounds(newPos, size);
+                    if (b.Contains(player.transform.position))
+                    {
+                        transform.position = newPos;
+                    }
                 }
             }
             float mm = Vector3.Distance(Input.GetTouch(0).position, origMP);
@@ -138,14 +144,20 @@ public class CameraController : MonoBehaviour {
                 origCP = transform.position - player.transform.position;
                 origMP = Input.mousePosition;
             }
-            
+
             else
             {
                 if (maxMouseMovement > dragThreshold)
                 {
                     cameraDragInProgress = true;
                     Vector3 delta = Camera.main.ScreenToWorldPoint(origMP) - Camera.main.ScreenToWorldPoint(Input.mousePosition);
-                        transform.position = player.transform.position + origCP + delta;
+                    Vector3 newPos = player.transform.position + origCP + delta;
+                    Vector3 size = Camera.main.ScreenToWorldPoint(new Vector3(Camera.main.pixelWidth, Camera.main.pixelHeight)) - Camera.main.ScreenToWorldPoint(new Vector3(0, 0)) + new Vector3(0, 0, 20);
+                    Bounds b = new Bounds(newPos, size);
+                    if (b.Contains(player.transform.position))
+                    {
+                        transform.position = newPos;
+                    }
                 }
             }
         }

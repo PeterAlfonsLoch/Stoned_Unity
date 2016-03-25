@@ -27,8 +27,12 @@ public class PlayerController : MonoBehaviour {
     private bool velocityNeedsReloaded = false;//because you can't set a Vector2 to null, using this to see when the velocity needs reloaded
 
     private bool isTeleportGesture;
+    private float maxMouseMovement = 0f;//how far the mouse has moved since the last mouse down (or tap down) event
+    private Vector3 origMP;//"original mouse position": the mouse position at the last mouse down (or tap down) event
 
     public AudioClip teleportSound;
+
+    private CameraController mainCamCtr;//the camera controller for the main camera
 
     Vector3[] dirs = new Vector3[]
             {//for checking if Merky is grounded
@@ -75,6 +79,7 @@ public class PlayerController : MonoBehaviour {
     void Start () {
         rb2d = GetComponent<Rigidbody2D>();
         Input.simulateMouseWithTouches = false;
+        mainCamCtr = Camera.main.GetComponent<CameraController>();
 	}
 
     void FixedUpdate()
@@ -122,11 +127,16 @@ public class PlayerController : MonoBehaviour {
                 velocityNeedsReloaded = false;
             }
         }
+        if (grounded && ! rb2d.isKinematic && rb2d.velocity.magnitude < 0.1f)
+        {
+            mainCamCtr.discardMovementDelay();
+        }
     }
-	
-	// Update is called once per frame
-	void Update () {
 
+    // Update is called once per frame
+    void Update()
+    {
+        float dragThreshold = 10;
         if (Input.touchCount == 0)
         {
             isTeleportGesture = true;
@@ -139,23 +149,55 @@ public class PlayerController : MonoBehaviour {
         {
             if (Input.GetTouch(0).phase == TouchPhase.Began)
             {
+                maxMouseMovement = 0;
+                origMP = Input.GetTouch(0).position;
             }
             else if (Input.GetTouch(0).phase == TouchPhase.Ended)
             {
+                if (dragThreshold == 0 && maxMouseMovement < 50)
+                {
+                    dragThreshold = maxMouseMovement;
+                }
                 if (isTeleportGesture)//don't let the pinch zoom gesture count as a teleport gesture
                 {
                     teleport(false);
                 }
             }
+            float mm = Vector3.Distance(Input.GetTouch(0).position, origMP);
+            if (mm > maxMouseMovement)
+            {
+                maxMouseMovement = mm;
+            }
+            if (maxMouseMovement > dragThreshold)
+            {
+                isTeleportGesture = false;
+            }
         }
         else
         {
+            if (Input.GetMouseButton(0))
+            {
+                float mm = Vector3.Distance(Input.mousePosition, origMP);
+                if (mm > maxMouseMovement)
+                {
+                    maxMouseMovement = mm;
+                }
+            }
             if (Input.GetMouseButtonDown(0))
             {
+                maxMouseMovement = 0;
+                origMP = Input.mousePosition;
             }
             else if (Input.GetMouseButtonUp(0))
             {
-                teleport(true);                
+                if (dragThreshold == 0 && maxMouseMovement < 50)
+                {
+                    dragThreshold = maxMouseMovement;
+                }
+                if (isTeleportGesture && maxMouseMovement <= dragThreshold)
+                {
+                    teleport(true);
+                }
             }
         }
     }
@@ -267,11 +309,11 @@ public class PlayerController : MonoBehaviour {
                     }
                     bool btOcc = isOccupied(btNewPos);
                     bool cdOcc = isOccupied(cdNewPos);
-                    if (btOcc && ! cdOcc)
+                    if (btOcc && !cdOcc)
                     {
                         newPos = cdNewPos;
                     }
-                    else if ( ! btOcc && cdOcc)
+                    else if (!btOcc && cdOcc)
                     {
                         newPos = btNewPos;
                     }
@@ -279,7 +321,7 @@ public class PlayerController : MonoBehaviour {
                     {
                         return;//the back up plan failed, just return, can't teleport
                     }
-                    else if ( ! btOcc && ! cdOcc)
+                    else if (!btOcc && !cdOcc)
                     {
                         //Whichever new pos is closer to the original new pos is the winner
                         float btDist = Vector3.Distance(newPos, btNewPos);
@@ -299,7 +341,7 @@ public class PlayerController : MonoBehaviour {
                     }
                 }
             }
-            
+
             //Actually Teleport
             transform.position = newPos;
             showTeleportEffect(oldPos, newPos);
@@ -308,6 +350,10 @@ public class PlayerController : MonoBehaviour {
             grounded = false;
             velocityNeedsReloaded = false;//discards previous velocity if was in gravity immunity bubble
             gravityImmuneTime = 0f;
+            //if (!isGrounded())//have to call it again because state has changed
+            //{
+            mainCamCtr.delayMovement(0.3f);
+            //}
         }
     }
 

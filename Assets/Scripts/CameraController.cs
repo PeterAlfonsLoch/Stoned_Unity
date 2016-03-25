@@ -184,15 +184,15 @@ public class CameraController : MonoBehaviour {
     }
 
     /**
+    * Makes sure that the current camera movement delay is at least the given delay amount in seconds
     * @param delayAmount How much to delay camera movement by in seconds
     */
     public void delayMovement(float delayAmount)
-    {
-        if (moveTime < Time.time)
+    {        
+        if (moveTime < Time.time + delayAmount)
         {
-            moveTime = Time.time;
+            moveTime = Time.time + delayAmount;
         }
-        moveTime += delayAmount;
     }
 
     public void discardMovementDelay()

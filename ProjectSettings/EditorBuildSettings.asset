@@ -5,9 +5,11 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/TutScene01b.unity
   - enabled: 0
     path: Assets/Scenes/TutScene01.unity
   - enabled: 0
     path: Assets/Scenes/startScene.unity
+  - enabled: 1
+    path: Assets/Scenes/ForceTeleportScene01.unity

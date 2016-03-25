@@ -99,13 +99,16 @@ public class CameraController : MonoBehaviour {
             if (Input.GetTouch(0).phase == TouchPhase.Began)
             {
                 maxMouseMovement = 0;
-                origCP = transform.position;
+                origCP = transform.position - player.transform.position;
                 origMP = Input.GetTouch(0).position;
             }
             else if (Input.GetTouch(0).phase == TouchPhase.Ended)
             {
-                cameraDragInProgress = false;
-                offset = transform.position - player.transform.position;
+                if (cameraDragInProgress)
+                {
+                    cameraDragInProgress = false;
+                    offset = transform.position - player.transform.position;
+                }
             }
             else
             {
@@ -113,7 +116,7 @@ public class CameraController : MonoBehaviour {
                 {
                     cameraDragInProgress = true;
                     Vector3 delta = Camera.main.ScreenToWorldPoint(origMP) - Camera.main.ScreenToWorldPoint((Vector3)Input.GetTouch(0).position);
-                    transform.position = origCP + delta;
+                        transform.position = player.transform.position + origCP + delta;
                 }
             }
             float mm = Vector3.Distance(Input.GetTouch(0).position, origMP);
@@ -132,7 +135,7 @@ public class CameraController : MonoBehaviour {
             if (Input.GetMouseButtonDown(0))
             {
                 maxMouseMovement = 0;
-                origCP = transform.position;
+                origCP = transform.position - player.transform.position;
                 origMP = Input.mousePosition;
             }
             
@@ -142,14 +145,17 @@ public class CameraController : MonoBehaviour {
                 {
                     cameraDragInProgress = true;
                     Vector3 delta = Camera.main.ScreenToWorldPoint(origMP) - Camera.main.ScreenToWorldPoint(Input.mousePosition);
-                    transform.position = origCP + delta;
+                        transform.position = player.transform.position + origCP + delta;
                 }
             }
         }
         else if (Input.GetMouseButtonUp(0))
         {
-            cameraDragInProgress = false;
-            offset = transform.position - player.transform.position;
+            if (cameraDragInProgress)
+            {
+                cameraDragInProgress = false;
+                offset = transform.position - player.transform.position;
+            }
         }
 
         //
@@ -165,7 +171,7 @@ public class CameraController : MonoBehaviour {
     void LateUpdate()
     {
         //transform.position = player.transform.position + offset;
-        if (moveTime <= Time.time && !cameraDragInProgress)
+        if (moveTime <= Time.time)// && !cameraDragInProgress)
         {
             transform.position = Vector3.MoveTowards(
                 transform.position,

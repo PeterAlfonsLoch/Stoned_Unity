@@ -171,7 +171,7 @@ public class CameraController : MonoBehaviour {
     void LateUpdate()
     {
         //transform.position = player.transform.position + offset;
-        if (moveTime <= Time.time)// && !cameraDragInProgress)
+        if (moveTime <= Time.time && !cameraDragInProgress)
         {
             transform.position = Vector3.MoveTowards(
                 transform.position,

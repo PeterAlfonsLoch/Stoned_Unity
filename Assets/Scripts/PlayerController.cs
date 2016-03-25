@@ -14,6 +14,8 @@ public class PlayerController : MonoBehaviour {
     private int giveGravityImmunityDelayCounter = -1;//used to delay granting gravity immunity until the next cycle
     public int gGIDCinit = 2;//note: this may go away once the teleport lookahead detector is improved
 
+    public int forceAmount = 100;
+
     public GameObject teleportStreak;
     public GameObject teleportStar;
     public bool useStreak = false;
@@ -353,6 +355,7 @@ public class PlayerController : MonoBehaviour {
             //if (!isGrounded())//have to call it again because state has changed
             //{
             mainCamCtr.delayMovement(0.3f);
+            explodeForce();
             //}
         }
     }
@@ -390,6 +393,20 @@ public class PlayerController : MonoBehaviour {
         range = newRange;
         TeleportRangeIndicatorUpdater tri = GetComponentInChildren<TeleportRangeIndicatorUpdater>();
         tri.updateRange();
+    }
+
+    void explodeForce()
+    {
+        Collider2D[] hitColliders = Physics2D.OverlapCircleAll(transform.position, baseRange);
+        Debug.Log("hitcolliders: " + hitColliders.Length+" t.p "+ transform.position);
+        for (int i = 0; i < hitColliders.Length; i++)
+        {
+            Rigidbody2D orb2d = hitColliders[i].gameObject.GetComponent<Rigidbody2D>();
+            if (orb2d != null)
+            {
+                AddExplosionForce(orb2d, forceAmount, transform.position, baseRange);
+            }
+        }
     }
 
     void checkGroundedState()
@@ -476,5 +493,20 @@ public class PlayerController : MonoBehaviour {
             }
         }
         return false;//nope, it's not occupied
+    }
+
+    /**
+    * 2016-03-25: copied from "2D Explosion Force" Asset: https://www.assetstore.unity3d.com/en/#!/content/24077
+    */
+    public static void AddExplosionForce(Rigidbody2D body, float expForce, Vector3 expPosition, float expRadius)
+    {
+        var dir = (body.transform.position - expPosition);
+        float calc = 1 - (dir.magnitude / expRadius);
+        if (calc <= 0)
+        {
+            calc = 0;
+        }
+
+        body.AddForce(dir.normalized * expForce * calc);
     }
 }

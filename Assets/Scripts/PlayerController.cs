@@ -213,7 +213,7 @@ public class PlayerController : MonoBehaviour {
     //{
     //}
 
-    public void teleport(bool mouseInput)
+    public void teleport(Vector3 targetPos)//targetPos is in world coordinations (NOT UI coordinates)
     {
         if (teleportTime <= Time.time)
         {
@@ -226,15 +226,7 @@ public class PlayerController : MonoBehaviour {
                 teleportTime = Time.time + exhaustCoolDownTime;
             }
             //Get new position
-            Vector3 click;
-            if (mouseInput)
-            {
-                click = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-            }
-            else
-            {
-                click = Camera.main.ScreenToWorldPoint(Input.GetTouch(0).position);
-            }
+            Vector3 click = targetPos;
             Vector3 newPos = new Vector3(click.x, click.y);
 
             //Determine if new position is in range

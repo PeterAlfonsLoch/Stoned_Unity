@@ -136,73 +136,73 @@ public class PlayerController : MonoBehaviour {
     }
 
     // Update is called once per frame
-    void Update()
-    {
-        float dragThreshold = 10;
-        if (Input.touchCount == 0)
-        {
-            isTeleportGesture = true;
-        }
-        else if (Input.touchCount >= 2)
-        {
-            isTeleportGesture = false;
-        }
-        if (Input.touchCount > 0)
-        {
-            if (Input.GetTouch(0).phase == TouchPhase.Began)
-            {
-                maxMouseMovement = 0;
-                origMP = Input.GetTouch(0).position;
-            }
-            else if (Input.GetTouch(0).phase == TouchPhase.Ended)
-            {
-                if (dragThreshold == 0 && maxMouseMovement < 50)
-                {
-                    dragThreshold = maxMouseMovement;
-                }
-                if (isTeleportGesture)//don't let the pinch zoom gesture count as a teleport gesture
-                {
-                    teleport(false);
-                }
-            }
-            float mm = Vector3.Distance(Input.GetTouch(0).position, origMP);
-            if (mm > maxMouseMovement)
-            {
-                maxMouseMovement = mm;
-            }
-            if (maxMouseMovement > dragThreshold)
-            {
-                isTeleportGesture = false;
-            }
-        }
-        else
-        {
-            if (Input.GetMouseButton(0))
-            {
-                float mm = Vector3.Distance(Input.mousePosition, origMP);
-                if (mm > maxMouseMovement)
-                {
-                    maxMouseMovement = mm;
-                }
-            }
-            if (Input.GetMouseButtonDown(0))
-            {
-                maxMouseMovement = 0;
-                origMP = Input.mousePosition;
-            }
-            else if (Input.GetMouseButtonUp(0))
-            {
-                if (dragThreshold == 0 && maxMouseMovement < 50)
-                {
-                    dragThreshold = maxMouseMovement;
-                }
-                if (isTeleportGesture && maxMouseMovement <= dragThreshold)
-                {
-                    teleport(true);
-                }
-            }
-        }
-    }
+    //void Update()
+    //{
+    //    float dragThreshold = 10;
+    //    if (Input.touchCount == 0)
+    //    {
+    //        isTeleportGesture = true;
+    //    }
+    //    else if (Input.touchCount >= 2)
+    //    {
+    //        isTeleportGesture = false;
+    //    }
+    //    if (Input.touchCount > 0)
+    //    {
+    //        if (Input.GetTouch(0).phase == TouchPhase.Began)
+    //        {
+    //            maxMouseMovement = 0;
+    //            origMP = Input.GetTouch(0).position;
+    //        }
+    //        else if (Input.GetTouch(0).phase == TouchPhase.Ended)
+    //        {
+    //            if (dragThreshold == 0 && maxMouseMovement < 50)
+    //            {
+    //                dragThreshold = maxMouseMovement;
+    //            }
+    //            if (isTeleportGesture)//don't let the pinch zoom gesture count as a teleport gesture
+    //            {
+    //                teleport(false);
+    //            }
+    //        }
+    //        float mm = Vector3.Distance(Input.GetTouch(0).position, origMP);
+    //        if (mm > maxMouseMovement)
+    //        {
+    //            maxMouseMovement = mm;
+    //        }
+    //        if (maxMouseMovement > dragThreshold)
+    //        {
+    //            isTeleportGesture = false;
+    //        }
+    //    }
+    //    else
+    //    {
+    //        if (Input.GetMouseButton(0))
+    //        {
+    //            float mm = Vector3.Distance(Input.mousePosition, origMP);
+    //            if (mm > maxMouseMovement)
+    //            {
+    //                maxMouseMovement = mm;
+    //            }
+    //        }
+    //        if (Input.GetMouseButtonDown(0))
+    //        {
+    //            maxMouseMovement = 0;
+    //            origMP = Input.mousePosition;
+    //        }
+    //        else if (Input.GetMouseButtonUp(0))
+    //        {
+    //            if (dragThreshold == 0 && maxMouseMovement < 50)
+    //            {
+    //                dragThreshold = maxMouseMovement;
+    //            }
+    //            if (isTeleportGesture && maxMouseMovement <= dragThreshold)
+    //            {
+    //                teleport(true);
+    //            }
+    //        }
+    //    }
+    //}
 
     //void OnCollisionEnter2D(Collision2D coll)
     //{
@@ -213,7 +213,7 @@ public class PlayerController : MonoBehaviour {
     //{
     //}
 
-    void teleport(bool mouseInput)
+    public void teleport(bool mouseInput)
     {
         if (teleportTime <= Time.time)
         {

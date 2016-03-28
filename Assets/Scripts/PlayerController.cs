@@ -273,7 +273,6 @@ public class PlayerController : MonoBehaviour {
             //if (!isGrounded())//have to call it again because state has changed
             //{
             mainCamCtr.delayMovement(0.3f);
-            explodeForce();
             //}
         }
     }
@@ -313,7 +312,7 @@ public class PlayerController : MonoBehaviour {
         tri.updateRange();
     }
 
-    void explodeForce()
+    public void explodeForce()
     {
         Collider2D[] hitColliders = Physics2D.OverlapCircleAll(transform.position, baseRange);
         Debug.Log("hitcolliders: " + hitColliders.Length+" t.p "+ transform.position);

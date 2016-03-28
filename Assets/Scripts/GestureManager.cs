@@ -9,8 +9,9 @@ public class GestureManager : MonoBehaviour {
     private CameraController cmaController;
 
     //Settings
-    public float dragThreshold = 10;//how far from the original mouse position the current position has to be to count as a drag
-    public float orthoZoomSpeed = 0.5f;
+    public const float dragThreshold = 10;//how far from the original mouse position the current position has to be to count as a drag
+    public const float holdThreshold = 0.1f;//how long the tap has to be held to count as a hold (in seconds)
+    public const float orthoZoomSpeed = 0.5f;
 
     //Original Positions
     private Vector3 origMP;//"original mouse position": the mouse position at the last mouse down (or tap down) event
@@ -22,6 +23,7 @@ public class GestureManager : MonoBehaviour {
     //Stats
     private int touchCount = 0;//how many touches to process, usually only 0 or 1, only 2 if zoom
     private float maxMouseMovement = 0f;//how far the mouse has moved since the last mouse down (or tap down) event
+    private float holdTime = 0f;//how long the gesture has been held for
     private enum ClickState {Began, InProgress, Ended, None};
     private ClickState clickState = ClickState.None;
     //Flags
@@ -88,12 +90,12 @@ public class GestureManager : MonoBehaviour {
             touchCount = 0;
             clickState = ClickState.None;
         }
-        
-            //
-            //Preliminary Processing
-            //Stats are processed here
-            //
-            switch (clickState)
+
+        //
+        //Preliminary Processing
+        //Stats are processed here
+        //
+        switch (clickState)
         {
             case ClickState.Began:
                 curMP = origMP;
@@ -110,10 +112,11 @@ public class GestureManager : MonoBehaviour {
                     maxMouseMovement = mm;
                 }
                 curTime = Time.time;
+                holdTime = curTime - origTime;
                 break;
             case ClickState.None: break;
             default:
-                throw new System.Exception("Click State of wrong type, or type not processed! (Stat Processing) clickState: "+clickState);
+                throw new System.Exception("Click State of wrong type, or type not processed! (Stat Processing) clickState: " + clickState);
         }
 
 
@@ -134,11 +137,19 @@ public class GestureManager : MonoBehaviour {
             {
                 if (maxMouseMovement > dragThreshold)
                 {
-                    isTeleportGesture = false;
                     if (!isForceTeleportGesture)
                     {
+                        isTeleportGesture = false;
                         isCameraDrag = true;
                         cameraDragInProgress = true;
+                    }
+                }
+                if (holdTime > holdThreshold)
+                {
+                    if (!isCameraDrag)
+                    {
+                        isTeleportGesture = true;
+                        isForceTeleportGesture = true;
                     }
                 }
                 if (isCameraDrag)
@@ -162,6 +173,10 @@ public class GestureManager : MonoBehaviour {
                 else if (isTeleportGesture)
                 {
                     plrController.teleport(cam.ScreenToWorldPoint(curMP));
+                    if (isForceTeleportGesture)
+                    {
+                        plrController.explodeForce();
+                    }
                 }
 
                 //Set all flags = false

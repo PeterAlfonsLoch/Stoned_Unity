@@ -35,7 +35,8 @@ public class GestureManager : MonoBehaviour {
     void Start () {
         plrController = player.GetComponent<PlayerController>();
         cmaController = cam.GetComponent<CameraController>();
-	}
+        Input.simulateMouseWithTouches = false;
+    }
 	
 	// Update is called once per frame
 	void Update () {

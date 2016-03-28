@@ -836,7 +836,7 @@ GameObject:
   - 114: {fileID: 753720677}
   m_Layer: 0
   m_Name: Gesture Manager
-  m_TagString: Untagged
+  m_TagString: GestureManager
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -853,7 +853,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   player: {fileID: 576593535}
-  cameraMain: {fileID: 574882670}
+  cam: {fileID: 574882670}
+  dragThreshold: 10
+  cameraDragInProgress: 0
+  perspectiveZoomSpeed: 0.5
+  orthoZoomSpeed: 0.5
 --- !u!4 &753720678
 Transform:
   m_ObjectHideFlags: 0
@@ -865,7 +869,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 6
+  m_RootOrder: 9
 --- !u!1001 &782129685
 Prefab:
   m_ObjectHideFlags: 0
@@ -1429,7 +1433,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 434258, guid: 3083dff23c2219d479b13c6930a29d00, type: 2}
       propertyPath: m_RootOrder
-      value: 6
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 434258, guid: 3083dff23c2219d479b13c6930a29d00, type: 2}
       propertyPath: m_LocalScale.y

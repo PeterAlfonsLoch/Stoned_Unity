@@ -182,7 +182,7 @@ public class GestureManager : MonoBehaviour {
                 }
                 else if (isTapGesture)
                 {
-                    plrController.teleport(curMPWorld);
+                    plrController.processTapGesture(curMPWorld);
                 }
 
                 //Set all flags = false

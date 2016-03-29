@@ -143,7 +143,7 @@ public class PlayerController : MonoBehaviour
     //{
     //}
 
-    public bool teleport(Vector3 targetPos)//targetPos is in world coordinations (NOT UI coordinates)
+    private bool teleport(Vector3 targetPos)//targetPos is in world coordinations (NOT UI coordinates)
     {
         if (teleportTime <= Time.time)
         {
@@ -407,6 +407,12 @@ public class PlayerController : MonoBehaviour
             }
         }
         return false;//nope, it's not occupied
+    }
+
+    public void processTapGesture(Vector3 gpos)
+    {
+        Vector3 newPos = findTeleportablePosition(gpos);
+        teleport(newPos);
     }
 
     public void processHoldGesture(Vector3 gpos, float holdTime, bool finished)

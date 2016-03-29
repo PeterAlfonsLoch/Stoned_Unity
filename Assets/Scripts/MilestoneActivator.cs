@@ -1,7 +1,6 @@
 ﻿using UnityEngine;
-using System.Collections;
 
-public class MilestoneActivator : MonoBehaviour {
+public abstract class MilestoneActivator : MonoBehaviour {
 
     public int incrementAmount = 1;
     public GameObject particle;
@@ -26,14 +25,16 @@ public class MilestoneActivator : MonoBehaviour {
 
     void OnTriggerEnter2D(Collider2D coll)
     {
-        if ( ! used && coll.gameObject.Equals(playerObject))
+        if (!used && coll.gameObject.Equals(playerObject))
         {
             sparkle();
             used = true;
-            playerObject.GetComponent<PlayerController>().maxAirPorts += incrementAmount;
+            activateEffect();
             Destroy(this);//makes sure it can only be used once
         }
     }
+
+    public abstract void activateEffect();
 
     protected void sparkle()
     {//2016-03-17: copied from PlayerController.showTeleportStar(..)

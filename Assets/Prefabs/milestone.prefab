@@ -142,6 +142,7 @@ MonoBehaviour:
   incrementAmount: 1
   particle: {fileID: 127114, guid: 84842629c9b04df48a7cd79dca5c22e9, type: 2}
   starAmount: 100
+  starSpawnDuration: 25
 --- !u!212 &21290114
 SpriteRenderer:
   m_ObjectHideFlags: 1
@@ -187,6 +188,11 @@ Prefab:
       propertyPath: particle
       value: 
       objectReference: {fileID: 127114, guid: 84842629c9b04df48a7cd79dca5c22e9, type: 2}
+    - target: {fileID: 0}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: bae21fc4065111748915ad50a84abde2,
+        type: 3}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}
   m_RootGameObject: {fileID: 158788}

@@ -411,16 +411,19 @@ public class PlayerController : MonoBehaviour
 
     public void processHoldGesture(Vector3 gpos, float holdTime, bool finished)
     {
-        Vector3 newPos = findTeleportablePosition(gpos);
-        if (finished)
+        if (fta.enabled)
         {
-            if (teleport(newPos))
+            Vector3 newPos = findTeleportablePosition(gpos);
+            if (finished)
             {
+                if (teleport(newPos))
+                {
+                    fta.processHoldGesture(newPos, holdTime, finished);
+                }
+            }
+            else {
                 fta.processHoldGesture(newPos, holdTime, finished);
             }
-        }
-        else {
-            fta.processHoldGesture(newPos, holdTime, finished);
         }
     }
 }

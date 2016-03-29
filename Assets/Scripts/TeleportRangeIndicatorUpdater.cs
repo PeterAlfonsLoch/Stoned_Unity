@@ -9,6 +9,7 @@ public class TeleportRangeIndicatorUpdater : MonoBehaviour {
     private float baseWidth=0;
     private float baseHeight=0;
     SpriteRenderer sr;
+    float size = 0;
 
     // Use this for initialization
     void Start()
@@ -19,9 +20,13 @@ public class TeleportRangeIndicatorUpdater : MonoBehaviour {
         }
         sr = GetComponent<SpriteRenderer>();
         sr.enabled = true;
-        Vector3 size = sr.bounds.size;
-        baseWidth = size.x;
-        baseHeight = size.y;
+        Vector3 bsize = sr.bounds.size;
+        baseWidth = bsize.x;
+        baseHeight = bsize.y;
+        if (size > 0)
+        {
+            setSize(size);
+        }
     }
 
     // Update is called once per frame
@@ -46,6 +51,7 @@ public class TeleportRangeIndicatorUpdater : MonoBehaviour {
     public void setSize(float newSize) {
         //if (Mathf.Abs(baseWidth - newSize) > 1)
         //{
+        size = newSize;
         if (baseWidth > 0 && baseHeight > 0)
         {
             Vector3 newV = new Vector3(newSize / baseWidth, newSize / baseHeight, 0);

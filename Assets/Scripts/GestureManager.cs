@@ -150,13 +150,13 @@ public class GestureManager : MonoBehaviour {
                 {
                     if (!isDrag)
                     {
-                        isTapGesture = true;
+                        isTapGesture = false;
                         isHoldGesture = true;
                     }
                 }
                 if (isDrag)
                 {
-                    Vector3 delta = cam.ScreenToWorldPoint(origMP) - curMPWorld;
+                    Vector3 delta = cam.ScreenToWorldPoint(origMP) - cam.ScreenToWorldPoint(curMP);
                     Vector3 newPos = player.transform.position + origCP + delta;
                     Vector3 size = cam.ScreenToWorldPoint(new Vector3(cam.pixelWidth, cam.pixelHeight)) - cam.ScreenToWorldPoint(new Vector3(0, 0)) + new Vector3(0, 0, 20);
                     Bounds b = new Bounds(newPos, size);

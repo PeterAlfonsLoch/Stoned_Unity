@@ -31,6 +31,8 @@ public class PlayerController : MonoBehaviour
 
     private CameraController mainCamCtr;//the camera controller for the main camera
 
+    private ForceTeleportAbility fta;
+
     //Vector3[] dirs = new Vector3[]
     //        {//for checking if Merky is grounded
     //            //Vector3.up,
@@ -77,6 +79,7 @@ public class PlayerController : MonoBehaviour
     {
         rb2d = GetComponent<Rigidbody2D>();
         mainCamCtr = Camera.main.GetComponent<CameraController>();
+        fta = GetComponent<ForceTeleportAbility>();
     }
 
     void FixedUpdate()
@@ -399,13 +402,13 @@ public class PlayerController : MonoBehaviour
         return false;//nope, it's not occupied
     }
 
-    public void processHoldGesture(Vector3 gpos, float holdTime)
+    public void processHoldGesture(Vector3 gpos, float holdTime, bool finished)
     {
-        ForceTeleportAbility fta = GetComponent<ForceTeleportAbility>();
-        if (fta != null)
+        if (finished)
         {
-            fta.processHoldGesture(gpos, holdTime);
+            teleport(gpos);
         }
+            fta.processHoldGesture(gpos, holdTime, finished);
     }
 }
 

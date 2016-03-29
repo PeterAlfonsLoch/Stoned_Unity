@@ -19,6 +19,7 @@ public class GestureManager : MonoBehaviour {
     private float origTime = 0f;//"original time": the clock time at the last mouse down (or tap down) event
     //Current Positions
     private Vector3 curMP;//"current mouse position"
+    private Vector3 curMPWorld;//"current mouse position world" - the mouse coordinates in the world
     private float curTime = 0f;
     //Stats
     private int touchCount = 0;//how many touches to process, usually only 0 or 1, only 2 if zoom
@@ -28,9 +29,9 @@ public class GestureManager : MonoBehaviour {
     private ClickState clickState = ClickState.None;
     //Flags
     public bool cameraDragInProgress = false;
-    private bool isCameraDrag = false;
-    private bool isTeleportGesture = true;
-    private bool isForceTeleportGesture = false;
+    private bool isDrag = false;
+    private bool isTapGesture = true;
+    private bool isHoldGesture = false;
 
 
     // Use this for initialization
@@ -118,6 +119,7 @@ public class GestureManager : MonoBehaviour {
             default:
                 throw new System.Exception("Click State of wrong type, or type not processed! (Stat Processing) clickState: " + clickState);
         }
+        curMPWorld = (Vector2)cam.ScreenToWorldPoint(curMP);//cast to Vector2 to force z to 0
 
 
         //
@@ -129,32 +131,32 @@ public class GestureManager : MonoBehaviour {
             {
                 //Set all flags = true
                 cameraDragInProgress = false;
-                isCameraDrag = false;
-                isTeleportGesture = true;
-                isForceTeleportGesture = false;
+                isDrag = false;
+                isTapGesture = true;
+                isHoldGesture = false;
             }
             else if (clickState == ClickState.InProgress)
             {
                 if (maxMouseMovement > dragThreshold)
                 {
-                    if (!isForceTeleportGesture)
+                    if (!isHoldGesture)
                     {
-                        isTeleportGesture = false;
-                        isCameraDrag = true;
+                        isTapGesture = false;
+                        isDrag = true;
                         cameraDragInProgress = true;
                     }
                 }
                 if (holdTime > holdThreshold)
                 {
-                    if (!isCameraDrag)
+                    if (!isDrag)
                     {
-                        isTeleportGesture = true;
-                        isForceTeleportGesture = true;
+                        isTapGesture = true;
+                        isHoldGesture = true;
                     }
                 }
-                if (isCameraDrag)
+                if (isDrag)
                 {
-                    Vector3 delta = cam.ScreenToWorldPoint(origMP) - cam.ScreenToWorldPoint(curMP);
+                    Vector3 delta = cam.ScreenToWorldPoint(origMP) - curMPWorld;
                     Vector3 newPos = player.transform.position + origCP + delta;
                     Vector3 size = cam.ScreenToWorldPoint(new Vector3(cam.pixelWidth, cam.pixelHeight)) - cam.ScreenToWorldPoint(new Vector3(0, 0)) + new Vector3(0, 0, 20);
                     Bounds b = new Bounds(newPos, size);
@@ -163,27 +165,31 @@ public class GestureManager : MonoBehaviour {
                         cam.transform.position = newPos;
                     }
                 }
+                else if (isHoldGesture)
+                {
+                    plrController.processHoldGesture(curMPWorld, holdTime,false);
+                }
             }
             else if (clickState == ClickState.Ended)
             {
-                if (isCameraDrag)
+                if (isDrag)
                 {
                     cmaController.pinPoint();
                 }
-                else if (isTeleportGesture)
+                else if (isHoldGesture)
                 {
-                    plrController.teleport(cam.ScreenToWorldPoint(curMP));
-                    if (isForceTeleportGesture)
-                    {
-                        plrController.processHoldGesture(cam.ScreenToWorldPoint(curMP), holdTime);
-                    }
+                    plrController.processHoldGesture(curMPWorld, holdTime, true);
+                }
+                else if (isTapGesture)
+                {
+                    plrController.teleport(curMPWorld);
                 }
 
                 //Set all flags = false
                 cameraDragInProgress = false;
-                isCameraDrag = false;
-                isTeleportGesture = false;
-                isForceTeleportGesture = false;
+                isDrag = false;
+                isTapGesture = false;
+                isHoldGesture = false;
             }
             else
             {

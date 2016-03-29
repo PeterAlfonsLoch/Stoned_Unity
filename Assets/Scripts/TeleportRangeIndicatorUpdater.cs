@@ -13,8 +13,12 @@ public class TeleportRangeIndicatorUpdater : MonoBehaviour {
     // Use this for initialization
     void Start()
     {
-        controller = parentObj.GetComponent<PlayerController>();
+        if (parentObj != null)
+        {
+            controller = parentObj.GetComponent<PlayerController>();
+        }
         sr = GetComponent<SpriteRenderer>();
+        sr.enabled = true;
         Vector3 size = sr.bounds.size;
         baseWidth = size.x;
         baseHeight = size.y;
@@ -36,12 +40,18 @@ public class TeleportRangeIndicatorUpdater : MonoBehaviour {
         }
         //transform.position = parentObj.transform.position;
         //transform.localScale = new Vector3(1, 1);
-        float newSize = (float)controller.range * 2;
+        float newSize = controller.range * 2;
+        setSize(newSize);
+    }
+    public void setSize(float newSize) {
         //if (Mathf.Abs(baseWidth - newSize) > 1)
         //{
-        Vector3 newV = new Vector3(newSize / baseWidth, newSize / baseHeight);
-        //if (Mathf.Abs(transform.localScale.magnitude - newV.magnitude) > 1) {
-        transform.localScale = newV;
+        if (baseWidth > 0 && baseHeight > 0)
+        {
+            Vector3 newV = new Vector3(newSize / baseWidth, newSize / baseHeight, 0);
+            //if (Mathf.Abs(transform.localScale.magnitude - newV.magnitude) > 1) {
+            transform.localScale = newV;
+        }
         // }
         //}
         //transform.localScale.y = newSize / height;

@@ -696,8 +696,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f16f92f62c03f9d49ae9349cf322432d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  forceRangeIndicator: {fileID: 138864, guid: d1311c9898ad32f488aea19cdc7d519c, type: 2}
+  maxForceAmount: 5000
   forceAmount: 10
   maxRange: 3
+  maxHoldTime: 1
 --- !u!1001 &625294335
 Prefab:
   m_ObjectHideFlags: 0
@@ -1371,11 +1374,11 @@ Prefab:
     m_Modifications:
     - target: {fileID: 434258, guid: 3083dff23c2219d479b13c6930a29d00, type: 2}
       propertyPath: m_LocalPosition.x
-      value: 10.24
+      value: 8.8
       objectReference: {fileID: 0}
     - target: {fileID: 434258, guid: 3083dff23c2219d479b13c6930a29d00, type: 2}
       propertyPath: m_LocalPosition.y
-      value: 21
+      value: 16.9
       objectReference: {fileID: 0}
     - target: {fileID: 434258, guid: 3083dff23c2219d479b13c6930a29d00, type: 2}
       propertyPath: m_LocalPosition.z
@@ -1403,14 +1406,17 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 434258, guid: 3083dff23c2219d479b13c6930a29d00, type: 2}
       propertyPath: m_LocalScale.y
-      value: 9.0691
+      value: 13.957268
       objectReference: {fileID: 0}
     - target: {fileID: 434258, guid: 3083dff23c2219d479b13c6930a29d00, type: 2}
       propertyPath: m_LocalScale.x
-      value: 9.792244
+      value: 12.029111
       objectReference: {fileID: 0}
-    m_RemovedComponents:
-    - {fileID: 11489412, guid: 3083dff23c2219d479b13c6930a29d00, type: 2}
+    - target: {fileID: 176284, guid: 3083dff23c2219d479b13c6930a29d00, type: 2}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 3083dff23c2219d479b13c6930a29d00, type: 2}
   m_IsPrefabParent: 0
 --- !u!1001 &1490271860

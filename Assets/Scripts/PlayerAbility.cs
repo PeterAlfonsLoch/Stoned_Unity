@@ -5,8 +5,8 @@ public class PlayerAbility : MonoBehaviour {
 
     GameObject player;
 
-	// Use this for initialization
-	void Start () {
+    // Use this for initialization
+    protected void Start () {
         player = gameObject;
 	}
 
@@ -30,7 +30,7 @@ public class PlayerAbility : MonoBehaviour {
         return true;
     }
 
-    public void processHoldGesture(Vector3 pos, float holdTime)
+    public void processHoldGesture(Vector3 pos, float holdTime, bool finished)
     {
 
     }

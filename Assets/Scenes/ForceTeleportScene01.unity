@@ -681,8 +681,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   player: {fileID: 576593535}
-  perspectiveZoomSpeed: 0.5
-  orthoZoomSpeed: 0.5
 --- !u!1 &576593535 stripped
 GameObject:
   m_PrefabParentObject: {fileID: 100086, guid: 5913bd1e88aefff4988c7dfee6595611, type: 2}
@@ -825,51 +823,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f272160f1fd614ea8b1715b3d85ed27b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!1 &753720676
-GameObject:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  serializedVersion: 4
-  m_Component:
-  - 4: {fileID: 753720678}
-  - 114: {fileID: 753720677}
-  m_Layer: 0
-  m_Name: Gesture Manager
-  m_TagString: GestureManager
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &753720677
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 753720676}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e363b7df0cecae740b4a61c6bf8acc06, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  player: {fileID: 576593535}
-  cam: {fileID: 574882670}
-  dragThreshold: 10
-  cameraDragInProgress: 0
-  perspectiveZoomSpeed: 0.5
-  orthoZoomSpeed: 0.5
---- !u!4 &753720678
-Transform:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 753720676}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 6.7799697, y: 6.73441, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 9
 --- !u!1001 &782129685
 Prefab:
   m_ObjectHideFlags: 0
@@ -2001,6 +1954,60 @@ Prefab:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 57170385b5ed646499dfd174766a0779, type: 2}
+  m_IsPrefabParent: 0
+--- !u!1001 &1929445863
+Prefab:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 439500, guid: 7e21e5f1081041741a82554ea3a49c4b, type: 2}
+      propertyPath: m_LocalPosition.x
+      value: 6.7799697
+      objectReference: {fileID: 0}
+    - target: {fileID: 439500, guid: 7e21e5f1081041741a82554ea3a49c4b, type: 2}
+      propertyPath: m_LocalPosition.y
+      value: 6.73441
+      objectReference: {fileID: 0}
+    - target: {fileID: 439500, guid: 7e21e5f1081041741a82554ea3a49c4b, type: 2}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 439500, guid: 7e21e5f1081041741a82554ea3a49c4b, type: 2}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 439500, guid: 7e21e5f1081041741a82554ea3a49c4b, type: 2}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 439500, guid: 7e21e5f1081041741a82554ea3a49c4b, type: 2}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 439500, guid: 7e21e5f1081041741a82554ea3a49c4b, type: 2}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 439500, guid: 7e21e5f1081041741a82554ea3a49c4b, type: 2}
+      propertyPath: m_RootOrder
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 11498136, guid: 7e21e5f1081041741a82554ea3a49c4b, type: 2}
+      propertyPath: player
+      value: 
+      objectReference: {fileID: 576593535}
+    - target: {fileID: 11498136, guid: 7e21e5f1081041741a82554ea3a49c4b, type: 2}
+      propertyPath: cam
+      value: 
+      objectReference: {fileID: 574882670}
+    - target: {fileID: 11498136, guid: 7e21e5f1081041741a82554ea3a49c4b, type: 2}
+      propertyPath: cameraDragInProgress
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_ParentPrefab: {fileID: 100100000, guid: 7e21e5f1081041741a82554ea3a49c4b, type: 2}
   m_IsPrefabParent: 0
 --- !u!1 &1967224466 stripped
 GameObject:

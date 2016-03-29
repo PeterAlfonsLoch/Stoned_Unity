@@ -9,9 +9,9 @@ public class GestureManager : MonoBehaviour {
     private CameraController cmaController;
 
     //Settings
-    public const float dragThreshold = 10;//how far from the original mouse position the current position has to be to count as a drag
-    public const float holdThreshold = 0.1f;//how long the tap has to be held to count as a hold (in seconds)
-    public const float orthoZoomSpeed = 0.5f;
+    public float dragThreshold = 10;//how far from the original mouse position the current position has to be to count as a drag
+    public float holdThreshold = 0.1f;//how long the tap has to be held to count as a hold (in seconds)
+    public float orthoZoomSpeed = 0.5f;
 
     //Original Positions
     private Vector3 origMP;//"original mouse position": the mouse position at the last mouse down (or tap down) event

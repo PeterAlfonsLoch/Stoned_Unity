@@ -1,7 +1,8 @@
 ﻿using System.Collections;
 using UnityEngine;
 
-public class PlayerController : MonoBehaviour {
+public class PlayerController : MonoBehaviour
+{
 
     public float range = 3;
     public float baseRange = 3;
@@ -14,8 +15,6 @@ public class PlayerController : MonoBehaviour {
     private int giveGravityImmunityDelayCounter = -1;//used to delay granting gravity immunity until the next cycle
     public int gGIDCinit = 2;//note: this may go away once the teleport lookahead detector is improved
 
-    public int forceAmount = 100;
-
     public GameObject teleportStreak;
     public GameObject teleportStar;
     public bool useStreak = false;
@@ -27,7 +26,7 @@ public class PlayerController : MonoBehaviour {
     private Vector2 savedVelocity;
     private float savedAngularVelocity;
     private bool velocityNeedsReloaded = false;//because you can't set a Vector2 to null, using this to see when the velocity needs reloaded
-    
+
     public AudioClip teleportSound;
 
     private CameraController mainCamCtr;//the camera controller for the main camera
@@ -74,10 +73,11 @@ public class PlayerController : MonoBehaviour {
                 };
 
     // Use this for initialization
-    void Start () {
+    void Start()
+    {
         rb2d = GetComponent<Rigidbody2D>();
         mainCamCtr = Camera.main.GetComponent<CameraController>();
-	}
+    }
 
     void FixedUpdate()
     {
@@ -91,13 +91,14 @@ public class PlayerController : MonoBehaviour {
         //    Vector2 start = (pos2 + dir2);
         //    Debug.DrawLine(pos2, start, Color.black);
         //}
-        bool wasInAir = ! grounded;
+        bool wasInAir = !grounded;
         checkGroundedState();
         if (wasInAir && grounded)//just landed on something
         {
             giveGravityImmunityDelayCounter = gGIDCinit;
         }
-        if (giveGravityImmunityDelayCounter == 0 && grounded) {
+        if (giveGravityImmunityDelayCounter == 0 && grounded)
+        {
             giveGravityImmunityDelayCounter = -1;
             gravityImmuneTime = Time.time + gravityImmuneTimeAmount;
             savedVelocity = rb2d.velocity;
@@ -124,7 +125,7 @@ public class PlayerController : MonoBehaviour {
                 velocityNeedsReloaded = false;
             }
         }
-        if (grounded && ! rb2d.isKinematic && rb2d.velocity.magnitude < 0.1f)
+        if (grounded && !rb2d.isKinematic && rb2d.velocity.magnitude < 0.1f)
         {
             mainCamCtr.discardMovementDelay();
         }
@@ -312,22 +313,8 @@ public class PlayerController : MonoBehaviour {
         tri.updateRange();
     }
 
-    public void explodeForce()
-    {
-        Collider2D[] hitColliders = Physics2D.OverlapCircleAll(transform.position, baseRange);
-        Debug.Log("hitcolliders: " + hitColliders.Length+" t.p "+ transform.position);
-        for (int i = 0; i < hitColliders.Length; i++)
-        {
-            Rigidbody2D orb2d = hitColliders[i].gameObject.GetComponent<Rigidbody2D>();
-            if (orb2d != null)
-            {
-                AddExplosionForce(orb2d, forceAmount, transform.position, baseRange);
-            }
-        }
-    }
-
     void checkGroundedState()
-    {        
+    {
         if (isGrounded())
         {
             airPorts = 0;
@@ -351,14 +338,14 @@ public class PlayerController : MonoBehaviour {
         int numberOfLines = 5;
         Bounds bounds = GetComponent<PolygonCollider2D>().bounds;
         float width = bounds.max.x - bounds.min.x;
-        float increment = width / (numberOfLines-1);//-1 because the last one doesn't take up any space
+        float increment = width / (numberOfLines - 1);//-1 because the last one doesn't take up any space
         Vector3 startV = bounds.min;
         float length = 0.75f;
         for (int i = 0; i < numberOfLines; i++)
         {
-            Vector2 start = new Vector2(startV.x + i*increment, pos.y-length);
+            Vector2 start = new Vector2(startV.x + i * increment, pos.y - length);
             Vector2 dir2 = new Vector2(0, length);
-            Debug.DrawLine(start, start+dir2, Color.black);
+            Debug.DrawLine(start, start + dir2, Color.black);
             RaycastHit2D rch2d = Physics2D.Raycast(start, dir2, length);// -1*(start), 1f);
             if (rch2d && rch2d.collider != null)
             {
@@ -394,9 +381,9 @@ public class PlayerController : MonoBehaviour {
                 if (ground != null && !ground.Equals(transform.gameObject))
                 {
                     //test opposite direction
-                    start = (pos2 + -1*dir2);
+                    start = (pos2 + -1 * dir2);
                     rch2d = Physics2D.Raycast(start, dir2, length);
-                    Debug.DrawLine(start, start+dir2, Color.black, 1);
+                    Debug.DrawLine(start, start + dir2, Color.black, 1);
                     if (rch2d && rch2d.collider != null)
                     {
                         ground = rch2d.collider.gameObject;
@@ -412,18 +399,14 @@ public class PlayerController : MonoBehaviour {
         return false;//nope, it's not occupied
     }
 
-    /**
-    * 2016-03-25: copied from "2D Explosion Force" Asset: https://www.assetstore.unity3d.com/en/#!/content/24077
-    */
-    public static void AddExplosionForce(Rigidbody2D body, float expForce, Vector3 expPosition, float expRadius)
+    public void processHoldGesture(Vector3 gpos, float holdTime)
     {
-        var dir = (body.transform.position - expPosition);
-        float calc = 1 - (dir.magnitude / expRadius);
-        if (calc <= 0)
+        ForceTeleportAbility fta = GetComponent<ForceTeleportAbility>();
+        if (fta != null)
         {
-            calc = 0;
+            fta.processHoldGesture(gpos, holdTime);
         }
-
-        body.AddForce(dir.normalized * expForce * calc);
     }
 }
+
+   

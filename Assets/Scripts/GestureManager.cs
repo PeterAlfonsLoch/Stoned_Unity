@@ -175,7 +175,7 @@ public class GestureManager : MonoBehaviour {
                     plrController.teleport(cam.ScreenToWorldPoint(curMP));
                     if (isForceTeleportGesture)
                     {
-                        plrController.explodeForce();
+                        plrController.processHoldGesture(cam.ScreenToWorldPoint(curMP), holdTime);
                     }
                 }
 

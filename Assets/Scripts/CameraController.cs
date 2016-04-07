@@ -4,8 +4,9 @@ using System.Collections;
 public class CameraController : MonoBehaviour {
 
 	public GameObject player;
+    public int viewMultiplier = 2;
 
-	private Vector3 offset;
+    private Vector3 offset;
     private Camera cam;
     private Rigidbody2D playerRB2D;
     private float moveTime = 0f;//used to delay the camera refocusing on the player
@@ -30,7 +31,7 @@ public class CameraController : MonoBehaviour {
                 player.transform.position + offset,
                 (Vector3.Distance(
                     transform.position,
-                    player.transform.position) * 2 + playerRB2D.velocity.magnitude)
+                    player.transform.position) *2 + playerRB2D.velocity.magnitude)
                     * Time.deltaTime);
         }
     }

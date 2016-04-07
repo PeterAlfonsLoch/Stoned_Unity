@@ -206,7 +206,7 @@ public class GestureManager : MonoBehaviour {
             //Zoom Processing
             //
             float minZoom = 1f;
-            float maxZoom = player.GetComponent<PlayerController>().baseRange * 2;
+            float maxZoom = player.GetComponent<PlayerController>().baseRange * cmaController.viewMultiplier;
             //
             //Mouse Scrolling Zoom
             //

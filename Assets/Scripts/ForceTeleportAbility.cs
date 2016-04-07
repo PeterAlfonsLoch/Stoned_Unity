@@ -24,7 +24,7 @@ public class ForceTeleportAbility : PlayerAbility
 
     public new void processHoldGesture(Vector3 pos, float holdTime, bool finished)
     {
-        float range = maxRange * holdTime / maxHoldTime;
+        float range = maxRange * holdTime*GestureManager.holdTimeScaleRecip / maxHoldTime;
         if (range > maxRange)
         {
             range = maxRange;
@@ -32,7 +32,7 @@ public class ForceTeleportAbility : PlayerAbility
         if (finished)
         {
             pos = (Vector2)pos;//2016-03-29: for some reason, pos.z is -10 when it comes in
-            float force = forceAmount * Mathf.Pow(2, (holdTime * 10));
+            float force = forceAmount * Mathf.Pow(2, (holdTime * 10 * GestureManager.holdTimeScaleRecip));
             if (force > maxForceAmount)
             {
                 force = maxForceAmount;

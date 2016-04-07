@@ -32,6 +32,8 @@ public class GestureManager : MonoBehaviour {
     private bool isDrag = false;
     private bool isTapGesture = true;
     private bool isHoldGesture = false;
+    public const float holdTimeScale = 0.5f;
+    public const float holdTimeScaleRecip = 1 / holdTimeScale;
 
 
     // Use this for initialization
@@ -152,6 +154,7 @@ public class GestureManager : MonoBehaviour {
                     {
                         isTapGesture = false;
                         isHoldGesture = true;
+                        Time.timeScale = holdTimeScale;
                     }
                 }
                 if (isDrag)
@@ -190,6 +193,7 @@ public class GestureManager : MonoBehaviour {
                 isDrag = false;
                 isTapGesture = false;
                 isHoldGesture = false;
+                Time.timeScale = 1;
             }
             else
             {

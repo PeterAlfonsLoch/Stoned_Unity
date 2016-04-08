@@ -4,17 +4,20 @@ using System.Collections;
 public class FloatCubeController : MonoBehaviour {
 
     public GameObject switchObj;
-    public int maxHeight;
+    public float maxHeight;
+    public float lift = 50;
 
     private Rigidbody2D rb;
     private Vector3 upVector;
     //private Vector3 stableVector;
     private bool increasingLastTime = false;
+    private float initAngDrag;
 
 	// Use this for initialization
 	void Start () {
         rb = GetComponent<Rigidbody2D>();
-        upVector = new Vector2(0, 50);
+        initAngDrag = rb.angularDrag;
+        upVector = new Vector2(0, lift);
         //stableVector = new Vector2(0, 90);
     }
 
@@ -23,8 +26,8 @@ public class FloatCubeController : MonoBehaviour {
     {
         if (switchObj.GetComponent<WeightSwitchActivator>().pressed)
         {
-            rb.angularDrag = 50f;
-            transform.rotation = Quaternion.RotateTowards(transform.rotation, Quaternion.identity,1);
+            rb.angularDrag = initAngDrag;
+            transform.rotation = Quaternion.RotateTowards(transform.rotation, Quaternion.identity, 5);
             if (transform.position.y < maxHeight)// && rb.velocity.magnitude < 100)
             {
                 rb.AddForce(upVector);

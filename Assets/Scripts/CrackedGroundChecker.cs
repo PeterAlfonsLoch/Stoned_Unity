@@ -25,10 +25,15 @@ public class CrackedGroundChecker : MonoBehaviour {
         {
             float force = rb2d.velocity.magnitude * rb2d.mass;
             Debug.Log("force: " + force);
-            if (force > forceThreshold)
-            {
-                crackAndBreak();
-            }
+            checkForce(force);
+        }
+    }
+
+    public void checkForce(float force)
+    {
+        if (force > forceThreshold)
+        {
+            crackAndBreak();
         }
     }
 

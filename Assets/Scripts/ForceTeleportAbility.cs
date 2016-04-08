@@ -45,6 +45,14 @@ public class ForceTeleportAbility : PlayerAbility
                 {
                     AddExplosionForce(orb2d, force, pos, range);
                 }
+                else
+                {
+                    CrackedGroundChecker cgc = hitColliders[i].gameObject.GetComponent<CrackedGroundChecker>();
+                    if (cgc != null)
+                    {
+                        cgc.checkForce(force);
+                    }
+                }
             }
             Destroy(frii);
             frii = null;

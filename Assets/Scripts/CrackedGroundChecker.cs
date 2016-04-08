@@ -5,6 +5,7 @@ public class CrackedGroundChecker : MonoBehaviour {
 
     public float forceThreshold = 10;//how much force is required to break it
     public AudioClip breakSound;
+    public GameObject secretHider;//the hidden area to be shown when this cracked ground breaks
 
 	// Use this for initialization
 	void Start () {
@@ -34,6 +35,10 @@ public class CrackedGroundChecker : MonoBehaviour {
     private void crackAndBreak()
     {
         AudioSource.PlayClipAtPoint(breakSound, transform.position);
+        if (secretHider != null)
+        {
+            secretHider.AddComponent<Fader>();
+        }
         Destroy(gameObject);
     }
 }

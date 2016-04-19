@@ -6,6 +6,7 @@ public class ForceTeleportAbility : PlayerAbility
     public GameObject forceRangeIndicator;
     private TeleportRangeIndicatorUpdater friu;//"force range indicator updater"
     private GameObject frii;//"force range indicator instance"
+    public GameObject explosionEffect;
 
     public float maxForceAmount = 5000;
     public float forceAmount = 10;//how much force to apply = forceAmount * 2^(holdTime*10)
@@ -54,6 +55,7 @@ public class ForceTeleportAbility : PlayerAbility
                     }
                 }
             }
+            showExplosionEffect(transform.position, pos, range*2);
             Destroy(frii);
             frii = null;
         }
@@ -83,5 +85,16 @@ public class ForceTeleportAbility : PlayerAbility
         }
 
         body.AddForce(dir.normalized * expForce * calc);
+    }
+    
+    void showExplosionEffect(Vector2 oldp, Vector2 newp, float finalSize)
+    {
+        GameObject newTS = (GameObject)Instantiate(explosionEffect);
+        newTS.GetComponent<ExplosionEffectUpdater>().start = oldp;
+        newTS.GetComponent<ExplosionEffectUpdater>().end = newp;
+        newTS.GetComponent<ExplosionEffectUpdater>().finalSize = finalSize;
+        newTS.GetComponent<ExplosionEffectUpdater>().position();
+        newTS.GetComponent<ExplosionEffectUpdater>().init();
+        newTS.GetComponent<ExplosionEffectUpdater>().turnOn(true);
     }
 }

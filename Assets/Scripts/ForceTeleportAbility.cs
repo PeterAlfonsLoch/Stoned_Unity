@@ -12,7 +12,9 @@ public class ForceTeleportAbility : PlayerAbility
     public float forceAmount = 10;//how much force to apply = forceAmount * 2^(holdTime*10)
     public float maxRange = 3;
     public float maxHoldTime = 1;//how long until the max range is reached
-    
+
+    public AudioClip forceTeleportSound;
+
     public new bool takesGesture()
     {
         return true;
@@ -56,6 +58,7 @@ public class ForceTeleportAbility : PlayerAbility
                 }
             }
             showExplosionEffect(transform.position, pos, range*2);
+            AudioSource.PlayClipAtPoint(forceTeleportSound, pos);
             Destroy(frii);
             frii = null;
         }

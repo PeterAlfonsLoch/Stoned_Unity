@@ -145,6 +145,10 @@ public class PlayerController : MonoBehaviour
 
     private bool teleport(Vector3 targetPos)//targetPos is in world coordinations (NOT UI coordinates)
     {
+        return teleport(targetPos, true);
+    }
+    private bool teleport(Vector3 targetPos,bool playSound)//targetPos is in world coordinations (NOT UI coordinates)
+    {
         if (teleportTime <= Time.time)
         {
             if (!isGrounded())
@@ -162,7 +166,10 @@ public class PlayerController : MonoBehaviour
             Vector3 oldPos = transform.position;
             transform.position = newPos;
             showTeleportEffect(oldPos, newPos);
-            AudioSource.PlayClipAtPoint(teleportSound, oldPos);
+            if (playSound)
+            {
+                AudioSource.PlayClipAtPoint(teleportSound, oldPos);
+            }
             //Gravity Immunity
             grounded = false;
             velocityNeedsReloaded = false;//discards previous velocity if was in gravity immunity bubble
@@ -422,7 +429,7 @@ public class PlayerController : MonoBehaviour
             Vector3 newPos = findTeleportablePosition(gpos);
             if (finished)
             {
-                if (teleport(newPos))
+                if (teleport(newPos,false))
                 {
                     fta.processHoldGesture(newPos, holdTime, finished);
                 }

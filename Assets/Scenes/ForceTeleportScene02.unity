@@ -11599,18 +11599,6 @@ Prefab:
       propertyPath: m_Name
       value: A merky
       objectReference: {fileID: 0}
-    - target: {fileID: 11407370, guid: 5913bd1e88aefff4988c7dfee6595611, type: 2}
-      propertyPath: m_Enabled
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 11477714, guid: 5913bd1e88aefff4988c7dfee6595611, type: 2}
-      propertyPath: explosionEffect
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 11407370, guid: 5913bd1e88aefff4988c7dfee6595611, type: 2}
-      propertyPath: explosionEffect
-      value: 
-      objectReference: {fileID: 195458, guid: 3e044ed6ab7216b438a24b0acaef2fb2, type: 2}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 5913bd1e88aefff4988c7dfee6595611, type: 2}
   m_IsPrefabParent: 0

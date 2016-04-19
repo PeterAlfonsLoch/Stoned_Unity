@@ -5,6 +5,7 @@ public class GestureManager : MonoBehaviour {
 
     public GameObject player;
     private PlayerController plrController;
+    private Rigidbody2D rb2dPlayer;
     public Camera cam;
     private CameraController cmaController;
 
@@ -39,6 +40,7 @@ public class GestureManager : MonoBehaviour {
     // Use this for initialization
     void Start () {
         plrController = player.GetComponent<PlayerController>();
+        rb2dPlayer = player.GetComponent<Rigidbody2D>();
         cmaController = cam.GetComponent<CameraController>();
         Input.simulateMouseWithTouches = false;
     }
@@ -139,7 +141,7 @@ public class GestureManager : MonoBehaviour {
             }
             else if (clickState == ClickState.InProgress)
             {
-                if (maxMouseMovement > dragThreshold)
+                if (maxMouseMovement > dragThreshold && rb2dPlayer.velocity.magnitude<1)
                 {
                     if (!isHoldGesture)
                     {

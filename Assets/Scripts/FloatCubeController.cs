@@ -7,6 +7,8 @@ public class FloatCubeController : MonoBehaviour {
     public float maxHeight;
     public float propulsionHeight;//how far off the ground the float cube can go
     public float lift = 50;
+    public GameObject psgoTrail;
+    public GameObject psgoSparks;
 
     private Rigidbody2D rb;
     public float liftForce;//the amount of force to use for lift
@@ -17,9 +19,12 @@ public class FloatCubeController : MonoBehaviour {
     //private Vector3 stableVector;
     private bool increasingLastTime = false;
     private float initAngDrag;
+    //Particles
+    private ParticleSystem psTrail;
+    private ParticleSystem psSparks;
 
-	// Use this for initialization
-	void Start () {
+    // Use this for initialization
+    void Start () {
         rb = GetComponent<Rigidbody2D>();
         initAngDrag = rb.angularDrag;
         upVector = new Vector2(0, lift);
@@ -28,6 +33,18 @@ public class FloatCubeController : MonoBehaviour {
         if (propulsionHeight <= 0)
         {
             propulsionHeight = maxHeight - transform.position.y + GetComponent<SpriteRenderer>().bounds.extents.y -(variance/2);//to facilitate setting the propulsionHeight
+        }
+        psTrail = psgoTrail.GetComponent<ParticleSystem>();
+        if (psTrail != null)
+        {
+            psTrail.Pause();
+            psTrail.Clear();
+        }
+        psSparks = psgoSparks.GetComponent<ParticleSystem>();
+        if (psSparks != null)
+        {
+            psSparks.Pause();
+            psSparks.Clear();
         }
         //Debug.Log("diff: " + maxHeight + "-" + transform.position.y + "= " + (maxHeight - transform.position.y));
         //stableVector = new Vector2(0, 90);
@@ -43,6 +60,14 @@ public class FloatCubeController : MonoBehaviour {
         //}
         if (switchObj.GetComponent<WeightSwitchActivator>().pressed)
         {
+            if (psTrail != null)
+            {
+                psTrail.Play();
+            }
+            if (psSparks != null)
+            {
+                psSparks.Play();
+            }
             if (propulsionHeight > 0)
             {//use new system
                 rb.angularDrag = initAngDrag;
@@ -176,6 +201,16 @@ public class FloatCubeController : MonoBehaviour {
             }
         }
         else {
+            if (psTrail != null)
+            {
+                psTrail.Pause();
+                psTrail.Clear();
+            }
+            if (psSparks != null)
+            {
+                psSparks.Pause();
+                psSparks.Clear();
+            }
             rb.angularDrag = 0.05f;
             rb.gravityScale = 1;
             rb.freezeRotation = false;

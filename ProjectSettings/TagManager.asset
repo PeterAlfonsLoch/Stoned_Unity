@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Float Cube
   - GestureManager
+  - HideableArea
   layers:
   - Default
   - TransparentFX

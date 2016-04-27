@@ -21,7 +21,8 @@ public class Fader : MonoBehaviour {
         srs.AddRange(GetComponentsInChildren<SpriteRenderer>());
         foreach (BoxCollider2D bc in GetComponentsInChildren<BoxCollider2D>())
         {
-            bc.enabled = false;
+            Destroy(bc);
+            //bc.enabled = false;
         }
     }
 

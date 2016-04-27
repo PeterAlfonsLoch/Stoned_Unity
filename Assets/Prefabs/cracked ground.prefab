@@ -57,6 +57,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   forceThreshold: 10
   breakSound: {fileID: 8300000, guid: bb2a37bffb821394d87697e4f3740389, type: 3}
+  rubble: {fileID: 100078, guid: 4df66864980fa2a4e8a7bbfef928068e, type: 2}
+  secretHider: {fileID: 0}
+  secretHider2: {fileID: 0}
 --- !u!212 &21226854
 SpriteRenderer:
   m_ObjectHideFlags: 1

@@ -1108,7 +1108,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 409136, guid: 61d77a5c634a9db4186a94e82dca7230, type: 2}
       propertyPath: m_LocalPosition.y
-      value: -10.58
+      value: -10.62
       objectReference: {fileID: 0}
     - target: {fileID: 409136, guid: 61d77a5c634a9db4186a94e82dca7230, type: 2}
       propertyPath: m_LocalPosition.z
@@ -1136,7 +1136,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 409136, guid: 61d77a5c634a9db4186a94e82dca7230, type: 2}
       propertyPath: m_LocalScale.y
-      value: 19.8241
+      value: 19.744638
       objectReference: {fileID: 0}
     - target: {fileID: 409136, guid: 61d77a5c634a9db4186a94e82dca7230, type: 2}
       propertyPath: m_LocalScale.x
@@ -1144,7 +1144,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 197918, guid: 61d77a5c634a9db4186a94e82dca7230, type: 2}
       propertyPath: m_Name
-      value: ground (7)
+      value: ha ground (7)
       objectReference: {fileID: 0}
     - target: {fileID: 21210666, guid: 61d77a5c634a9db4186a94e82dca7230, type: 2}
       propertyPath: m_SortingOrder
@@ -1222,7 +1222,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 6114734, guid: 2964a113d33795e4fa2f7f2b88fa9f80, type: 2}
       propertyPath: m_IsTrigger
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 443586, guid: 2964a113d33795e4fa2f7f2b88fa9f80, type: 2}
       propertyPath: m_LocalPosition.y
@@ -2531,7 +2531,7 @@ GameObject:
   - 212: {fileID: 316446065}
   m_Layer: 0
   m_Name: HideableArea (4)
-  m_TagString: Untagged
+  m_TagString: HideableArea
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2811,7 +2811,7 @@ GameObject:
   - 212: {fileID: 339063135}
   m_Layer: 0
   m_Name: HideableArea (5)
-  m_TagString: Untagged
+  m_TagString: HideableArea
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -5635,6 +5635,10 @@ Prefab:
       propertyPath: secretHider
       value: 
       objectReference: {fileID: 1352233823}
+    - target: {fileID: 11437166, guid: 1ff4e76eb756aec45adc64763951e4bc, type: 2}
+      propertyPath: rubble
+      value: 
+      objectReference: {fileID: 100078, guid: 4df66864980fa2a4e8a7bbfef928068e, type: 2}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 1ff4e76eb756aec45adc64763951e4bc, type: 2}
   m_IsPrefabParent: 0
@@ -8404,7 +8408,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 495822, guid: 1ff4e76eb756aec45adc64763951e4bc, type: 2}
       propertyPath: m_LocalPosition.y
-      value: -42.27
+      value: -42.242
       objectReference: {fileID: 0}
     - target: {fileID: 495822, guid: 1ff4e76eb756aec45adc64763951e4bc, type: 2}
       propertyPath: m_LocalPosition.z
@@ -8440,11 +8444,11 @@ Prefab:
       objectReference: {fileID: 793783179}
     - target: {fileID: 495822, guid: 1ff4e76eb756aec45adc64763951e4bc, type: 2}
       propertyPath: m_LocalScale.x
-      value: 0.28911862
+      value: 0.26933953
       objectReference: {fileID: 0}
     - target: {fileID: 495822, guid: 1ff4e76eb756aec45adc64763951e4bc, type: 2}
       propertyPath: m_LocalScale.y
-      value: 0.57999164
+      value: 0.57999223
       objectReference: {fileID: 0}
     - target: {fileID: 11437166, guid: 1ff4e76eb756aec45adc64763951e4bc, type: 2}
       propertyPath: forceThreshold
@@ -13216,7 +13220,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 409136, guid: 61d77a5c634a9db4186a94e82dca7230, type: 2}
       propertyPath: m_RootOrder
-      value: 3
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 197918, guid: 61d77a5c634a9db4186a94e82dca7230, type: 2}
       propertyPath: m_Name
@@ -13666,7 +13670,7 @@ GameObject:
   - 212: {fileID: 1626761238}
   m_Layer: 0
   m_Name: HideableArea (3)
-  m_TagString: Untagged
+  m_TagString: HideableArea
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -15492,7 +15496,7 @@ GameObject:
   - 212: {fileID: 1684630453}
   m_Layer: 0
   m_Name: HideableArea (2)
-  m_TagString: Untagged
+  m_TagString: HideableArea
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -16912,11 +16916,11 @@ Prefab:
     m_Modifications:
     - target: {fileID: 409136, guid: 61d77a5c634a9db4186a94e82dca7230, type: 2}
       propertyPath: m_LocalPosition.x
-      value: 22.79
+      value: 22.7
       objectReference: {fileID: 0}
     - target: {fileID: 409136, guid: 61d77a5c634a9db4186a94e82dca7230, type: 2}
       propertyPath: m_LocalPosition.y
-      value: 12.46
+      value: 12.56
       objectReference: {fileID: 0}
     - target: {fileID: 409136, guid: 61d77a5c634a9db4186a94e82dca7230, type: 2}
       propertyPath: m_LocalPosition.z
@@ -16948,11 +16952,11 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 409136, guid: 61d77a5c634a9db4186a94e82dca7230, type: 2}
       propertyPath: m_LocalScale.x
-      value: 0.3519346
+      value: 0.3318095
       objectReference: {fileID: 0}
     - target: {fileID: 409136, guid: 61d77a5c634a9db4186a94e82dca7230, type: 2}
       propertyPath: m_LocalScale.y
-      value: 0.59372216
+      value: 0.5362295
       objectReference: {fileID: 0}
     - target: {fileID: 21210666, guid: 61d77a5c634a9db4186a94e82dca7230, type: 2}
       propertyPath: m_SortingOrder
@@ -17324,7 +17328,7 @@ GameObject:
   - 212: {fileID: 1988749823}
   m_Layer: 0
   m_Name: HideableArea (6)
-  m_TagString: Untagged
+  m_TagString: HideableArea
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

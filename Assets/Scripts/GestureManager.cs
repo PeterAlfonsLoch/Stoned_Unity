@@ -35,6 +35,12 @@ public class GestureManager : MonoBehaviour {
     private bool isHoldGesture = false;
     public const float holdTimeScale = 0.5f;
     public const float holdTimeScaleRecip = 1 / holdTimeScale;
+    //Cheats
+    public const bool CHEATS_ALLOWED = true;//whether or not cheats are allowed (turned off for final version)
+    private int cheatTaps = 0;//how many taps have been put in for the cheat
+    private float cheatTapsTime = 0f;//the time at which the cheat taps will expire
+    private int cheatTapsThreshold = 3;//how many taps it takes to activate cheats
+    public bool cheatsEnabled = false;//whether or not the cheats are enabled
 
 
     // Use this for initialization
@@ -138,6 +144,17 @@ public class GestureManager : MonoBehaviour {
                 isDrag = false;
                 isTapGesture = true;
                 isHoldGesture = false;
+                if (CHEATS_ALLOWED && curMP.x < 20 && curMP.y < 20)
+                {
+                    cheatTaps++;
+                    cheatTapsTime = Time.time + 1;//give one more second to enter taps
+                    if (cheatTaps >= cheatTapsThreshold)
+                    {
+                        cheatsEnabled = !cheatsEnabled;
+                        cheatTaps = 0;
+                        cheatTapsTime = 0;
+                    }
+                }
             }
             else if (clickState == ClickState.InProgress)
             {
@@ -214,7 +231,7 @@ public class GestureManager : MonoBehaviour {
             //
             if (Input.GetAxis("Mouse ScrollWheel") < 0)
             {
-                if (cam.orthographicSize < maxZoom)
+                if (cam.orthographicSize < maxZoom || (CHEATS_ALLOWED && cheatsEnabled))
                 {
                     cam.orthographicSize += 1f;
                 }
@@ -258,8 +275,11 @@ public class GestureManager : MonoBehaviour {
             }
             // Make sure the orthographic size never drops below zero.
             cam.orthographicSize = Mathf.Max(cam.orthographicSize, minZoom);
-            // Make sure the orthographic size never goes above maxZoom.
-            cam.orthographicSize = Mathf.Min(cam.orthographicSize, maxZoom);
+            if (!(CHEATS_ALLOWED && cheatsEnabled))//don't limit how far out they can zoom when cheats enabled
+            {
+                // Make sure the orthographic size never goes above maxZoom.
+                cam.orthographicSize = Mathf.Min(cam.orthographicSize, maxZoom);
+            }
         }
 
         //
@@ -268,6 +288,12 @@ public class GestureManager : MonoBehaviour {
         if (Input.GetKeyDown(KeyCode.Escape))
         {
             Application.Quit();
+        }
+
+        if (cheatTapsTime <= Time.time)
+        {
+            //Reset cheat taps
+            cheatTaps = 0;
         }
     }
 }

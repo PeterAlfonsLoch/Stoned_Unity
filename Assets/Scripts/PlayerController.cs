@@ -30,6 +30,7 @@ public class PlayerController : MonoBehaviour
     public AudioClip teleportSound;
 
     private CameraController mainCamCtr;//the camera controller for the main camera
+    private GestureManager gm;
 
     private ForceTeleportAbility fta;
 
@@ -79,6 +80,7 @@ public class PlayerController : MonoBehaviour
     {
         rb2d = GetComponent<Rigidbody2D>();
         mainCamCtr = Camera.main.GetComponent<CameraController>();
+        gm = GameObject.FindGameObjectWithTag("GestureManager").GetComponent<GestureManager>();
         fta = GetComponent<ForceTeleportAbility>();
     }
 
@@ -188,7 +190,8 @@ public class PlayerController : MonoBehaviour
         Vector3 newPos = targetPos;
         //Determine if new position is in range
         Vector3 oldPos = transform.position;
-        if (Vector3.Distance(newPos, transform.position) <= range)
+        if (Vector3.Distance(newPos, transform.position) <= range
+            || (GestureManager.CHEATS_ALLOWED && gm.cheatsEnabled))//allow unlimited range while cheat is active
         {
         }
         else

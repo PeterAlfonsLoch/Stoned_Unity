@@ -4,11 +4,18 @@ using System.Collections;
 public class WeightSwitchActivator : MonoBehaviour {
 
     public bool pressed = false;
+    public GameObject psgoSparks;
+    private ParticleSystem psSparks;
 
-	// Use this for initialization
-	void Start () {
-	
-	}
+    // Use this for initialization
+    void Start () {
+        psSparks = psgoSparks.GetComponent<ParticleSystem>();
+        if (psSparks != null)
+        {
+            psSparks.Pause();
+            psSparks.Clear();
+        }
+    }
 	
 	void FixedUpdate () {
         pressed = false;
@@ -29,6 +36,21 @@ public class WeightSwitchActivator : MonoBehaviour {
                         break;
                     }
                 }
+            }
+        }
+    }
+
+    void Update()
+    {
+        if (psSparks != null)
+        {
+            if(pressed){
+                psSparks.Play();
+            }
+            else
+            {
+                psSparks.Pause();
+                psSparks.Clear();
             }
         }
     }

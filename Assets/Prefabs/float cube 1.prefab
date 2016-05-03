@@ -18,6 +18,22 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!1 &111050
+GameObject:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 4
+  m_Component:
+  - 4: {fileID: 477488}
+  - 61: {fileID: 6126456}
+  m_Layer: 0
+  m_Name: triggerArea
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
 --- !u!1 &121540
 GameObject:
   m_ObjectHideFlags: 0
@@ -92,8 +108,21 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -0.0109939575, y: 0.6899986, z: 0}
   m_LocalScale: {x: 0.8592974, y: 0.8592974, z: 0.8592974}
-  m_Children: []
+  m_Children:
+  - {fileID: 477488}
   m_Father: {fileID: 486762}
+  m_RootOrder: 0
+--- !u!4 &477488
+Transform:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 111050}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 477166}
   m_RootOrder: 0
 --- !u!4 &486762
 Transform:
@@ -159,6 +188,20 @@ PolygonCollider2D:
       - {x: -0.68359375, y: 0.11328125}
       - {x: -0.8359375, y: -0.1328125}
       - {x: 0.8359375, y: -0.1328125}
+--- !u!61 &6126456
+BoxCollider2D:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 111050}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_Offset: {x: 0.024584962, y: -0.0067877225}
+  serializedVersion: 2
+  m_Size: {x: 1.3308609, y: 0.1886612}
 --- !u!61 &6153548
 BoxCollider2D:
   m_ObjectHideFlags: 1
@@ -206,7 +249,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   pressed: 0
-  weightObject: {fileID: 0}
 --- !u!198 &19805316
 ParticleSystem:
   m_ObjectHideFlags: 1

@@ -114,9 +114,10 @@ public class FloatCubeController : MonoBehaviour {
                     if (rb.velocity.y <= 0)
                     {
                         rb.gravityScale--;
-                        if (rb.gravityScale < -velocityThreshold)
+                        if (rb.velocity.y > velocityThreshold)
                         {
-                            rb.gravityScale = -velocityThreshold;
+                            rb.velocity = new Vector2(rb.velocity.x, velocityThreshold);
+                            rb.gravityScale++;
                         }
                     }
                     //if (rb.velocity.y == 0)

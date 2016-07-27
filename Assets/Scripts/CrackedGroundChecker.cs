@@ -28,7 +28,7 @@ public class CrackedGroundChecker : MonoBehaviour {
         if (rb2d != null)
         {
             float force = rb2d.velocity.magnitude * rb2d.mass;
-            Debug.Log("force: " + force);
+            Debug.Log("force: " + force+", velocity: "+ rb2d.velocity.magnitude);
             checkForce(force);
         }
     }

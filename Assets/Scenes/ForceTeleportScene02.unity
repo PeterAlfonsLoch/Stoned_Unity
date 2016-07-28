@@ -444,7 +444,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 41450814}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 416.51, y: 74.61, z: -10}
+  m_LocalPosition: {x: 385, y: 43.9, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children: []
@@ -717,7 +717,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 11437166, guid: 1ff4e76eb756aec45adc64763951e4bc, type: 2}
       propertyPath: forceThreshold
-      value: 100
+      value: 68
       objectReference: {fileID: 0}
     - target: {fileID: 11437166, guid: 1ff4e76eb756aec45adc64763951e4bc, type: 2}
       propertyPath: secretHider
@@ -1611,7 +1611,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 11437166, guid: 1ff4e76eb756aec45adc64763951e4bc, type: 2}
       propertyPath: forceThreshold
-      value: 40
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 11437166, guid: 1ff4e76eb756aec45adc64763951e4bc, type: 2}
       propertyPath: secretHider2
@@ -2409,7 +2409,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 11437166, guid: 1ff4e76eb756aec45adc64763951e4bc, type: 2}
       propertyPath: forceThreshold
-      value: 20
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 198804, guid: 1ff4e76eb756aec45adc64763951e4bc, type: 2}
       propertyPath: m_IsActive
@@ -3862,7 +3862,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 11437166, guid: 1ff4e76eb756aec45adc64763951e4bc, type: 2}
       propertyPath: forceThreshold
-      value: 40
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 11437166, guid: 1ff4e76eb756aec45adc64763951e4bc, type: 2}
       propertyPath: secretHider2
@@ -6170,7 +6170,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 11437166, guid: 1ff4e76eb756aec45adc64763951e4bc, type: 2}
       propertyPath: forceThreshold
-      value: 40
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 495822, guid: 1ff4e76eb756aec45adc64763951e4bc, type: 2}
       propertyPath: m_LocalEulerAnglesHint.z
@@ -7207,7 +7207,7 @@ Prefab:
       objectReference: {fileID: 100078, guid: 4df66864980fa2a4e8a7bbfef928068e, type: 2}
     - target: {fileID: 11437166, guid: 1ff4e76eb756aec45adc64763951e4bc, type: 2}
       propertyPath: forceThreshold
-      value: 1.4
+      value: 0.18
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 1ff4e76eb756aec45adc64763951e4bc, type: 2}
@@ -8592,7 +8592,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 11437166, guid: 1ff4e76eb756aec45adc64763951e4bc, type: 2}
       propertyPath: forceThreshold
-      value: 20
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 495822, guid: 1ff4e76eb756aec45adc64763951e4bc, type: 2}
       propertyPath: m_LocalEulerAnglesHint.z
@@ -10216,7 +10216,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 11437166, guid: 1ff4e76eb756aec45adc64763951e4bc, type: 2}
       propertyPath: forceThreshold
-      value: 40
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 495822, guid: 1ff4e76eb756aec45adc64763951e4bc, type: 2}
       propertyPath: m_LocalEulerAnglesHint.z
@@ -16057,7 +16057,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 11437166, guid: 1ff4e76eb756aec45adc64763951e4bc, type: 2}
       propertyPath: forceThreshold
-      value: 40
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 11437166, guid: 1ff4e76eb756aec45adc64763951e4bc, type: 2}
       propertyPath: secretHider2
@@ -17399,11 +17399,11 @@ Prefab:
     m_Modifications:
     - target: {fileID: 464668, guid: 5913bd1e88aefff4988c7dfee6595611, type: 2}
       propertyPath: m_LocalPosition.x
-      value: 416.51
+      value: 385
       objectReference: {fileID: 0}
     - target: {fileID: 464668, guid: 5913bd1e88aefff4988c7dfee6595611, type: 2}
       propertyPath: m_LocalPosition.y
-      value: 74.61
+      value: 43.9
       objectReference: {fileID: 0}
     - target: {fileID: 464668, guid: 5913bd1e88aefff4988c7dfee6595611, type: 2}
       propertyPath: m_LocalPosition.z

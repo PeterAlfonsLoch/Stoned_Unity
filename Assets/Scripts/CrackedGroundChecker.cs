@@ -71,6 +71,8 @@ public class CrackedGroundChecker : MonoBehaviour {
                 nr.transform.localScale = transform.localScale;
                 nr.transform.rotation = transform.rotation;
                 nr.transform.position = new Vector2(xpos, ypos);
+                nr.AddComponent<Fader>();//make the rubble go away eventually
+                nr.GetComponent<Fader>().delayTime = 1;
                 nrList.Add(nr);
             }
             foreach (GameObject nr in nrList) { 

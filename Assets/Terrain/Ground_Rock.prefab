@@ -7,7 +7,6 @@ GameObject:
   m_PrefabInternal: {fileID: 0}
   serializedVersion: 4
   m_Component:
-  - 4: {fileID: 0}
   - 4: {fileID: 421120}
   - 114: {fileID: 11449322}
   m_Layer: 0

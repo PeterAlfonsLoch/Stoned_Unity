@@ -10,7 +10,8 @@ public class CloudDrifter : MonoBehaviour {
 
     private float maxDiff;//only set at start up
     private float diff;
-    private float baseSpeed;
+    private float baseSpeed;//test changed line
+    //comment for test commit
 
 	// Use this for initialization
 	void Start () {

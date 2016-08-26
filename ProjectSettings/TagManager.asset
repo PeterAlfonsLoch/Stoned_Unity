@@ -5,6 +5,8 @@ TagManager:
   serializedVersion: 2
   tags:
   - Float Cube
+  - GestureManager
+  - HideableArea
   layers:
   - Default
   - TransparentFX
@@ -15,7 +17,7 @@ TagManager:
   - 
   - 
   - Background
-  - 
+  - Particle Effects
   - 
   - 
   - 
@@ -41,6 +43,9 @@ TagManager:
   m_SortingLayers:
   - name: Background
     uniqueID: 1659163103
+    locked: 0
+  - name: Particle Effects
+    uniqueID: 408500713
     locked: 0
   - name: Default
     uniqueID: 0

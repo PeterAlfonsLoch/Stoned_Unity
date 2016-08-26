@@ -4,36 +4,55 @@ using System.Collections;
 public class WeightSwitchActivator : MonoBehaviour {
 
     public bool pressed = false;
-    public GameObject weightObject;
+    public GameObject psgoSparks;
+    private ParticleSystem psSparks;
 
-	// Use this for initialization
-	void Start () {
-	
-	}
-	
-	// Update is called once per frame
-	void Update () {
-	
-	}
-
-    void OnCollisionEnter2D(Collision2D other)
-    {
-        Vector3 otherPos = other.collider.gameObject.transform.position;
-        if (weightObject == null && otherPos.y > transform.position.y && Mathf.Abs(otherPos.x - transform.position.x) < 10)
+    // Use this for initialization
+    void Start () {
+        psSparks = psgoSparks.GetComponent<ParticleSystem>();
+        if (psSparks != null)
         {
-            pressed = true;
-            weightObject = other.collider.gameObject;
-            //other.gameObject.transform.position = new Vector3(0, 0);
+            psSparks.Pause();
+            psSparks.Clear();
         }
     }
-    void OnCollisionExit2D(Collision2D other)
-    {
-        //Vector3 otherPos = other.collider.gameObject.transform.position;
-        if (other.collider.gameObject.Equals(weightObject))
+	
+	void FixedUpdate () {
+        pressed = false;
+        //Determine if anything is in the weight switch's trigger area
+        BoxCollider2D bc2d = GetComponentInChildren<BoxCollider2D>();
+        if (bc2d != null)
         {
-            pressed = false;
-            weightObject = null;
-            //other.gameObject.transform.position = new Vector3(0, 0);
+            Collider2D[] hitColliders = Physics2D.OverlapAreaAll(bc2d.bounds.min, bc2d.bounds.max);
+            for (int i = 0; i < hitColliders.Length; i++)
+            {
+                GameObject hc = hitColliders[i].gameObject;
+                if (!hc.Equals(gameObject) && !hc.Equals(bc2d.transform.gameObject))
+                {
+                    if (hc.GetComponent<Rigidbody2D>() != null)
+                    {
+                        Debug.Log("Weight switched: " + hc);
+                        pressed = true;
+                        break;
+                    }
+                }
+            }
         }
     }
+
+    void Update()
+    {
+        if (psSparks != null)
+        {
+            if(pressed){
+                psSparks.Play();
+            }
+            else
+            {
+                psSparks.Pause();
+                psSparks.Clear();
+            }
+        }
+    }
+    
 }

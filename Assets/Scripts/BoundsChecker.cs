@@ -3,6 +3,8 @@ using System.Collections;
 
 public class BoundsChecker : MonoBehaviour {
 
+    public bool active = false;//whether or not it will actually check the bounds
+
 	//// Use this for initialization
 	//void Start () {
 	
@@ -15,6 +17,9 @@ public class BoundsChecker : MonoBehaviour {
 
     void OnTriggerExit2D(Collider2D coll)
     {
-        coll.gameObject.transform.position = new Vector3(0, 0, coll.gameObject.transform.position.z);
+        if (active)
+        {
+            coll.gameObject.transform.position = new Vector3(0, 0, coll.gameObject.transform.position.z);
+        }
     }
 }

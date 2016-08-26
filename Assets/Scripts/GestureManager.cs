@@ -56,7 +56,11 @@ public class GestureManager : MonoBehaviour {
         //
         //Input scouting
         //
-        if (Input.touchCount >= 2)
+        if (Input.touchCount > 2)
+        {
+            touchCount = 0;
+        }
+        else if (Input.touchCount == 2)
         {
             touchCount = 2;
         }

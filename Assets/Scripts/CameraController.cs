@@ -74,4 +74,43 @@ public class CameraController : MonoBehaviour
     {
         offset = new Vector3(0, 0, offset.z);
     }
+
+    public void setZoomLevel(float level){
+        if (level < 0)
+        {
+            level = 0;
+        }
+        //Set the size
+        cam.orthographicSize = level;
+        //Make sure player is still in view
+        Vector3 size = cam.ScreenToWorldPoint(new Vector3(cam.pixelWidth, cam.pixelHeight)) - cam.ScreenToWorldPoint(new Vector3(0, 0)) + new Vector3(0, 0, 20);
+        Bounds b = new Bounds(cam.transform.position, size);
+        if ( ! b.Contains(player.transform.position))
+        {
+            float newX = offset.x;
+            float newY = offset.y;
+            Vector3 ppos = player.transform.position;
+            if (ppos.x < b.min.x)
+            {
+                newX = b.extents.x;
+            }
+            else if (ppos.x > b.max.x)
+            {
+                newX = -b.extents.x;
+            }
+            if (ppos.y < b.min.y)
+            {
+                newY = b.extents.y;
+            }
+            else if (ppos.y > b.max.y)
+            {
+                newY = -b.extents.y;
+            }
+            offset = new Vector3(newX, newY, offset.z);
+        }
+    }
+    public void adjustZoomLevel(float addend)
+    {
+        setZoomLevel(cam.orthographicSize + addend);
+    }
 }

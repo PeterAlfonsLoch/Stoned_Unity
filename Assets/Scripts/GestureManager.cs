@@ -237,14 +237,14 @@ public class GestureManager : MonoBehaviour {
             {
                 if (cam.orthographicSize < maxZoom || (CHEATS_ALLOWED && cheatsEnabled))
                 {
-                    cam.orthographicSize += 1f;
+                    cmaController.adjustZoomLevel(1f);
                 }
             }
             else if (Input.GetAxis("Mouse ScrollWheel") > 0)
             {
                 if (cam.orthographicSize > minZoom)
                 {
-                    cam.orthographicSize -= 1f;
+                    cmaController.adjustZoomLevel(-1f);
                 }
             }
             //
@@ -274,15 +274,21 @@ public class GestureManager : MonoBehaviour {
                 //if (cam.orthographic)
                 //{
                     // ... change the orthographic size based on the change in distance between the touches.
-                    cam.orthographicSize += deltaMagnitudeDiff * orthoZoomSpeed;
+                    cmaController.adjustZoomLevel(deltaMagnitudeDiff * orthoZoomSpeed);
                 //}
             }
             // Make sure the orthographic size never drops below zero.
-            cam.orthographicSize = Mathf.Max(cam.orthographicSize, minZoom);
+            if (cam.orthographicSize < minZoom)
+            {
+                cmaController.setZoomLevel(minZoom);
+            }
             if (!(CHEATS_ALLOWED && cheatsEnabled))//don't limit how far out they can zoom when cheats enabled
             {
                 // Make sure the orthographic size never goes above maxZoom.
-                cam.orthographicSize = Mathf.Min(cam.orthographicSize, maxZoom);
+                if (cam.orthographicSize > maxZoom)
+                {
+                    cmaController.setZoomLevel(maxZoom);
+                }
             }
         }
 

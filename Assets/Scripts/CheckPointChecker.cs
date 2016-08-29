@@ -3,7 +3,7 @@ using System.Collections;
 
 public class CheckPointChecker : MonoBehaviour {
 
-    public bool activated = true;
+    public bool activated = false;
     private GameObject ghost;
     public GameObject ghostPrefab;
 
@@ -11,6 +11,7 @@ public class CheckPointChecker : MonoBehaviour {
 	void Start () {
         ghost = (GameObject)Instantiate(ghostPrefab);
         ghost.GetComponent<CheckPointGhostChecker>().sourceCP = this.gameObject;
+        ghost.SetActive(false);
 	}
 	
 	// Update is called once per frame
@@ -30,6 +31,7 @@ public class CheckPointChecker : MonoBehaviour {
     void OnTriggerEnter2D(Collider2D coll)
     {
         activated = true;
+        ghost.SetActive(false);
         foreach (GameObject go in GameObject.FindGameObjectsWithTag("Checkpoint_Root"))
         {
             if (!go.Equals(this.gameObject))
@@ -51,7 +53,6 @@ public class CheckPointChecker : MonoBehaviour {
     {
         if (activated)
         {
-            ghost.GetComponent<CheckPointGhostChecker>().curCP = currentCheckpoint;
             ghost.SetActive(true);
             ghost.transform.position = currentCheckpoint.transform.position + new Vector3(2,1,0);
         }

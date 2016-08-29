@@ -4,7 +4,6 @@ using System.Collections;
 public class CheckPointGhostChecker : MonoBehaviour {
 
     public GameObject sourceCP;//the checkpoint that this teleports to
-    public GameObject curCP;//the checkpoint that the player is currently at
 
 	// Use this for initialization
 	void Start () {
@@ -13,7 +12,6 @@ public class CheckPointGhostChecker : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-	
 	}
 
     void OnTriggerEnter2D(Collider2D coll)
@@ -21,7 +19,10 @@ public class CheckPointGhostChecker : MonoBehaviour {
         if (coll.gameObject.Equals(GameObject.FindGameObjectWithTag("Player")))
         {
             coll.gameObject.transform.position = sourceCP.transform.position;
-            curCP.GetComponent<CheckPointChecker>().clearPostTeleport(true);
+            foreach (GameObject go in GameObject.FindGameObjectsWithTag("Checkpoint_Root"))
+            {
+                go.GetComponent<CheckPointChecker>().showRelativeTo(this.gameObject);
+            }
         }
     }
 }

@@ -76,7 +76,7 @@ public class CheckPointChecker : MonoBehaviour {
         if (activated)
         {
             ghost.SetActive(true);
-            ghost.transform.position = currentCheckpoint.transform.position + (gameObject.transform.position- currentCheckpoint.transform.position).normalized*2;
+            ghost.transform.position = currentCheckpoint.transform.position + (gameObject.transform.position- currentCheckpoint.transform.position).normalized*4;
         }
 
     }

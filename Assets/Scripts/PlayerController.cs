@@ -27,6 +27,8 @@ public class PlayerController : MonoBehaviour
     private float savedAngularVelocity;
     private bool velocityNeedsReloaded = false;//because you can't set a Vector2 to null, using this to see when the velocity needs reloaded
 
+    private bool inCheckPoint = false;//whether or not the player is inside a checkpoint
+
     public AudioClip teleportSound;
 
     private CameraController mainCamCtr;//the camera controller for the main camera
@@ -187,6 +189,16 @@ public class PlayerController : MonoBehaviour
 
     Vector3 findTeleportablePosition(Vector3 targetPos)
     {
+        if (inCheckPoint)
+        {//if in checkpoint, make exception for the teleporting into checkpoint ghosts
+            foreach (GameObject go in GameObject.FindGameObjectsWithTag("Checkpoint_Root"))
+            {
+                if (go.GetComponent<CheckPointChecker>().checkGhostActivation(targetPos))
+                {
+                    return targetPos;
+                }
+            }
+        }
         Vector3 newPos = targetPos;
         //Determine if new position is in range
         Vector3 oldPos = transform.position;
@@ -417,6 +429,11 @@ public class PlayerController : MonoBehaviour
             }
         }
         return false;//nope, it's not occupied
+    }
+
+    public void setIsInCheckPoint(bool iicp)
+    {
+        inCheckPoint = iicp;
     }
 
     public void processTapGesture(Vector3 gpos)

@@ -7,6 +7,7 @@ public class CheckPointChecker : MonoBehaviour {
     private GameObject ghost;
     public GameObject ghostPrefab;
     private GameObject player;
+    private PlayerController plyrController;
 
 	// Use this for initialization
 	void Start () {
@@ -14,6 +15,7 @@ public class CheckPointChecker : MonoBehaviour {
         ghost.GetComponent<CheckPointGhostChecker>().sourceCP = this.gameObject;
         ghost.SetActive(false);
         player = GameObject.FindGameObjectWithTag("Player");
+        plyrController = player.GetComponent<PlayerController>();
 	}
 	
 	// Update is called once per frame
@@ -34,6 +36,7 @@ public class CheckPointChecker : MonoBehaviour {
     {
         activated = true;
         ghost.SetActive(false);
+        plyrController.setIsInCheckPoint(true);
         foreach (GameObject go in GameObject.FindGameObjectsWithTag("Checkpoint_Root"))
         {
             if (!go.Equals(this.gameObject))
@@ -58,6 +61,7 @@ public class CheckPointChecker : MonoBehaviour {
         }
         if (!foundCPGhost)
         {
+            plyrController.setIsInCheckPoint(false);
             activated = true;
             clearPostTeleport(true);
         }
@@ -81,6 +85,13 @@ public class CheckPointChecker : MonoBehaviour {
     public bool checkGhostActivation()
     {
         return ghost.GetComponent<BoxCollider2D>().bounds.Intersects(player.GetComponent<PolygonCollider2D>().bounds);
+    }
+    /**
+    * Checks to see if this checkpoint's ghost contains the targetPos 
+    */
+    public bool checkGhostActivation(Vector3 targetPos)
+    {
+        return ghost.GetComponent<BoxCollider2D>().bounds.Contains(targetPos);
     }
     /**
     * So now the player has teleported and the checkpoint ghosts need to go away

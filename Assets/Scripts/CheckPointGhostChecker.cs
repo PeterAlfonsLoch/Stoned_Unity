@@ -16,7 +16,8 @@ public class CheckPointGhostChecker : MonoBehaviour {
 
     void OnTriggerEnter2D(Collider2D coll)
     {
-        if (coll.gameObject.Equals(GameObject.FindGameObjectWithTag("Player")))
+        GameObject player = GameObject.FindGameObjectWithTag("Player");
+        if (coll.gameObject.Equals(player) && player.GetComponent<PlayerController>().getIsInCheckPoint())
         {
             coll.gameObject.transform.position = sourceCP.transform.position;
             foreach (GameObject go in GameObject.FindGameObjectsWithTag("Checkpoint_Root"))

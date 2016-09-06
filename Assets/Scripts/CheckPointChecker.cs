@@ -37,6 +37,7 @@ public class CheckPointChecker : MonoBehaviour {
         activated = true;
         ghost.SetActive(false);
         plyrController.setIsInCheckPoint(true);
+        player.transform.position = this.gameObject.transform.position;
         foreach (GameObject go in GameObject.FindGameObjectsWithTag("Checkpoint_Root"))
         {
             if (!go.Equals(this.gameObject))

@@ -434,6 +434,11 @@ public class PlayerController : MonoBehaviour
     public void setIsInCheckPoint(bool iicp)
     {
         inCheckPoint = iicp;
+        rb2d.isKinematic = iicp;
+    }
+    public bool getIsInCheckPoint()
+    {
+        return inCheckPoint;
     }
 
     public void processTapGesture(Vector3 gpos)

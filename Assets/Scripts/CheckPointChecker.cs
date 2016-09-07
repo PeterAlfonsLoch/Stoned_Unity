@@ -3,6 +3,7 @@ using System.Collections;
 
 public class CheckPointChecker : MonoBehaviour {
 
+    public static GameObject current = null;//the current checkpoint
     public bool activated = false;
     private GameObject ghost;
     public GameObject ghostPrefab;
@@ -34,6 +35,11 @@ public class CheckPointChecker : MonoBehaviour {
     */
     void OnTriggerEnter2D(Collider2D coll)
     {
+        trigger();
+    }
+    public void trigger()
+    {
+        current = this.gameObject;
         activated = true;
         ghost.SetActive(false);
         plyrController.setIsInCheckPoint(true);
@@ -48,23 +54,12 @@ public class CheckPointChecker : MonoBehaviour {
     }
     void OnTriggerExit2D(Collider2D coll)
     {
-        bool foundCPGhost = false;//whether the player is colliding with a checkpoint ghost
-        foreach (GameObject go in GameObject.FindGameObjectsWithTag("Checkpoint_Root"))
-        {
-            if (!go.Equals(this.gameObject))
-            {
-                foundCPGhost = go.GetComponent<CheckPointChecker>().checkGhostActivation();
-                if (foundCPGhost)
-                {
-                    break;
-                }
-            }
-        }
-        if (!foundCPGhost)
+        if (current == this.gameObject)
         {
             plyrController.setIsInCheckPoint(false);
             activated = true;
             clearPostTeleport(true);
+            current = null;
         }
     }
 

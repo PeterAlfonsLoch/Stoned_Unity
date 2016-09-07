@@ -189,16 +189,6 @@ public class PlayerController : MonoBehaviour
 
     Vector3 findTeleportablePosition(Vector3 targetPos)
     {
-        if (inCheckPoint)
-        {//if in checkpoint, make exception for the teleporting into checkpoint ghosts
-            foreach (GameObject go in GameObject.FindGameObjectsWithTag("Checkpoint_Root"))
-            {
-                if (go.GetComponent<CheckPointChecker>().checkGhostActivation(targetPos))
-                {
-                    return targetPos;
-                }
-            }
-        }
         Vector3 newPos = targetPos;
         //Determine if new position is in range
         Vector3 oldPos = transform.position;
@@ -446,6 +436,17 @@ public class PlayerController : MonoBehaviour
         Vector3 newPos = findTeleportablePosition(gpos);
         teleport(newPos);
     }
+    public void processTapGesture(GameObject checkPoint)
+    {
+        CheckPointChecker cpc = checkPoint.GetComponent<CheckPointChecker>();
+        if (cpc != null)
+        {
+            Vector3 newPos = checkPoint.transform.position;
+            teleport(newPos);
+            cpc.trigger();
+        }
+    }
+
 
     public void processHoldGesture(Vector3 gpos, float holdTime, bool finished)
     {

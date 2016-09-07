@@ -443,6 +443,7 @@ public class PlayerController : MonoBehaviour
         {
             Vector3 newPos = checkPoint.transform.position;
             teleport(newPos);
+            mainCamCtr.refocus();
             cpc.trigger();
         }
     }

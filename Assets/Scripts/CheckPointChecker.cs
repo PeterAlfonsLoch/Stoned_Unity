@@ -13,7 +13,6 @@ public class CheckPointChecker : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
         ghost = (GameObject)Instantiate(ghostPrefab);
-        ghost.GetComponent<CheckPointGhostChecker>().sourceCP = this.gameObject;
         ghost.SetActive(false);
         player = GameObject.FindGameObjectWithTag("Player");
         plyrController = player.GetComponent<PlayerController>();

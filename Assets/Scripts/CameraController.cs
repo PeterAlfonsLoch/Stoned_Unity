@@ -74,6 +74,11 @@ public class CameraController : MonoBehaviour
     {
         offset = new Vector3(0, 0, offset.z);
     }
+    //Moves the camera directly to Merky's position + offset
+    public void refocus()
+    {
+        transform.position = player.transform.position + offset;
+    }
 
     public void setZoomLevel(float level){
         if (level < 0)

@@ -208,7 +208,23 @@ public class GestureManager : MonoBehaviour {
                 }
                 else if (isTapGesture)
                 {
-                    plrController.processTapGesture(curMPWorld);
+                    bool checkPointPort = false;//Merky is in a checkpoint teleporting to another checkpoint
+                    if (plrController.getIsInCheckPoint())
+                    {
+                        foreach (GameObject go in GameObject.FindGameObjectsWithTag("Checkpoint_Root"))
+                        {
+                            if (go.GetComponent<CheckPointChecker>().checkGhostActivation(curMPWorld))
+                            {
+                                checkPointPort = true;
+                                plrController.processTapGesture(go);
+                                break;
+                            }
+                        }
+                    }
+                    if (!checkPointPort)
+                    {
+                        plrController.processTapGesture(curMPWorld);
+                    }
                 }
 
                 //Set all flags = false

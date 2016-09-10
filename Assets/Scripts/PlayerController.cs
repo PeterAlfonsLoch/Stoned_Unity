@@ -27,6 +27,8 @@ public class PlayerController : MonoBehaviour
     private float savedAngularVelocity;
     private bool velocityNeedsReloaded = false;//because you can't set a Vector2 to null, using this to see when the velocity needs reloaded
 
+    private bool inCheckPoint = false;//whether or not the player is inside a checkpoint
+
     public AudioClip teleportSound;
 
     private CameraController mainCamCtr;//the camera controller for the main camera
@@ -419,11 +421,33 @@ public class PlayerController : MonoBehaviour
         return false;//nope, it's not occupied
     }
 
+    public void setIsInCheckPoint(bool iicp)
+    {
+        inCheckPoint = iicp;
+        rb2d.isKinematic = iicp;
+    }
+    public bool getIsInCheckPoint()
+    {
+        return inCheckPoint;
+    }
+
     public void processTapGesture(Vector3 gpos)
     {
         Vector3 newPos = findTeleportablePosition(gpos);
         teleport(newPos);
     }
+    public void processTapGesture(GameObject checkPoint)
+    {
+        CheckPointChecker cpc = checkPoint.GetComponent<CheckPointChecker>();
+        if (cpc != null)
+        {
+            Vector3 newPos = checkPoint.transform.position;
+            teleport(newPos);
+            mainCamCtr.refocus();
+            cpc.trigger();
+        }
+    }
+
 
     public void processHoldGesture(Vector3 gpos, float holdTime, bool finished)
     {

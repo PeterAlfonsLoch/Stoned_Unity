@@ -1,27 +1,27 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class CheckPointChecker : MonoBehaviour {
+public class CheckPointChecker : MonoBehaviour
+{
 
     public static GameObject current = null;//the current checkpoint
+
     public bool activated = false;
     private GameObject ghost;
+    public Bounds ghostBounds;
     public GameObject ghostPrefab;
     private GameObject player;
     private PlayerController plyrController;
 
-	// Use this for initialization
-	void Start () {
+    // Use this for initialization
+    void Start()
+    {
         ghost = (GameObject)Instantiate(ghostPrefab);
         ghost.SetActive(false);
+        ghostBounds = ghost.GetComponent<SpriteRenderer>().bounds;
         player = GameObject.FindGameObjectWithTag("Player");
         plyrController = player.GetComponent<PlayerController>();
-	}
-	
-	// Update is called once per frame
-	void Update () {
-	
-	}
+    }
 
     //When a player touches this checkpoint, activate it
     void OnCollisionEnter2D(Collision2D coll)
@@ -70,7 +70,32 @@ public class CheckPointChecker : MonoBehaviour {
         if (activated)
         {
             ghost.SetActive(true);
-            ghost.transform.position = currentCheckpoint.transform.position + (gameObject.transform.position- currentCheckpoint.transform.position).normalized*4;
+            ghost.transform.position = currentCheckpoint.transform.position + (gameObject.transform.position - currentCheckpoint.transform.position).normalized * 4;
+            ghostBounds = ghost.GetComponent<SpriteRenderer>().bounds;
+
+            //check to make sure its ghost does not intersect other CP ghosts
+            foreach (GameObject go in GameObject.FindGameObjectsWithTag("Checkpoint_Root"))
+            {
+                if (go != gameObject)
+                {
+                    CheckPointChecker cpc = go.GetComponent<CheckPointChecker>();
+                    if (cpc.activated && cpc.ghost.activeSelf)
+                    {
+                        if (ghostBounds.Intersects(cpc.ghostBounds))
+                        {
+                            if (Vector3.Distance(go.transform.position, current.transform.position) < Vector3.Distance(gameObject.transform.position, current.transform.position))
+                            {
+                                clearPostTeleport(false);
+                                return;
+                            }
+                            else
+                            {
+                                cpc.clearPostTeleport(false);
+                            }
+                        }
+                    }
+                }
+            }
         }
 
     }
@@ -98,7 +123,10 @@ public class CheckPointChecker : MonoBehaviour {
         {
             foreach (GameObject go in GameObject.FindGameObjectsWithTag("Checkpoint_Root"))
             {
-                go.GetComponent<CheckPointChecker>().clearPostTeleport(false);
+                if (!go.Equals(this.gameObject))
+                {
+                    go.GetComponent<CheckPointChecker>().clearPostTeleport(false);
+                }
             }
         }
     }

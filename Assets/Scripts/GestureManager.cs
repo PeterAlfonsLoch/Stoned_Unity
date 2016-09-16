@@ -162,7 +162,7 @@ public class GestureManager : MonoBehaviour {
             }
             else if (clickState == ClickState.InProgress)
             {
-                if (maxMouseMovement > dragThreshold && rb2dPlayer.velocity.magnitude<1)
+                if (maxMouseMovement > dragThreshold && rb2dPlayer.velocity.magnitude < 1)
                 {
                     if (!isHoldGesture)
                     {
@@ -193,7 +193,7 @@ public class GestureManager : MonoBehaviour {
                 }
                 else if (isHoldGesture)
                 {
-                    plrController.processHoldGesture(curMPWorld, holdTime,false);
+                    plrController.processHoldGesture(curMPWorld, holdTime, false);
                 }
             }
             else if (clickState == ClickState.Ended)
@@ -238,30 +238,22 @@ public class GestureManager : MonoBehaviour {
             {
                 throw new System.Exception("Click State of wrong type, or type not processed! (Input Processing) clickState: " + clickState);
             }
-            
+
         }
         else {//touchCount == 0 || touchCount >= 2
             //
             //Zoom Processing
             //
-            float minZoom = 1f;
-            float maxZoom = player.GetComponent<PlayerController>().baseRange * cmaController.viewMultiplier;
             //
             //Mouse Scrolling Zoom
             //
             if (Input.GetAxis("Mouse ScrollWheel") < 0)
             {
-                if (cam.orthographicSize < maxZoom || (CHEATS_ALLOWED && cheatsEnabled))
-                {
-                    cmaController.adjustZoomLevel(1f);
-                }
+                cmaController.adjustZoomLevel(1f);
             }
             else if (Input.GetAxis("Mouse ScrollWheel") > 0)
             {
-                if (cam.orthographicSize > minZoom)
-                {
-                    cmaController.adjustZoomLevel(-1f);
-                }
+                cmaController.adjustZoomLevel(-1f);
             }
             //
             //Pinch Touch Zoom
@@ -289,22 +281,9 @@ public class GestureManager : MonoBehaviour {
                 // If the camera is orthographic...
                 //if (cam.orthographic)
                 //{
-                    // ... change the orthographic size based on the change in distance between the touches.
-                    cmaController.adjustZoomLevel(deltaMagnitudeDiff * orthoZoomSpeed);
+                // ... change the orthographic size based on the change in distance between the touches.
+                cmaController.adjustZoomLevel(deltaMagnitudeDiff * orthoZoomSpeed);
                 //}
-            }
-            // Make sure the orthographic size never drops below zero.
-            if (cam.orthographicSize < minZoom)
-            {
-                cmaController.setZoomLevel(minZoom);
-            }
-            if (!(CHEATS_ALLOWED && cheatsEnabled))//don't limit how far out they can zoom when cheats enabled
-            {
-                // Make sure the orthographic size never goes above maxZoom.
-                if (cam.orthographicSize > maxZoom)
-                {
-                    cmaController.setZoomLevel(maxZoom);
-                }
             }
         }
 

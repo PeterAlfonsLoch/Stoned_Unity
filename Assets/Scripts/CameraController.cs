@@ -13,6 +13,10 @@ public class CameraController : MonoBehaviour
     private float moveTime = 0f;//used to delay the camera refocusing on the player
     private bool wasDelayed = false;
     private GestureManager gm;
+    private PlayerController plyrController;
+    
+    private int prevScreenHeight;
+    float minZoom = 1f;
 
     // Use this for initialization
     void Start()
@@ -21,6 +25,17 @@ public class CameraController : MonoBehaviour
         cam = GetComponent<Camera>();
         playerRB2D = player.GetComponent<Rigidbody2D>();
         gm = GameObject.FindGameObjectWithTag("GestureManager").GetComponent<GestureManager>();
+        plyrController = player.GetComponent<PlayerController>();
+        prevScreenHeight = Screen.height;
+    }
+
+    void Update()
+    {
+        if (prevScreenHeight != Screen.height)
+        {
+            setZoomLevel((Screen.height * cam.orthographicSize) / prevScreenHeight);
+            prevScreenHeight = Screen.height;
+        }
     }
 
     // Update is called once per frame, after all other objects have moved that frame
@@ -81,9 +96,31 @@ public class CameraController : MonoBehaviour
     }
 
     public void setZoomLevel(float level){
-        if (level < 0)
+        // Make sure the orthographic size never drops below zero.
+        if (level < minZoom)
         {
-            level = 0;
+            level = minZoom;
+        }
+        if (!(GestureManager.CHEATS_ALLOWED && gm.cheatsEnabled))//don't limit how far out they can zoom when cheats enabled
+        {
+            float maxZoom = plyrController.baseRange * viewMultiplier;//landscape
+            if (level > maxZoom)
+            {
+                if (Screen.height > Screen.width)//portrait orientation
+                {
+                    float width = (cam.ScreenToWorldPoint(new Vector3(cam.pixelWidth, 0)) - cam.ScreenToWorldPoint(new Vector3(0, 0))).magnitude;
+                    float height = (cam.ScreenToWorldPoint(new Vector3(0, cam.pixelHeight)) - cam.ScreenToWorldPoint(new Vector3(0, 0))).magnitude;
+                    float maxLevel = (maxZoom * height) / width;//portrait
+                    if (level > maxLevel)
+                    {
+                        level = maxLevel;
+                    }
+                }
+                else//landscape orientation
+                {
+                    level = maxZoom;
+                }
+            }
         }
         //Set the size
         cam.orthographicSize = level;

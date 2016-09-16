@@ -397,23 +397,34 @@ public class PlayerController : MonoBehaviour
             Vector2 start = (pos2 + dir2);
             //Debug.DrawLine(pos2, start, Color.black, 1);
             RaycastHit2D rch2d = Physics2D.Raycast(start, -1 * dir2, length);// -1*(start), 1f);
-            if (rch2d && rch2d.collider != null)
+            if (rch2d)
             {
-                GameObject ground = rch2d.collider.gameObject;
-                if (ground != null && !ground.Equals(transform.gameObject))
+                if (rch2d.collider != null)
                 {
-                    //test opposite direction
-                    start = (pos2 + -1 * dir2);
-                    rch2d = Physics2D.Raycast(start, dir2, length);
-                    Debug.DrawLine(start, start + dir2, Color.black, 1);
-                    if (rch2d && rch2d.collider != null)
+                    GameObject ground = rch2d.collider.gameObject;
+                    if (ground != null && !ground.Equals(transform.gameObject))
                     {
-                        ground = rch2d.collider.gameObject;
-                        if (ground != null && !ground.Equals(transform.gameObject))
+                        //test opposite direction
+                        start = (pos2 + -1 * dir2);
+                        rch2d = Physics2D.Raycast(start, dir2, length);
+                        Debug.DrawLine(start, start + dir2, Color.black, 1);
+                        if (rch2d && rch2d.collider != null)
                         {
-                            return true;//yep, it's occupied on both sides
+                            ground = rch2d.collider.gameObject;
+                            if (ground != null && !ground.Equals(transform.gameObject))
+                            {
+                                return true;//yep, it's occupied on both sides
+                            }
+                            //nope, it's occupied on one side but not the other
                         }
-                        //nope, it's occupied on one side but not the other
+                    }
+                }
+                else
+                {
+                    GameObject go = rch2d.transform.gameObject;
+                    if (go.tag.Equals("HidableArea") || go.transform.parent.gameObject.tag.Equals("HideableArea"))
+                    {
+                        return true;//yep, it's occupied by a hidden area
                     }
                 }
             }

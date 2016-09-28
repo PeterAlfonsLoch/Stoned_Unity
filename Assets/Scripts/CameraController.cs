@@ -76,7 +76,7 @@ public class CameraController : MonoBehaviour
         scale = cam.orthographicSize;
         //Initialize ScalePoints
         scalePoints.Add(new ScalePoint(1, 1, LOWER_BOUND, true));
-        scalePoints.Add(new ScalePoint(8, 2, UPPER_BOUND, false));
+        scalePoints.Add(new ScalePoint(7, 2, UPPER_BOUND, false));
         scalePoints.Add(new ScalePoint(20, 10, UPPER_BOUND, true));
         //ScalePoint sp=((ScalePoint)scalePoints[1]);
         //sp.isExtreme = false;

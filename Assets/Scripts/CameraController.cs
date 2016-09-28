@@ -25,14 +25,34 @@ public class CameraController : MonoBehaviour
     const int NONBOUND = 0;
     const int UPPER_BOUND = 1;
     struct ScalePoint{
-        float scalePoint;
+        public float scalePoint;
         float radius;
-        int bound;
-        public ScalePoint(float scale, float radius, int bound)
+        public int bound;
+        public bool isExtreme;//{ get { return isExtreme; } set { isExtreme = value; } }//is lowest or highest
+        public ScalePoint(float scale, float radius, int bound, bool extreme)
         {
             scalePoint = scale;
             this.radius = radius;
             this.bound = bound;
+            isExtreme = extreme;
+        }
+        public bool breaksBounds(float scale)
+        {
+            if ((bound == LOWER_BOUND && scale < scalePoint)
+                || (bound == UPPER_BOUND && scale > scalePoint))
+            {
+                return true;
+            }
+            return false;
+        }
+        public float bounds(float scale)
+        {
+            if ((bound == LOWER_BOUND && scale < scalePoint)
+                || (bound == UPPER_BOUND && scale > scalePoint))
+            {
+                return scalePoint;
+            }
+            return scale;
         }
         public float attracts(float scale)
         {
@@ -40,10 +60,7 @@ public class CameraController : MonoBehaviour
             {
                 return scalePoint;
             }
-            else
-            {
                 return scale;
-            }
         }
     }
     ArrayList scalePoints = new ArrayList();
@@ -57,11 +74,16 @@ public class CameraController : MonoBehaviour
         gm = GameObject.FindGameObjectWithTag("GestureManager").GetComponent<GestureManager>();
         plyrController = player.GetComponent<PlayerController>();
         scale = cam.orthographicSize;
-        Debug.Log("scale: " + scale);
         //Initialize ScalePoints
-        scalePoints.Add(new ScalePoint(1, 1, LOWER_BOUND));
-        scalePoints.Add(new ScalePoint(8, 2, UPPER_BOUND));
-        scalePoints.Add(new ScalePoint(20, 10, UPPER_BOUND));
+        scalePoints.Add(new ScalePoint(1, 1, LOWER_BOUND, true));
+        scalePoints.Add(new ScalePoint(8, 2, UPPER_BOUND, false));
+        scalePoints.Add(new ScalePoint(20, 10, UPPER_BOUND, true));
+        //ScalePoint sp=((ScalePoint)scalePoints[1]);
+        //sp.isExtreme = false;
+        //TODO 2016-09-27
+        //float min = float.MaxValue, max = 0;
+        //int minIndex, maxIndex;
+
     }
 
     void Update()
@@ -146,6 +168,34 @@ public class CameraController : MonoBehaviour
         //        level = maxZoom;
         //    }
         //}
+        foreach (ScalePoint sp in scalePoints)
+        {
+            if (sp.isExtreme)//if extreme, don't let it go beyond
+            {
+                level = sp.bounds(level);
+                Debug.Log("sp.ie: " + sp.isExtreme);
+            }
+            else
+            {
+                if (sp.bound != NONBOUND && sp.breaksBounds(level))//if it goes beyond your bound, try to make it snap to another bound
+                {
+                    foreach (ScalePoint sp2 in scalePoints)
+                    {
+                        if (sp2.isExtreme && sp2.bound == sp.bound)//if sp2 is the outer most bound to sp
+                        {
+                            if (sp2.attracts(level) == sp2.scalePoint && level != sp2.scalePoint && ! sp2.breaksBounds(level))//if the level is within range of the sp2 but not right on it
+                            {
+                                level = sp.scalePoint;//snap it to sp (because the player is prob trying to zoom in)
+                            }
+                            else {
+                                level = sp2.scalePoint;//snap to sp2 (because player is prob trying to zoom out)
+                            }
+                            break;
+                        }
+                    }
+                }
+            }
+        }
 
         //Set the size
         scale = level;

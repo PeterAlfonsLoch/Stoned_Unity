@@ -6,15 +6,18 @@ public class CameraController : MonoBehaviour
 
     public GameObject player;
     public int viewMultiplier = 2;
+    public int mapViewMultiplier = 7;
 
     private Vector3 offset;
+    private float scale = 1;//scale used to determine orthographicSize, independent of (landscape or portrait) orientation
     private Camera cam;
     private Rigidbody2D playerRB2D;
     private float moveTime = 0f;//used to delay the camera refocusing on the player
     private bool wasDelayed = false;
     private GestureManager gm;
     private PlayerController plyrController;
-    
+
+    private int prevScreenWidth;
     private int prevScreenHeight;
     float minZoom = 1f;
 
@@ -26,15 +29,16 @@ public class CameraController : MonoBehaviour
         playerRB2D = player.GetComponent<Rigidbody2D>();
         gm = GameObject.FindGameObjectWithTag("GestureManager").GetComponent<GestureManager>();
         plyrController = player.GetComponent<PlayerController>();
-        prevScreenHeight = Screen.height;
+        scale = cam.orthographicSize;
     }
 
     void Update()
     {
-        if (prevScreenHeight != Screen.height)
+        if (prevScreenHeight != Screen.height || prevScreenWidth != Screen.width)
         {
-            setZoomLevel((Screen.height * cam.orthographicSize) / prevScreenHeight);
+            prevScreenWidth = Screen.width;
             prevScreenHeight = Screen.height;
+            updateOrthographicSize();
         }
     }
 
@@ -95,7 +99,8 @@ public class CameraController : MonoBehaviour
         transform.position = player.transform.position + offset;
     }
 
-    public void setZoomLevel(float level){
+    public void setZoomLevel(float level)
+    {
         // Make sure the orthographic size never drops below zero.
         if (level < minZoom)
         {
@@ -103,31 +108,20 @@ public class CameraController : MonoBehaviour
         }
         if (!(GestureManager.CHEATS_ALLOWED && gm.cheatsEnabled))//don't limit how far out they can zoom when cheats enabled
         {
-            float maxZoom = plyrController.baseRange * viewMultiplier;//landscape
+            float maxZoom = plyrController.baseRange * viewMultiplier * mapViewMultiplier;//landscape
             if (level > maxZoom)
             {
-                if (Screen.height > Screen.width)//portrait orientation
-                {
-                    float width = (cam.ScreenToWorldPoint(new Vector3(cam.pixelWidth, 0)) - cam.ScreenToWorldPoint(new Vector3(0, 0))).magnitude;
-                    float height = (cam.ScreenToWorldPoint(new Vector3(0, cam.pixelHeight)) - cam.ScreenToWorldPoint(new Vector3(0, 0))).magnitude;
-                    float maxLevel = (maxZoom * height) / width;//portrait
-                    if (level > maxLevel)
-                    {
-                        level = maxLevel;
-                    }
-                }
-                else//landscape orientation
-                {
-                    level = maxZoom;
-                }
+                level = maxZoom;
             }
         }
         //Set the size
-        cam.orthographicSize = level;
+        scale = level;
+        updateOrthographicSize();
+
         //Make sure player is still in view
         Vector3 size = cam.ScreenToWorldPoint(new Vector3(cam.pixelWidth, cam.pixelHeight)) - cam.ScreenToWorldPoint(new Vector3(0, 0)) + new Vector3(0, 0, 20);
         Bounds b = new Bounds(cam.transform.position, size);
-        if ( ! b.Contains(player.transform.position))
+        if (!b.Contains(player.transform.position))
         {
             float newX = offset.x;
             float newY = offset.y;
@@ -153,6 +147,16 @@ public class CameraController : MonoBehaviour
     }
     public void adjustZoomLevel(float addend)
     {
-        setZoomLevel(cam.orthographicSize + addend);
+        setZoomLevel(scale + addend);
+    }
+    public void updateOrthographicSize()
+    {
+        if (Screen.height > Screen.width)//portrait orientation
+        {
+            cam.orthographicSize = (scale * cam.pixelHeight) / cam.pixelWidth;
+        }
+        else {//landscape orientation
+            cam.orthographicSize = scale;
+        }
     }
 }

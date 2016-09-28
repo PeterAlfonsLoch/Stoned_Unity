@@ -6,7 +6,7 @@ public class CameraController : MonoBehaviour
 
     public GameObject player;
     public int viewMultiplier = 2;
-    public int mapViewMultiplier = 7;
+    public int mapViewMultiplier = 1;
 
     private Vector3 offset;
     private float scale = 1;//scale used to determine orthographicSize, independent of (landscape or portrait) orientation
@@ -21,6 +21,33 @@ public class CameraController : MonoBehaviour
     private int prevScreenHeight;
     float minZoom = 1f;
 
+    const int LOWER_BOUND = -1;
+    const int NONBOUND = 0;
+    const int UPPER_BOUND = 1;
+    struct ScalePoint{
+        float scalePoint;
+        float radius;
+        int bound;
+        public ScalePoint(float scale, float radius, int bound)
+        {
+            scalePoint = scale;
+            this.radius = radius;
+            this.bound = bound;
+        }
+        public float attracts(float scale)
+        {
+            if (Mathf.Abs(scalePoint - scale) <= radius)
+            {
+                return scalePoint;
+            }
+            else
+            {
+                return scale;
+            }
+        }
+    }
+    ArrayList scalePoints = new ArrayList();
+
     // Use this for initialization
     void Start()
     {
@@ -30,6 +57,11 @@ public class CameraController : MonoBehaviour
         gm = GameObject.FindGameObjectWithTag("GestureManager").GetComponent<GestureManager>();
         plyrController = player.GetComponent<PlayerController>();
         scale = cam.orthographicSize;
+        Debug.Log("scale: " + scale);
+        //Initialize ScalePoints
+        scalePoints.Add(new ScalePoint(1, 1, LOWER_BOUND));
+        scalePoints.Add(new ScalePoint(8, 2, UPPER_BOUND));
+        scalePoints.Add(new ScalePoint(20, 10, UPPER_BOUND));
     }
 
     void Update()
@@ -101,19 +133,20 @@ public class CameraController : MonoBehaviour
 
     public void setZoomLevel(float level)
     {
-        // Make sure the orthographic size never drops below zero.
-        if (level < minZoom)
-        {
-            level = minZoom;
-        }
-        if (!(GestureManager.CHEATS_ALLOWED && gm.cheatsEnabled))//don't limit how far out they can zoom when cheats enabled
-        {
-            float maxZoom = plyrController.baseRange * viewMultiplier * mapViewMultiplier;//landscape
-            if (level > maxZoom)
-            {
-                level = maxZoom;
-            }
-        }
+        //// Make sure the orthographic size never drops below zero.
+        //if (level < minZoom)
+        //{
+        //    level = minZoom;
+        //}
+        //if (!(GestureManager.CHEATS_ALLOWED && gm.cheatsEnabled))//don't limit how far out they can zoom when cheats enabled
+        //{
+        //    float maxZoom = plyrController.baseRange * viewMultiplier * mapViewMultiplier;//landscape
+        //    if (level > maxZoom)
+        //    {
+        //        level = maxZoom;
+        //    }
+        //}
+
         //Set the size
         scale = level;
         updateOrthographicSize();
@@ -151,12 +184,18 @@ public class CameraController : MonoBehaviour
     }
     public void updateOrthographicSize()
     {
+        float level = scale;
+        //See if the level snaps to any scalePoint
+        foreach (ScalePoint sp in scalePoints)
+        {
+            level = sp.attracts(level);
+        }
         if (Screen.height > Screen.width)//portrait orientation
         {
-            cam.orthographicSize = (scale * cam.pixelHeight) / cam.pixelWidth;
+            cam.orthographicSize = (level * cam.pixelHeight) / cam.pixelWidth;
         }
         else {//landscape orientation
-            cam.orthographicSize = scale;
+            cam.orthographicSize = level;
         }
     }
 }

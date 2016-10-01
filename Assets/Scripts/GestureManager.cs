@@ -249,11 +249,11 @@ public class GestureManager : MonoBehaviour {
             //
             if (Input.GetAxis("Mouse ScrollWheel") < 0)
             {
-                cmaController.adjustZoomLevel(1f);
+                cmaController.adjustScalePoint(1);
             }
             else if (Input.GetAxis("Mouse ScrollWheel") > 0)
             {
-                cmaController.adjustZoomLevel(-1f);
+                cmaController.adjustScalePoint(-1);
             }
             //
             //Pinch Touch Zoom
@@ -282,7 +282,7 @@ public class GestureManager : MonoBehaviour {
                 //if (cam.orthographic)
                 //{
                 // ... change the orthographic size based on the change in distance between the touches.
-                cmaController.adjustZoomLevel(deltaMagnitudeDiff * orthoZoomSpeed);
+                cmaController.adjustScalePoint((int)Mathf.Sign(deltaMagnitudeDiff));
                 //}
             }
         }

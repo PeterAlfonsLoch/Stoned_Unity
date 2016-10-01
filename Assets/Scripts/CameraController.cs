@@ -54,6 +54,8 @@ public class CameraController : MonoBehaviour
         scalePoints.Add(new ScalePoint(1, true, plyrController));
         scalePoints.Add(new ScalePoint(2, true, plyrController));
         scalePoints.Add(new ScalePoint(4, true, plyrController));
+        //
+        setScalePoint(1);
 
     }
 

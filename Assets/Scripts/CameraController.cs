@@ -170,6 +170,10 @@ public class CameraController : MonoBehaviour
     {
         setScalePoint(scalePointIndex + addend);
     }
+    public int getScalePointIndex()
+    {
+        return scalePointIndex;
+    }
     public void updateOrthographicSize()
     {
         if (Screen.height > Screen.width)//portrait orientation

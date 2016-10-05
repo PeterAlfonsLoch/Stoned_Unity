@@ -74,7 +74,6 @@ public class GestureManager : MonoBehaviour {
             }
             else if (Input.GetTouch(1).phase == TouchPhase.Ended)
             {
-                clickState = ClickState.Ended;
             }
             else
             {
@@ -117,6 +116,10 @@ public class GestureManager : MonoBehaviour {
         else if (Input.GetMouseButtonUp(0))
         {
             clickState = ClickState.Ended;
+        }
+        else if (Input.GetAxis("Mouse ScrollWheel") != 0)
+        {
+            clickState = ClickState.InProgress;
         }
         else if(Input.touchCount == 0 && !Input.GetMouseButton(0))
         {
@@ -269,46 +272,56 @@ public class GestureManager : MonoBehaviour {
 
         }
         else {//touchCount == 0 || touchCount >= 2
-            //
-            //Zoom Processing
-            //
-            //
-            //Mouse Scrolling Zoom
-            //
-            if (Input.GetAxis("Mouse ScrollWheel") < 0)
+            if (clickState == ClickState.Began)
             {
-                cmaController.adjustScalePoint(1);
             }
-            else if (Input.GetAxis("Mouse ScrollWheel") > 0)
+            else if (clickState == ClickState.InProgress)
             {
-                cmaController.adjustScalePoint(-1);
+                //
+                //Zoom Processing
+                //
+                //
+                //Mouse Scrolling Zoom
+                //
+                if (Input.GetAxis("Mouse ScrollWheel") < 0)
+                {
+                    cmaController.adjustScalePoint(1);
+                }
+                else if (Input.GetAxis("Mouse ScrollWheel") > 0)
+                {
+                    cmaController.adjustScalePoint(-1);
+                }
+                //
+                //Pinch Touch Zoom
+                //2015-12-31 (1:23am): copied from https://unity3d.com/learn/tutorials/modules/beginner/platform-specific/pinch-zoom
+                //
+
+                // If there are two touches on the device...
+                if (touchCount == 2)
+                {
+                    // Store both touches.
+                    Touch touchZero = Input.GetTouch(0);
+                    Touch touchOne = Input.GetTouch(1);
+
+                    // Find the position in the previous frame of each touch.
+                    Vector2 touchZeroPrevPos = origMP;
+                    Vector2 touchOnePrevPos = origMP2;
+
+                    // Find the magnitude of the vector (the distance) between the touches in each frame.
+                    float prevTouchDeltaMag = (touchZeroPrevPos - touchOnePrevPos).magnitude;
+                    float touchDeltaMag = (touchZero.position - touchOne.position).magnitude;
+
+                    // Find the difference in the distances between each frame.
+                    int deltaMagnitudeQuo = (int)System.Math.Truncate(Mathf.Max(prevTouchDeltaMag, touchDeltaMag) / Mathf.Min(prevTouchDeltaMag, touchDeltaMag));
+                    deltaMagnitudeQuo *= (int)Mathf.Sign(prevTouchDeltaMag - touchDeltaMag);
+
+                    //Update the camera's scale point index
+                    cmaController.setScalePoint(origScalePoint + deltaMagnitudeQuo);
+                }
             }
-            //
-            //Pinch Touch Zoom
-            //2015-12-31 (1:23am): copied from https://unity3d.com/learn/tutorials/modules/beginner/platform-specific/pinch-zoom
-            //
-
-            // If there are two touches on the device...
-            if (touchCount == 2)
+            else if (clickState == ClickState.Ended)
             {
-                // Store both touches.
-                Touch touchZero = Input.GetTouch(0);
-                Touch touchOne = Input.GetTouch(1);
-
-                // Find the position in the previous frame of each touch.
-                Vector2 touchZeroPrevPos = origMP;
-                Vector2 touchOnePrevPos = origMP2;
-
-                // Find the magnitude of the vector (the distance) between the touches in each frame.
-                float prevTouchDeltaMag = (touchZeroPrevPos - touchOnePrevPos).magnitude;
-                float touchDeltaMag = (touchZero.position - touchOne.position).magnitude;
-
-                // Find the difference in the distances between each frame.
-                int deltaMagnitudeQuo = (int)System.Math.Truncate(Mathf.Max(prevTouchDeltaMag, touchDeltaMag) / Mathf.Min(prevTouchDeltaMag, touchDeltaMag));
-                deltaMagnitudeQuo *= (int)Mathf.Sign(prevTouchDeltaMag - touchDeltaMag);
-
-                //Update the camera's scale point index
-                cmaController.setScalePoint(origScalePoint + deltaMagnitudeQuo);
+                origScalePoint = cmaController.getScalePointIndex();
             }
         }
 

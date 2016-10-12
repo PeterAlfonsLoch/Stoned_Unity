@@ -5,6 +5,7 @@ UnityGenerated/
 Library/
 Assets/UnityTestTools/
 Assets/Ferr/
+Assets/VoxelBusters
 
 
 # Windows image file caches
@@ -61,3 +62,4 @@ Temporary Items
 Assets/UnityTestTools.meta
 Assets/Sounds/ForceTeleport.mp3
 Assets/Sounds/forceteleport_data.meta
+Assets/VoxelBusters.meta

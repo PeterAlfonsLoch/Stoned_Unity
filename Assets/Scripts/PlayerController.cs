@@ -1,6 +1,8 @@
 ﻿using System.Collections;
 using UnityEngine;
+using VoxelBusters.RuntimeSerialization;
 
+[RuntimeSerializable(true, true)]
 public class PlayerController : MonoBehaviour
 {
 
@@ -15,9 +17,13 @@ public class PlayerController : MonoBehaviour
     private int giveGravityImmunityDelayCounter = -1;//used to delay granting gravity immunity until the next cycle
     public int gGIDCinit = 2;//note: this may go away once the teleport lookahead detector is improved
 
+    [NonRuntimeSerializedField]
     public GameObject teleportStreak;
+    [NonRuntimeSerializedField]
     public GameObject teleportStar;
+    [NonRuntimeSerializedField]
     public bool useStreak = false;
+    [NonRuntimeSerializedField]
     public bool useStar = true;
 
     public int airPorts = 0;
@@ -29,6 +35,8 @@ public class PlayerController : MonoBehaviour
 
     private bool inCheckPoint = false;//whether or not the player is inside a checkpoint
 
+
+    [NonRuntimeSerializedField]
     public AudioClip teleportSound;
 
     private CameraController mainCamCtr;//the camera controller for the main camera
@@ -56,6 +64,8 @@ public class PlayerController : MonoBehaviour
     //            //new Vector3(.5f,-1),
     //            //new Vector3(-.5f,-1),
     //        };
+
+    [NonRuntimeSerializedField]
     Vector3[] checkDirs = new Vector3[]
                 {//for checking area around teleport target point
                 Vector3.up,

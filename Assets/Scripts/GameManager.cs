@@ -8,11 +8,10 @@ using System.IO;
 public class GameManager : MonoBehaviour {
     public static List<GameObject> savedGames = new List<GameObject>();
     public GameObject root;
-    public bool save = false;
+    public bool save = false;   
 
     // Use this for initialization
     void Start () {
-	
 	}
 	
 	// Update is called once per frame
@@ -27,9 +26,10 @@ public class GameManager : MonoBehaviour {
     public static void Save(GameObject root)
     {
         savedGames.Add(root);
-        BinaryFormatter bf = new BinaryFormatter();
+        //BinaryFormatter bf = new BinaryFormatter();
         FileStream file = File.Create(Application.persistentDataPath + "/savedGames.gd");
-        bf.Serialize(file, savedGames);
+        //bf.Serialize(file, savedGames);
+        RSManager.Serialize<GameObject>(root);
         file.Close();
     }
     public static void Load()

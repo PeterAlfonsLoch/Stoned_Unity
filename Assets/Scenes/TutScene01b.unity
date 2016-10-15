@@ -992,6 +992,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   root: {fileID: 1657645883}
   save: 0
+  load: 0
 --- !u!4 &94021248
 Transform:
   m_ObjectHideFlags: 0

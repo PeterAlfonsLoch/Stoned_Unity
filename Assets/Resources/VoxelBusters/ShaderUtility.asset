@@ -1768,13 +1768,13 @@ MonoBehaviour:
     m_propertyList:
     - m_name: _MainTex
       m_type: 4
-  - m_name: Ferr/Unlit Tinted Textured Vertex Color
+  - m_name: Ferr/2D Terrain/Unlit/Tinted Textured Vertex Color
     m_propertyList:
     - m_name: _MainTex
       m_type: 4
     - m_name: _Color
       m_type: 0
-  - m_name: Ferr/Unlit Textured Vertex Color Transparent
+  - m_name: Ferr/2D Terrain/Unlit/Textured Vertex Color Transparent
     m_propertyList:
     - m_name: _MainTex
       m_type: 4
@@ -1782,7 +1782,21 @@ MonoBehaviour:
     m_propertyList:
     - m_name: _MainTex
       m_type: 4
-  - m_name: Ferr/Lit Wavy Textured Vertex Color Transparent
+  - m_name: Ferr/2D Terrain/Vertex Lit/Textured Wavy Transparent
+    m_propertyList:
+    - m_name: _MainTex
+      m_type: 4
+    - m_name: _Color
+      m_type: 0
+    - m_name: _WaveSizeX
+      m_type: 2
+    - m_name: _WaveSizeY
+      m_type: 2
+    - m_name: _WaveSpeed
+      m_type: 2
+    - m_name: _PositionScale
+      m_type: 2
+  - m_name: Ferr/2D Terrain/Pixel Lit/Wavy Textured Vertex Color Transparent
     m_propertyList:
     - m_name: _MainTex
       m_type: 4
@@ -1794,21 +1808,19 @@ MonoBehaviour:
       m_type: 2
     - m_name: _PositionScale
       m_type: 2
-  - m_name: Ferr/Common/Unlit Solid Color
-    m_propertyList:
-    - m_name: _Color
-      m_type: 0
-  - m_name: Ferr/Lit Textured Vertex Color (4 lights|lightmap +1 light)
+  - m_name: Ferr/2D Terrain/Pixel Lit/Textured Vertex Color (4 lights|lightmap +1
+      light)
     m_propertyList:
     - m_name: _MainTex
       m_type: 4
-  - m_name: Ferr/Lit Textured Vertex Color Tinted (4 lights|lightmap +1 light)
+  - m_name: Ferr/2D Terrain/Pixel Lit/Textured Vertex Color Tinted (4 lights|lightmap
+      +1 light)
     m_propertyList:
     - m_name: _MainTex
       m_type: 4
     - m_name: _Color
       m_type: 0
-  - m_name: Ferr/Unlit Textured Vertex Color
+  - m_name: Ferr/2D Terrain/Unlit/Textured Vertex Color
     m_propertyList:
     - m_name: _MainTex
       m_type: 4
@@ -1822,21 +1834,31 @@ MonoBehaviour:
     m_propertyList:
     - m_name: _MainTex
       m_type: 4
-  - m_name: Ferr/Lit Textured Vertex Color Tinted Transparent (4 lights|lightmap +1
-      light)
+  - m_name: Ferr/Common/Unlit Solid Color
+    m_propertyList:
+    - m_name: _Color
+      m_type: 0
+  - m_name: Ferr/2D Terrain/Pixel Lit/Textured Vertex Color Tinted Transparent (4
+      lights|lightmap +1 light)
     m_propertyList:
     - m_name: _MainTex
       m_type: 4
     - m_name: _Color
       m_type: 0
-  - m_name: Ferr/Unlit Tinted Textured Vertex Color Transparent
+  - m_name: Ferr/2D Terrain/Unlit/Tinted Textured Vertex Color Transparent
     m_propertyList:
     - m_name: _MainTex
       m_type: 4
     - m_name: _Color
       m_type: 0
-  - m_name: Ferr/Lightmap Textured Vertex Color Transparent (8 lights|lightmap +0
-      light)
+  - m_name: Ferr/2D Terrain/Vertex Lit/Textured
+    m_propertyList:
+    - m_name: _MainTex
+      m_type: 4
+    - m_name: _Color
+      m_type: 0
+  - m_name: Ferr/2D Terrain/Pixel Lit/Lightmap Textured Vertex Color Transparent (8
+      lights|lightmap +0 light)
     m_propertyList:
     - m_name: _MainTex
       m_type: 4
@@ -1854,7 +1876,7 @@ MonoBehaviour:
     m_propertyList:
     - m_name: _MainTex
       m_type: 4
-  - m_name: Ferr/Unlit Wavy Textured Vertex Color Transparent
+  - m_name: Ferr/2D Terrain/Unlit/Wavy Textured Vertex Color Transparent
     m_propertyList:
     - m_name: _MainTex
       m_type: 4
@@ -1866,6 +1888,12 @@ MonoBehaviour:
       m_type: 2
     - m_name: _PositionScale
       m_type: 2
+  - m_name: Ferr/2D Terrain/Vertex Lit/Textured Transparent
+    m_propertyList:
+    - m_name: _MainTex
+      m_type: 4
+    - m_name: _Color
+      m_type: 0
   - m_name: Ferr/Common/Unlit Transparent Textured Vertex Color
     m_propertyList:
     - m_name: _MainTex
@@ -1874,11 +1902,17 @@ MonoBehaviour:
       m_type: 0
   - m_name: Ferr/Common/Shadow Only
     m_propertyList: []
-  - m_name: Ferr/Lightmap Textured Vertex Color (8 lights|lightmap +0 light)
+  - m_name: Ferr/Common/Unlit Solid Color Transparent
+    m_propertyList:
+    - m_name: _Color
+      m_type: 0
+  - m_name: Ferr/2D Terrain/Pixel Lit/Lightmap Textured Vertex Color (8 lights|lightmap
+      +0 light)
     m_propertyList:
     - m_name: _MainTex
       m_type: 4
-  - m_name: Ferr/Lit Textured Vertex Color Transparent (4 lights|lightmap +1 light)
+  - m_name: Ferr/2D Terrain/Pixel Lit/Textured Vertex Color Transparent (4 lights|lightmap
+      +1 light)
     m_propertyList:
     - m_name: _MainTex
       m_type: 4

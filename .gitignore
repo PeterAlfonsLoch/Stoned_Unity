@@ -6,6 +6,8 @@ Library/
 Assets/UnityTestTools/
 Assets/Ferr/
 Assets/VoxelBusters
+Assets/Easy Save 2/
+Assets/PLugins/
 
 
 # Windows image file caches
@@ -63,3 +65,4 @@ Assets/UnityTestTools.meta
 Assets/Sounds/ForceTeleport.mp3
 Assets/Sounds/forceteleport_data.meta
 Assets/VoxelBusters.meta
+Assets/Easy Save 2.meta

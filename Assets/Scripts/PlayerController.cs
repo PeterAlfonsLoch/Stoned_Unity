@@ -456,6 +456,7 @@ public class PlayerController : MonoBehaviour
     {
         Vector3 newPos = findTeleportablePosition(gpos);
         teleport(newPos);
+        GameManager.Save(this.gameObject);
     }
     public void processTapGesture(GameObject checkPoint)
     {
@@ -467,6 +468,7 @@ public class PlayerController : MonoBehaviour
             mainCamCtr.refocus();
             cpc.trigger();
         }
+        GameManager.Save(this.gameObject);
     }
 
 

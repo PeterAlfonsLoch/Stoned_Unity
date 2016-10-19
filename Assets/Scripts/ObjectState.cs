@@ -2,10 +2,15 @@
 using System.Collections;
 
 public class ObjectState {
-
-    public Transform transformSave;
+    
+    //Transform
+    public Vector3 position;
+    public Vector3 localScale;
+    public Quaternion rotation;
+    //RigidBody2D
     public Vector2 velocity;
     public float angularVelocity;
+    //Name
     public string objectName;
 
     private Rigidbody2D rb2d;
@@ -21,16 +26,18 @@ public class ObjectState {
 
     public void saveState()
     {
-        transformSave = go.transform;
+        position = go.transform.position;
+        localScale = go.transform.localScale;
+        rotation = go.transform.rotation;
         velocity = rb2d.velocity;
         angularVelocity = rb2d.angularVelocity;
     }
     public void loadState()
     {
         go = GameObject.Find(objectName);
-        go.transform.localPosition = transformSave.position;
-        go.transform.localScale = transformSave.localScale;
-        go.transform.localRotation = transformSave.rotation;
+        go.transform.position = position;
+        go.transform.localScale = localScale;
+        go.transform.rotation = rotation;
         rb2d = go.GetComponent<Rigidbody2D>();
         rb2d.velocity = velocity;
         rb2d.angularVelocity = angularVelocity;

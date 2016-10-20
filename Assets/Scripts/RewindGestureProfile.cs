@@ -3,12 +3,6 @@ using System.Collections;
 
 public class RewindGestureProfile: GestureProfile
 {
-    private GameManager gm;
-    public RewindGestureProfile()
-    {
-        gm = GameObject.FindObjectOfType<GameManager>();
-    }
-    
     public override void processTapGesture(GameObject go)
     {
     }

@@ -17,12 +17,13 @@ public class ObjectState {
     private GameObject go;
 
     public ObjectState() { }
-    public ObjectState (string name) {
-        objectName = name;
-        go = GameObject.Find(name);
+    public ObjectState(GameObject goIn)
+    {
+        go = goIn;
+        objectName = go.name;
         rb2d = go.GetComponent<Rigidbody2D>();
         saveState();
-	}
+    }
 
     public void saveState()
     {
@@ -34,7 +35,10 @@ public class ObjectState {
     }
     public void loadState()
     {
-        go = GameObject.Find(objectName);
+        if (go == null)
+        {
+            go = GameObject.Find(objectName);
+        }
         go.transform.position = position;
         go.transform.localScale = localScale;
         go.transform.rotation = rotation;

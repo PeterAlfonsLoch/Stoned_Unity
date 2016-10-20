@@ -12,8 +12,8 @@ public class GameManager : MonoBehaviour
     public int chosenId = 0;
     public int amount = 0;
     public GameObject playerGhost;//this is to show Merky in the past
-    private static List<GameState> gameStates = new List<GameState>();
-    private static List<GameObject> gameObjects = new List<GameObject>();
+    private List<GameState> gameStates = new List<GameState>();
+    private List<GameObject> gameObjects = new List<GameObject>();
 
     private static GameManager instance;
     private CameraController camCtr;
@@ -37,7 +37,10 @@ public class GameManager : MonoBehaviour
     }
     public void addAll(List<GameObject> list)
     {
-        gameObjects.AddRange(list);
+        foreach (GameObject go in list)
+        {
+            gameObjects.Add(go);
+        }
     }
 
     // Update is called once per frame
@@ -79,11 +82,11 @@ public class GameManager : MonoBehaviour
         }
         GameState.nextid = gamestateId + 1;
     }
-    public static void saveToFile()
+    public void saveToFile()
     {
         ES2.Save(gameStates, "merky.txt");
     }
-    public static void loadFromFile()
+    public void loadFromFile()
     {
         gameStates = ES2.LoadList<GameState>("merky.txt");
     }

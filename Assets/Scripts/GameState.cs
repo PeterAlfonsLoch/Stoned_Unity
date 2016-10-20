@@ -18,7 +18,7 @@ public class GameState
     public GameState(List<GameObject> list): this()
     {
         foreach (GameObject go in list){
-            ObjectState os = new ObjectState(go.name);
+            ObjectState os = new ObjectState(go);
             states.Add(os);
             if (go.name.Equals("merky"))
             {

@@ -15,6 +15,8 @@ public class GameManager : MonoBehaviour
     private static List<GameState> gameStates = new List<GameState>();
     private static List<GameObject> gameObjects = new List<GameObject>();
 
+    private CameraController camCtr;
+
     // Use this for initialization
     void Start()
     {
@@ -22,6 +24,8 @@ public class GameManager : MonoBehaviour
         {
             gameObjects.Add(rb.gameObject);
         }
+
+        camCtr = FindObjectOfType<CameraController>();
     }
 
     // Update is called once per frame
@@ -103,6 +107,9 @@ public class GameManager : MonoBehaviour
             {
                 gs.hideRepresentation();
             }
+            camCtr.adjustScalePoint(-1);
+            camCtr.recenter();
+            camCtr.refocus();
         }
     }
 }

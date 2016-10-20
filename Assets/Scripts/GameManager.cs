@@ -15,17 +15,29 @@ public class GameManager : MonoBehaviour
     private static List<GameState> gameStates = new List<GameState>();
     private static List<GameObject> gameObjects = new List<GameObject>();
 
+    private static GameManager instance;
     private CameraController camCtr;
 
     // Use this for initialization
     void Start()
     {
-        foreach (Rigidbody2D rb in FindObjectsOfType<Rigidbody2D>())
+        refreshGameObjects();
+
+        if (instance == null)
         {
-            gameObjects.Add(rb.gameObject);
+            instance = this;
+        }
+        else
+        {
+            instance.addAll(gameObjects);
+            Destroy(gameObject);
         }
 
         camCtr = FindObjectOfType<CameraController>();
+    }
+    public void addAll(List<GameObject> list)
+    {
+        gameObjects.AddRange(list);
     }
 
     // Update is called once per frame
@@ -40,6 +52,15 @@ public class GameManager : MonoBehaviour
         {
             load = false;
             Load(chosenId);
+        }
+    }
+
+    public void refreshGameObjects()
+    {
+        gameObjects = new List<GameObject>();
+        foreach (Rigidbody2D rb in FindObjectsOfType<Rigidbody2D>())
+        {
+            gameObjects.Add(rb.gameObject);
         }
     }
 
@@ -67,18 +88,18 @@ public class GameManager : MonoBehaviour
         gameStates = ES2.LoadList<GameState>("merky.txt");
     }
 
-    void Awake()
-    {
-        if (ES2.Exists("merky.txt"))
-        {
-            loadFromFile();
-            Load(gameStates.Count - 1);
-            CameraController cam = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<CameraController>();
-            cam.pinPoint();
-            cam.recenter();
-            cam.refocus();
-        }
-    }
+    //void Awake()
+    //{
+    //    if (ES2.Exists("merky.txt"))
+    //    {
+    //        loadFromFile();
+    //        Load(gameStates.Count - 1);
+    //        CameraController cam = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<CameraController>();
+    //        cam.pinPoint();
+    //        cam.recenter();
+    //        cam.refocus();
+    //    }
+    //}
     void OnApplicationQuit()
     {
         Save();

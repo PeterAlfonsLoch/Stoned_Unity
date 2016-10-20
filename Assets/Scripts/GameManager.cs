@@ -51,6 +51,12 @@ public class GameManager : MonoBehaviour
     public void Load(int gamestateId)
     {
         gameStates[gamestateId].load();
+        for (int i = gameStates.Count - 1; i > gamestateId ; i--)
+        {
+            Destroy(gameStates[i].representation);
+            gameStates.RemoveAt(i);
+        }
+        GameState.nextid = gamestateId + 1;
     }
     public static void saveToFile()
     {
@@ -102,11 +108,11 @@ public class GameManager : MonoBehaviour
         }
         if (final != null)
         {
-            Load(final.id);
             foreach (GameState gs in gameStates)
             {
                 gs.hideRepresentation();
             }
+            Load(final.id);
             camCtr.adjustScalePoint(-1);
             camCtr.recenter();
             camCtr.refocus();

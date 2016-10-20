@@ -8,8 +8,8 @@ public class GameState
     public List<ObjectState> states = new List<ObjectState>();
     public ObjectState merky;//the object state in the list specifically for Merky
 
-    private static int nextid = 0;
-    private GameObject representation;//the player ghost that represents this game state
+    public static int nextid = 0;
+    public GameObject representation;//the player ghost that represents this game state
 
     public GameState() {
         id = nextid;

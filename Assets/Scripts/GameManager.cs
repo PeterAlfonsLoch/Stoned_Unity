@@ -11,6 +11,7 @@ public class GameManager : MonoBehaviour
     public bool load = false;
     public int chosenId = 0;
     public int amount = 0;
+    public GameObject playerGhost;//this is to show Merky in the past
     private static List<GameState> gameStates = new List<GameState>();
     private static List<GameObject> gameObjects = new List<GameObject>();
 
@@ -74,9 +75,35 @@ public class GameManager : MonoBehaviour
         saveToFile();
     }
 
+    public void showPlayerGhosts()
+    {
+        foreach (GameState gs in gameStates)
+        {
+            gs.showRepresentation(playerGhost);
+        }
+    }
     public void processTapGesture(Vector3 curMPWorld)
     {
         Debug.Log("GameManager.pTG: curMPWorld: " + curMPWorld);
+        GameState final = null;
+        foreach (GameState gs in gameStates)
+        {
+            if (gs.checkRepresentation(curMPWorld))
+            {
+                if (final == null || gs.id > final.id)//assuming the later ones have higher id values
+                {
+                    final = gs;//keep the latest one
+                }
+            }
+        }
+        if (final != null)
+        {
+            Load(final.id);
+            foreach (GameState gs in gameStates)
+            {
+                gs.hideRepresentation();
+            }
+        }
     }
 }
 

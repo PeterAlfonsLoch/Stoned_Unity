@@ -8,6 +8,7 @@ public class GestureProfile {
     protected Rigidbody2D rb2dPlayer;
     //protected Camera cam;
     //protected CameraController cmaController;
+    protected GameManager gm;
 
     public GestureProfile()
     {
@@ -16,14 +17,17 @@ public class GestureProfile {
         rb2dPlayer = player.GetComponent<Rigidbody2D>();
         //cam = Camera.main;
         //cmaController = cam.GetComponent<CameraController>();
+        gm = GameObject.FindObjectOfType<GameManager>();
     }
     public virtual void processTapGesture(GameObject go)
     {
         plrController.processTapGesture(go);
+        gm.Save();
     }
     public virtual void processTapGesture(Vector3 curMPWorld)
     {
         plrController.processTapGesture(curMPWorld);
+        gm.Save();
     }
     public virtual void processHoldGesture(Vector3 curMPWorld, float holdTime, bool finished)
     {

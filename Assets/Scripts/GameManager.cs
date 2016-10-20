@@ -73,6 +73,11 @@ public class GameManager : MonoBehaviour
         Save();
         saveToFile();
     }
+
+    public void processTapGesture(Vector3 curMPWorld)
+    {
+        Debug.Log("GameManager.pTG: curMPWorld: " + curMPWorld);
+    }
 }
 
 

@@ -167,6 +167,16 @@ public class CameraController : MonoBehaviour
             }
             offset = new Vector3(newX, newY, offset.z);
         }
+        
+        //GestureProfile switcher
+        if (this.scalePointIndex == scalePoints.Count - 1)
+        {
+            gm.currentGP = gm.gestureProfiles["Rewind"];
+        }
+        else
+        {
+            gm.currentGP = gm.gestureProfiles["Main"];
+        }
     }
     public void adjustScalePoint(int addend)
     {

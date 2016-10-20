@@ -92,6 +92,13 @@ public class GameManager : MonoBehaviour
             gs.showRepresentation(playerGhost);
         }
     }
+    public void hidePlayerGhosts()
+    {
+        foreach (GameState gs in gameStates)
+        {
+            gs.hideRepresentation();
+        }
+    }
     public void processTapGesture(Vector3 curMPWorld)
     {
         Debug.Log("GameManager.pTG: curMPWorld: " + curMPWorld);
@@ -108,10 +115,7 @@ public class GameManager : MonoBehaviour
         }
         if (final != null)
         {
-            foreach (GameState gs in gameStates)
-            {
-                gs.hideRepresentation();
-            }
+            hidePlayerGhosts();
             Load(final.id);
             camCtr.adjustScalePoint(-1);
             camCtr.recenter();

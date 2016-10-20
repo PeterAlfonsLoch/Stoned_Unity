@@ -53,6 +53,9 @@ public class GameState
     }
     public void hideRepresentation()
     {
-        representation.SetActive(false);
+        if (representation != null)
+        {
+            representation.SetActive(false);
+        }
     }
 }

@@ -179,6 +179,7 @@ public class CameraController : MonoBehaviour
         else
         {
             gm.currentGP = gm.gestureProfiles["Main"];
+            gameManager.hidePlayerGhosts();
         }
     }
     public void adjustScalePoint(int addend)

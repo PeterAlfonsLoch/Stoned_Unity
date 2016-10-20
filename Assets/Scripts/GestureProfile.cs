@@ -31,7 +31,7 @@ public class GestureProfile {
     }
     public virtual void processHoldGesture(Vector3 curMPWorld, float holdTime, bool finished)
     {
-        plrController.processHoldGesture(curMPWorld, holdTime, false);
+        plrController.processHoldGesture(curMPWorld, holdTime, finished);
     }
     public void processDragGesture()
     {

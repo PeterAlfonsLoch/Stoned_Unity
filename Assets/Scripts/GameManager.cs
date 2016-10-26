@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.IO;
+using UnityEngine.SceneManagement;
 
 
 public class GameManager : MonoBehaviour
@@ -21,6 +22,8 @@ public class GameManager : MonoBehaviour
     // Use this for initialization
     void Start()
     {
+        loadOnAwake();
+
         refreshGameObjects();
 
         if (instance == null)
@@ -84,25 +87,25 @@ public class GameManager : MonoBehaviour
     }
     public void saveToFile()
     {
-        ES2.Save(gameStates, "merky.txt");
+        ES2.Save(gameStates, "merky.txt?tag=states");
     }
     public void loadFromFile()
     {
-        gameStates = ES2.LoadList<GameState>("merky.txt");
+        gameStates = ES2.LoadList<GameState>("merky.txt?tag=states");
     }
 
-    //void Awake()
-    //{
-    //    if (ES2.Exists("merky.txt"))
-    //    {
-    //        loadFromFile();
-    //        Load(gameStates.Count - 1);
-    //        CameraController cam = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<CameraController>();
-    //        cam.pinPoint();
-    //        cam.recenter();
-    //        cam.refocus();
-    //    }
-    //}
+    void loadOnAwake()
+    {
+        if (ES2.Exists("merky.txt"))
+        {
+            loadFromFile();
+            Load(gameStates.Count - 1);
+            CameraController cam = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<CameraController>();
+            cam.pinPoint();
+            cam.recenter();
+            cam.refocus();
+        }
+    }
     void OnApplicationQuit()
     {
         Save();

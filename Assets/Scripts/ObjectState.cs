@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityEngine.SceneManagement;
 
 public class ObjectState {
     
@@ -12,6 +13,7 @@ public class ObjectState {
     public float angularVelocity;
     //Name
     public string objectName;
+    public string sceneName;
 
     private Rigidbody2D rb2d;
     private GameObject go;
@@ -21,6 +23,7 @@ public class ObjectState {
     {
         go = goIn;
         objectName = go.name;
+        sceneName = go.scene.name;
         rb2d = go.GetComponent<Rigidbody2D>();
         saveState();
     }
@@ -37,7 +40,25 @@ public class ObjectState {
     {
         if (go == null)
         {
-            go = GameObject.Find(objectName);
+            Scene scene = SceneManager.GetSceneByName(sceneName);
+            if (scene.isLoaded)
+            {
+                foreach (GameObject sceneGo in scene.GetRootGameObjects())
+                {
+                    foreach(Transform childTransform in sceneGo.GetComponentsInChildren<Transform>())
+                    {
+                        GameObject childGo = childTransform.gameObject;
+                        if (childGo.name.Equals(objectName))
+                        {
+                            this.go = childGo;
+                        }
+                    }
+                }
+            }
+            else
+            {
+                return;
+            }
         }
         go.transform.position = position;
         go.transform.localScale = localScale;

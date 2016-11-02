@@ -106,6 +106,10 @@ public class GameManager : MonoBehaviour
             cam.refocus();
         }
     }
+    void Awake()
+    {
+        SceneManager.LoadScene(1, LoadSceneMode.Additive);//load the SceneLoaderTrigger scene
+    }
     void OnApplicationQuit()
     {
         Save();

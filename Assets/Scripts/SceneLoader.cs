@@ -19,6 +19,10 @@ public class SceneLoader : MonoBehaviour {
 
     void OnTriggerEnter2D(Collider2D coll)
     {
+        loadLevel();
+    }
+    void loadLevel()
+    {
         if (!isLoaded)
         {
             isLoaded = true;

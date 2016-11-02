@@ -22,7 +22,15 @@ public class GameManager : MonoBehaviour
     // Use this for initialization
     void Start()
     {
-        loadOnAwake();
+        if (ES2.Exists("merky.txt"))
+        {
+            loadFromFile();
+            Load(gameStates.Count - 1);
+            CameraController cam = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<CameraController>();
+            cam.pinPoint();
+            cam.recenter();
+            cam.refocus();
+        }
 
         refreshGameObjects();
 
@@ -92,19 +100,6 @@ public class GameManager : MonoBehaviour
     public void loadFromFile()
     {
         gameStates = ES2.LoadList<GameState>("merky.txt?tag=states");
-    }
-
-    void loadOnAwake()
-    {
-        if (ES2.Exists("merky.txt"))
-        {
-            loadFromFile();
-            Load(gameStates.Count - 1);
-            CameraController cam = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<CameraController>();
-            cam.pinPoint();
-            cam.recenter();
-            cam.refocus();
-        }
     }
     void Awake()
     {

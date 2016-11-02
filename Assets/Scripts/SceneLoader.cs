@@ -5,11 +5,11 @@ using System.Collections;
 public class SceneLoader : MonoBehaviour {
 
     public int sceneIndex;//the index of the scene to load
-    private bool isLoaded = false;
+    private Scene scene;
 
 	// Use this for initialization
 	void Start () {
-	
+        scene = SceneManager.GetSceneAt(sceneIndex);
 	}
 	
 	// Update is called once per frame
@@ -23,9 +23,8 @@ public class SceneLoader : MonoBehaviour {
     }
     void loadLevel()
     {
-        if (!isLoaded)
+        if ( ! scene.isLoaded)
         {
-            isLoaded = true;
             SceneManager.LoadScene(sceneIndex, LoadSceneMode.Additive);
         }
     }

@@ -34,15 +34,7 @@ public class GameManager : MonoBehaviour
 
         refreshGameObjects();
 
-        if (instance == null)
-        {
-            instance = this;
-        }
-        else
-        {
-            instance.addAll(gameObjects);
-            Destroy(gameObject);
-        }
+        
 
         camCtr = FindObjectOfType<CameraController>();
     }
@@ -103,6 +95,14 @@ public class GameManager : MonoBehaviour
     }
     void Awake()
     {
+        if (instance == null)
+        {
+            instance = this;
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
         SceneManager.LoadScene(1, LoadSceneMode.Additive);//load the SceneLoaderTrigger scene
     }
     void OnApplicationQuit()

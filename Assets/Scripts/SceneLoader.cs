@@ -5,7 +5,7 @@ using System.Collections;
 public class SceneLoader : MonoBehaviour {
 
     public int sceneIndex;//the index of the scene to load
-    bool isLoaded = false;
+    private bool isLoaded = false;
 
 	// Use this for initialization
 	void Start () {

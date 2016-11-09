@@ -13,11 +13,14 @@ public class GameManager : MonoBehaviour
     public int chosenId = 0;
     public int amount = 0;
     public GameObject playerGhost;//this is to show Merky in the past
+    private int rewindId = 0;//the id to eventually load back to
     private List<GameState> gameStates = new List<GameState>();
     private List<GameObject> gameObjects = new List<GameObject>();
 
     private static GameManager instance;
     private CameraController camCtr;
+    private float actionTime = Time.time;//used to determine how often to rewind
+    private const float rewindDelay = 0.05f;//how much to delay each rewind transition by
 
     // Use this for initialization
     void Start()
@@ -25,7 +28,8 @@ public class GameManager : MonoBehaviour
         if (ES2.Exists("merky.txt"))
         {
             loadFromFile();
-            Load(gameStates.Count - 1);
+            chosenId = rewindId = gameStates.Count - 1;
+            Load(chosenId);
             CameraController cam = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<CameraController>();
             cam.pinPoint();
             cam.recenter();
@@ -46,7 +50,7 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    // Update is called once per frame
+     // Update is called once per frame
     void Update()
     {
         if (save == true)
@@ -58,6 +62,14 @@ public class GameManager : MonoBehaviour
         {
             load = false;
             Load(chosenId);
+        }
+        if (chosenId > rewindId)
+        {
+            if (Time.time > actionTime)
+            {
+                actionTime = Time.time + rewindDelay;
+                Load(chosenId - 1);
+            }
         }
     }
 
@@ -74,9 +86,12 @@ public class GameManager : MonoBehaviour
     {
         gameStates.Add(new GameState(gameObjects));
         amount++;
+        chosenId++;
+        rewindId++;
     }
     public void Load(int gamestateId)
     {
+        chosenId = gamestateId;
         gameStates[gamestateId].load();
         for (int i = gameStates.Count - 1; i > gamestateId ; i--)
         {
@@ -84,6 +99,10 @@ public class GameManager : MonoBehaviour
             gameStates.RemoveAt(i);
         }
         GameState.nextid = gamestateId + 1;
+    }
+    void Rewind(int gamestateId)//rewinds one state at a time
+    {
+        rewindId = gamestateId;
     }
     public void saveToFile()
     {
@@ -143,7 +162,13 @@ public class GameManager : MonoBehaviour
         if (final != null)
         {
             hidePlayerGhosts();
-            Load(final.id);
+            if (final.id == chosenId)
+            {
+                Load(final.id);
+            }
+            else {
+                Rewind(final.id);
+            }
             camCtr.adjustScalePoint(-1);
             camCtr.recenter();
             camCtr.refocus();

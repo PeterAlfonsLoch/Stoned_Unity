@@ -101,6 +101,7 @@ public class GameManager : MonoBehaviour
         }
         else
         {
+            refreshGameObjects();
             Destroy(gameObject);
         }
         SceneManager.LoadScene(1, LoadSceneMode.Additive);//load the SceneLoaderTrigger scene

@@ -2,30 +2,48 @@
 using UnityEngine.SceneManagement;
 using System.Collections;
 
-public class SceneLoader : MonoBehaviour {
+public class SceneLoader : MonoBehaviour
+{
 
     public int sceneIndex;//the index of the scene to load
-    private Scene scene;
+    private PolygonCollider2D playerColl;
+    private bool isLoaded = false;
+    private BoxCollider2D bc;
 
-	// Use this for initialization
-	void Start () {
-        scene = SceneManager.GetSceneAt(sceneIndex);
-	}
-	
-	// Update is called once per frame
-	void Update () {
-	
-	}
-
-    void OnTriggerEnter2D(Collider2D coll)
+    // Use this for initialization
+    void Start()
     {
-        loadLevel();
+        bc = gameObject.GetComponent<BoxCollider2D>();
+        foreach (GameObject go in SceneManager.GetSceneAt(0).GetRootGameObjects())
+        {
+            if (go.tag.Equals("Player"))
+            {
+                playerColl = go.GetComponent<PolygonCollider2D>();
+                break;
+            }
+        }
+    }
+
+    void Update()
+    {
+
+        if (!isLoaded && playerColl.bounds.Intersects(bc.bounds))
+        {
+            isLoaded = true;
+            loadLevel();
+        }
+        if (isLoaded && !playerColl.bounds.Intersects(bc.bounds))
+        {
+            isLoaded = false;
+            unloadLevel();
+        }
     }
     void loadLevel()
     {
-        if ( ! scene.isLoaded)
-        {
-            SceneManager.LoadScene(sceneIndex, LoadSceneMode.Additive);
-        }
+        SceneManager.LoadScene(sceneIndex, LoadSceneMode.Additive);
+    }
+    void unloadLevel()
+    {
+        SceneManager.UnloadSceneAsync(sceneIndex);
     }
 }

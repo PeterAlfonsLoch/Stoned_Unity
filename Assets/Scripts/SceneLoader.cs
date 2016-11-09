@@ -5,7 +5,7 @@ using System.Collections;
 public class SceneLoader : MonoBehaviour
 {
 
-    public int sceneIndex;//the index of the scene to load
+    public string sceneName;//the index of the scene to load
     private PolygonCollider2D playerColl;
     private bool isLoaded = false;
     private BoxCollider2D bc;
@@ -40,10 +40,10 @@ public class SceneLoader : MonoBehaviour
     }
     void loadLevel()
     {
-        SceneManager.LoadScene(sceneIndex, LoadSceneMode.Additive);
+        SceneManager.LoadScene(sceneName, LoadSceneMode.Additive);
     }
     void unloadLevel()
     {
-        SceneManager.UnloadSceneAsync(sceneIndex);
+        SceneManager.UnloadSceneAsync(sceneName);
     }
 }

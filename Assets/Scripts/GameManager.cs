@@ -19,7 +19,7 @@ public class GameManager : MonoBehaviour
 
     private static GameManager instance;
     private CameraController camCtr;
-    private float actionTime = Time.time;//used to determine how often to rewind
+    private float actionTime = 0;//used to determine how often to rewind
     private const float rewindDelay = 0.05f;//how much to delay each rewind transition by
 
     // Use this for initialization
@@ -99,6 +99,9 @@ public class GameManager : MonoBehaviour
             gameStates.RemoveAt(i);
         }
         GameState.nextid = gamestateId + 1;
+        //Recenter the camera
+        camCtr.recenter();
+        camCtr.refocus();
     }
     void Rewind(int gamestateId)//rewinds one state at a time
     {
@@ -170,8 +173,6 @@ public class GameManager : MonoBehaviour
                 Rewind(final.id);
             }
             camCtr.adjustScalePoint(-1);
-            camCtr.recenter();
-            camCtr.refocus();
         }
     }
 }

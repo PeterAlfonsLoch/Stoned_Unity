@@ -15,6 +15,7 @@ public class GameManager : MonoBehaviour
     public GameObject playerGhost;//this is to show Merky in the past
     private int rewindId = 0;//the id to eventually load back to
     private List<GameState> gameStates = new List<GameState>();
+    private List<SceneLoader> sceneLoaders = new List<SceneLoader>();
     private List<GameObject> gameObjects = new List<GameObject>();
 
     private static GameManager instance;
@@ -25,6 +26,11 @@ public class GameManager : MonoBehaviour
     // Use this for initialization
     void Start()
     {
+        foreach (GameObject go in SceneManager.GetSceneByName("SceneLoaderTriggers").GetRootGameObjects())
+        {
+            sceneLoaders.Add(go.GetComponent<SceneLoader>());
+        }
+        camCtr = FindObjectOfType<CameraController>();
         if (ES2.Exists("merky.txt"))
         {
             loadFromFile();
@@ -37,10 +43,6 @@ public class GameManager : MonoBehaviour
         }
 
         refreshGameObjects();
-
-        
-
-        camCtr = FindObjectOfType<CameraController>();
     }
     public void addAll(List<GameObject> list)
     {
@@ -70,6 +72,10 @@ public class GameManager : MonoBehaviour
                 actionTime = Time.time + rewindDelay;
                 Load(chosenId - 1);
             }
+        }
+        foreach (SceneLoader sl in sceneLoaders)
+        {
+            sl.check();
         }
     }
 

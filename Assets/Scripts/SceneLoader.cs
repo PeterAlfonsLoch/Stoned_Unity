@@ -22,11 +22,11 @@ public class SceneLoader : MonoBehaviour
                 break;
             }
         }
+        check();
     }
 
-    void Update()
+    public void check()
     {
-
         if (!isLoaded && playerColl.bounds.Intersects(bc.bounds))
         {
             isLoaded = true;

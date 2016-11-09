@@ -31,15 +31,15 @@ public class GameManager : MonoBehaviour
             sceneLoaders.Add(go.GetComponent<SceneLoader>());
         }
         camCtr = FindObjectOfType<CameraController>();
+        CameraController cam = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<CameraController>();
+        cam.pinPoint();
+        cam.recenter();
+        cam.refocus();
         if (ES2.Exists("merky.txt"))
         {
             loadFromFile();
             chosenId = rewindId = gameStates.Count - 1;
             Load(chosenId);
-            CameraController cam = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<CameraController>();
-            cam.pinPoint();
-            cam.recenter();
-            cam.refocus();
         }
 
         refreshGameObjects();

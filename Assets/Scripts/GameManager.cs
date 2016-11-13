@@ -22,6 +22,7 @@ public class GameManager : MonoBehaviour
     private CameraController camCtr;
     private float actionTime = 0;//used to determine how often to rewind
     private const float rewindDelay = 0.05f;//how much to delay each rewind transition by
+    private string newlyLoadedScene = null;
 
     // Use this for initialization
     void Start()
@@ -43,6 +44,8 @@ public class GameManager : MonoBehaviour
         }
 
         refreshGameObjects();
+        SceneManager.sceneLoaded += sceneLoaded;
+        SceneManager.sceneUnloaded += sceneUnloaded;
     }
     public void addAll(List<GameObject> list)
     {
@@ -77,6 +80,22 @@ public class GameManager : MonoBehaviour
         {
             sl.check();
         }
+        if (newlyLoadedScene != null)
+        {
+            refreshGameObjects();
+            LoadObjectsFromScene(SceneManager.GetSceneByName(newlyLoadedScene));
+            newlyLoadedScene = null;
+        }
+    }
+
+    void sceneLoaded(Scene s, LoadSceneMode m)
+    {
+        refreshGameObjects();
+        newlyLoadedScene = s.name;
+    }
+    void sceneUnloaded(Scene s)
+    {
+        refreshGameObjects();
     }
 
     public void refreshGameObjects()
@@ -109,6 +128,26 @@ public class GameManager : MonoBehaviour
         camCtr.recenter();
         camCtr.refocus();
     }
+    public void LoadObjectsFromScene(Scene s)
+    {
+        foreach (GameObject go in gameObjects)
+        {
+            if (go.scene.Equals(s))
+            {
+                for (int stateid = chosenId; stateid >= 0; stateid--)
+                {
+                    if (gameStates[stateid].loadObject(go))
+                    {
+                        break;
+                    }
+                    else
+                    {
+                        //continue until you find the game state that has the most recent information about this object
+                    }
+                }
+            }
+        }
+    }
     void Rewind(int gamestateId)//rewinds one state at a time
     {
         rewindId = gamestateId;
@@ -129,7 +168,7 @@ public class GameManager : MonoBehaviour
         }
         else
         {
-            refreshGameObjects();
+            return;
             Destroy(gameObject);
         }
         SceneManager.LoadScene(1, LoadSceneMode.Additive);//load the SceneLoaderTrigger scene

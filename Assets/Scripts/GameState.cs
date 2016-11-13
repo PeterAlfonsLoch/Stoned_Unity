@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEngine.SceneManagement;
 
 public class GameState
 {
@@ -32,6 +33,18 @@ public class GameState
         {
             os.loadState();
         }
+    }
+    public bool loadObject(GameObject go)
+    {
+        foreach (ObjectState os in states)
+        {
+            if (os.sceneName.Equals(go.scene.name) && os.objectName.Equals(go.name))
+            {
+                os.loadState();
+                return true;
+            }
+        }
+        return false;
     }
     public void showRepresentation(GameObject ghostPrefab)
     {

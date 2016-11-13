@@ -40,8 +40,9 @@ public class ObjectState {
     {
         if (go == null)
         {
+            Debug.Log("/!\\ go is " + go);
             Scene scene = SceneManager.GetSceneByName(sceneName);
-            if (scene.isLoaded)
+            if (scene.IsValid())
             {
                 foreach (GameObject sceneGo in scene.GetRootGameObjects())
                 {
@@ -54,12 +55,12 @@ public class ObjectState {
                         }
                     }
                 }
-            }
-            else
-            {
-                return;
-            }
         }
+        else
+        {
+            return;
+        }
+    }
         go.transform.position = position;
         go.transform.localScale = localScale;
         go.transform.rotation = rotation;

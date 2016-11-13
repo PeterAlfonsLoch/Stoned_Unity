@@ -36,6 +36,7 @@ public class GameManager : MonoBehaviour
         cam.pinPoint();
         cam.recenter();
         cam.refocus();
+        chosenId = -1;
         if (ES2.Exists("merky.txt"))
         {
             loadFromFile();
@@ -85,6 +86,10 @@ public class GameManager : MonoBehaviour
             refreshGameObjects();
             LoadObjectsFromScene(SceneManager.GetSceneByName(newlyLoadedScene));
             newlyLoadedScene = null;
+        }
+        if (gameStates.Count == 0)
+        {
+            Save();
         }
     }
 

@@ -23,6 +23,7 @@ public class GameManager : MonoBehaviour
     private float actionTime = 0;//used to determine how often to rewind
     private const float rewindDelay = 0.05f;//how much to delay each rewind transition by
     private string newlyLoadedScene = null;
+    private string unloadedScene = null;
 
     // Use this for initialization
     void Start()
@@ -87,6 +88,11 @@ public class GameManager : MonoBehaviour
             LoadObjectsFromScene(SceneManager.GetSceneByName(newlyLoadedScene));
             newlyLoadedScene = null;
         }
+        if (unloadedScene != null)
+        {
+            refreshGameObjects();
+            unloadedScene = null;
+        }
         if (gameStates.Count == 0)
         {
             Save();
@@ -101,6 +107,7 @@ public class GameManager : MonoBehaviour
     void sceneUnloaded(Scene s)
     {
         refreshGameObjects();
+        unloadedScene = s.name;
     }
 
     public void refreshGameObjects()

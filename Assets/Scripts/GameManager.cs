@@ -168,8 +168,8 @@ public class GameManager : MonoBehaviour
         }
         else
         {
-            return;
             Destroy(gameObject);
+            return;
         }
         SceneManager.LoadScene(1, LoadSceneMode.Additive);//load the SceneLoaderTrigger scene
     }

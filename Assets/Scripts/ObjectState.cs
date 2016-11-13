@@ -40,7 +40,6 @@ public class ObjectState {
     {
         if (go == null)
         {
-            Debug.Log("/!\\ go is " + go);
             Scene scene = SceneManager.GetSceneByName(sceneName);
             if (scene.IsValid())
             {

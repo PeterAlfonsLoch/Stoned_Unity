@@ -20,6 +20,7 @@ public class GameState
     {
         foreach (GameObject go in list){
             ObjectState os = new ObjectState(go);
+            os.saveState();
             states.Add(os);
             if (go.name.Equals("merky"))
             {

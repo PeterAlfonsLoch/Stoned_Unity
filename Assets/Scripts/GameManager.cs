@@ -117,6 +117,10 @@ public class GameManager : MonoBehaviour
         {
             gameObjects.Add(rb.gameObject);
         }
+        foreach (SavableMonoBehaviour smb in FindObjectsOfType<SavableMonoBehaviour>())
+        {
+            gameObjects.Add(smb.gameObject);
+        }
     }
 
     public void Save()

@@ -2,8 +2,9 @@
 using System.Collections;
 using UnityEngine.SceneManagement;
 
-public class ObjectState {
-    
+public class ObjectState
+{
+
     //Transform
     public Vector3 position;
     public Vector3 localScale;
@@ -11,12 +12,15 @@ public class ObjectState {
     //RigidBody2D
     public Vector2 velocity;
     public float angularVelocity;
+    //Saveable Object
+    public SavableObject so;
     //Name
     public string objectName;
     public string sceneName;
 
     private Rigidbody2D rb2d;
     private GameObject go;
+    private SavableMonoBehaviour smb;
 
     public ObjectState() { }
     public ObjectState(GameObject goIn)
@@ -25,7 +29,7 @@ public class ObjectState {
         objectName = go.name;
         sceneName = go.scene.name;
         rb2d = go.GetComponent<Rigidbody2D>();
-        saveState();
+        smb = go.GetComponent<SavableMonoBehaviour>();
     }
 
     public void saveState()
@@ -33,19 +37,26 @@ public class ObjectState {
         position = go.transform.position;
         localScale = go.transform.localScale;
         rotation = go.transform.rotation;
-        velocity = rb2d.velocity;
-        angularVelocity = rb2d.angularVelocity;
+        if (rb2d != null)
+        {
+            velocity = rb2d.velocity;
+            angularVelocity = rb2d.angularVelocity;
+        }
+        if (smb != null)
+        {
+            this.so = smb.getSavableObject();
+        }
     }
     public void loadState()
     {
-        if (go == null)
+        if (go == null || !ReferenceEquals(go, null))//2016-11-20: reference equals test copied from an answer by sindrijo: http://answers.unity3d.com/questions/13840/how-to-detect-if-a-gameobject-has-been-destroyed.html
         {
             Scene scene = SceneManager.GetSceneByName(sceneName);
             if (scene.IsValid())
             {
                 foreach (GameObject sceneGo in scene.GetRootGameObjects())
                 {
-                    foreach(Transform childTransform in sceneGo.GetComponentsInChildren<Transform>())
+                    foreach (Transform childTransform in sceneGo.GetComponentsInChildren<Transform>())
                     {
                         GameObject childGo = childTransform.gameObject;
                         if (childGo.name.Equals(objectName))
@@ -54,17 +65,24 @@ public class ObjectState {
                         }
                     }
                 }
+            }
+            else
+            {
+                return;
+            }
         }
-        else
-        {
-            return;
-        }
-    }
         go.transform.position = position;
         go.transform.localScale = localScale;
         go.transform.rotation = rotation;
         rb2d = go.GetComponent<Rigidbody2D>();
-        rb2d.velocity = velocity;
-        rb2d.angularVelocity = angularVelocity;
+        if (rb2d != null)
+        {
+            rb2d.velocity = velocity;
+            rb2d.angularVelocity = angularVelocity;
+        }
+        if (this.so != null)
+        {
+            this.so.loadState(go);
+        }
     }
 }

@@ -9,7 +9,8 @@ public class ES2UserType_CrackedGroundCheckerSavable : ES2Type
 	{
 		CrackedGroundCheckerSavable data = (CrackedGroundCheckerSavable)obj;
 		// Add your writer.Write calls here.
-		writer.Write(data.cracked);
+        writer.Write("CrackedGroundCheckerSavable");
+        writer.Write(data.cracked);
 
 	}
 	
@@ -23,7 +24,8 @@ public class ES2UserType_CrackedGroundCheckerSavable : ES2Type
 	public override void Read(ES2Reader reader, object c)
 	{
 		CrackedGroundCheckerSavable data = (CrackedGroundCheckerSavable)c;
-		// Add your reader.Read calls here to read the data into the object.
+        // Add your reader.Read calls here to read the data into the object.
+        string type = reader.Read<string>();
 		data.cracked = reader.Read<System.Boolean>();
 
 	}

@@ -14,6 +14,7 @@ public class ES2UserType_ObjectState : ES2Type
 		writer.Write(data.rotation);
 		writer.Write(data.velocity);
 		writer.Write(data.angularVelocity);
+		writer.Write(data.so);
 		writer.Write(data.objectName);
 		writer.Write(data.sceneName);
 
@@ -35,12 +36,12 @@ public class ES2UserType_ObjectState : ES2Type
 		data.rotation = reader.Read<UnityEngine.Quaternion>();
 		data.velocity = reader.Read<UnityEngine.Vector2>();
 		data.angularVelocity = reader.Read<System.Single>();
+		data.so = reader.Read<SavableObject>();
 		data.objectName = reader.Read<System.String>();
 		data.sceneName = reader.Read<System.String>();
 
 	}
 	
 	/* ! Don't modify anything below this line ! */
-	public ES2UserType_ObjectState():base(typeof(ObjectState)){ }
-    public ES2UserType_ObjectState(System.Type to) : base(to) { }
+	public ES2UserType_ObjectState():base(typeof(ObjectState)){}
 }

@@ -14,6 +14,7 @@ public class ObjectState
     public float angularVelocity;
     //Saveable Object
     public SavableObject so;
+    public static SavableObject dummySO = new SavableObject();//for objects that don't have them
     //Name
     public string objectName;
     public string sceneName;
@@ -45,6 +46,10 @@ public class ObjectState
         if (smb != null)
         {
             this.so = smb.getSavableObject();
+        }
+        else
+        {
+            this.so = dummySO;
         }
     }
     public void loadState()

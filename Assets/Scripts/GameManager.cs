@@ -17,6 +17,8 @@ public class GameManager : MonoBehaviour
     private List<GameState> gameStates = new List<GameState>();
     private List<SceneLoader> sceneLoaders = new List<SceneLoader>();
     private List<GameObject> gameObjects = new List<GameObject>();
+    //Memories
+    private List<MemoryObject> memories = new List<MemoryObject>();
 
     private static GameManager instance;
     private CameraController camCtr;
@@ -43,6 +45,7 @@ public class GameManager : MonoBehaviour
             loadFromFile();
             chosenId = rewindId = gameStates.Count - 1;
             Load(chosenId);
+            LoadMemories();
         }
 
         refreshGameObjects();
@@ -121,6 +124,24 @@ public class GameManager : MonoBehaviour
         {
             gameObjects.Add(smb.gameObject);
         }
+        foreach(MemoryMonoBehaviour mmb in FindObjectsOfType<MemoryMonoBehaviour>())
+        {
+            //load state if found, save state if not foud
+            bool foundMO = false;
+            foreach (MemoryObject mo in instance.memories)
+            {
+                if (mo.isFor(mmb))
+                {
+                    foundMO = true;
+                    mo.loadState(mmb.gameObject);
+                    break;
+                }
+            }
+            if (!foundMO)
+            {
+                instance.memories.Add(mmb.getMemoryObject());
+            }
+        }
     }
 
     public void Save()
@@ -129,6 +150,23 @@ public class GameManager : MonoBehaviour
         amount++;
         chosenId++;
         rewindId++;
+    }
+    public static void saveMemory(MemoryMonoBehaviour mmb)
+    {//2016-11-23: CODE HAZARD: mixture of static and non-static methods, will cause error if there are ever more than 1 instance of GameManager
+        bool foundMO = false;
+        foreach (MemoryObject mo in instance.memories)
+        {
+            if (mo.isFor(mmb))
+            {
+                foundMO = true;
+                mo.saveState(mmb);
+                break;
+            }
+        }
+        if (!foundMO)
+        {
+            instance.memories.Add(mmb.getMemoryObject());
+        }
     }
     public void Load(int gamestateId)
     {
@@ -168,12 +206,21 @@ public class GameManager : MonoBehaviour
     {
         rewindId = gamestateId;
     }
+    void LoadMemories()
+    {
+        foreach(MemoryObject mo in memories)
+        {
+            mo.loadState();
+        }
+    }
     public void saveToFile()
     {
+        ES2.Save(memories, "merky.txt?tag=memories");
         ES2.Save(gameStates, "merky.txt?tag=states");
     }
     public void loadFromFile()
     {
+        memories = ES2.LoadList<MemoryObject>("merky.txt?tag=memories");
         gameStates = ES2.LoadList<GameState>("merky.txt?tag=states");
     }
     void Awake()

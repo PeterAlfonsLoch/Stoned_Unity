@@ -6,7 +6,8 @@ Library/
 Assets/UnityTestTools/
 Assets/Ferr/
 Assets/VoxelBusters
-Assets/Easy Save 2/
+Assets/Easy Save 2/*
+!Assets/Easy Save 2/Types
 Assets/PLugins/
 
 

@@ -24,7 +24,7 @@ public class CrackedGroundChecker : SavableMonoBehaviour
         return new CrackedGroundCheckerSavable(this);
     }
 
-    void setCracked(bool nowCracked)
+    public void setCracked(bool nowCracked)
     {
         this.cracked = nowCracked;
         if (!cracked)
@@ -135,31 +135,32 @@ public class CrackedGroundChecker : SavableMonoBehaviour
         setCracked(true);
     }
 
-    //
-    //Inner class that saves the important variables of this class
-    //
-    public class CrackedGroundCheckerSavable : SavableObject
+}
+
+//
+//Class that saves the important variables of this class
+//
+public class CrackedGroundCheckerSavable : SavableObject
+{
+    public bool cracked;
+
+    public CrackedGroundCheckerSavable() { }//only called by the method that reads it from the file
+    public CrackedGroundCheckerSavable(CrackedGroundChecker cgc)
     {
-        bool cracked;
-
-        public CrackedGroundCheckerSavable(CrackedGroundChecker cgc)
-        {
-            saveState(cgc);
-        }
-
-        public override void loadState(GameObject go)
-        {
-            CrackedGroundChecker cgc = go.GetComponent<CrackedGroundChecker>();
-            if (cgc != null)
-            {
-                cgc.setCracked(this.cracked);
-            }
-        }
-        public override void saveState(SavableMonoBehaviour smb)
-        {
-            CrackedGroundChecker cgc = ((CrackedGroundChecker)smb);
-            this.cracked = cgc.cracked;
-        }
+        saveState(cgc);
     }
 
+    public override void loadState(GameObject go)
+    {
+        CrackedGroundChecker cgc = go.GetComponent<CrackedGroundChecker>();
+        if (cgc != null)
+        {
+            cgc.setCracked(this.cracked);
+        }
+    }
+    public override void saveState(SavableMonoBehaviour smb)
+    {
+        CrackedGroundChecker cgc = ((CrackedGroundChecker)smb);
+        this.cracked = cgc.cracked;
+    }
 }

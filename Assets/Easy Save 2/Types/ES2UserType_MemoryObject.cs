@@ -13,6 +13,11 @@ public class ES2UserType_MemoryObject : ES2Type
             SecretAreaTriggerMemory satm = (SecretAreaTriggerMemory)obj;
             writer.Write("SecretAreaTriggerMemory");
         }
+        else if (obj.GetType() == typeof(CheckPointCheckerMemory))//2016-11-26
+        {
+            CheckPointCheckerMemory cpcm = (CheckPointCheckerMemory)obj;
+            writer.Write("CheckPointCheckerMemory");
+        }
         else
         {
             writer.Write("None");
@@ -31,8 +36,11 @@ public class ES2UserType_MemoryObject : ES2Type
         string objType = reader.Read<string>();
         if (objType == "SecretAreaTriggerMemory")//2016-11-23: copied from ES2UserType_SavableObject.Read(.)
         {
-            data = new SecretAreaTriggerMemory();
-           
+            data = new SecretAreaTriggerMemory();           
+        }
+        else if (objType == "CheckPointCheckerMemory")//2016-11-26
+        {
+            data = new CheckPointCheckerMemory();
         }
         else
         {

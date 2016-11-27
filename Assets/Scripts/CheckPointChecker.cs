@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class CheckPointChecker : MonoBehaviour
+public class CheckPointChecker : MemoryMonoBehaviour
 {
 
     public static GameObject current = null;//the current checkpoint
@@ -26,7 +26,7 @@ public class CheckPointChecker : MonoBehaviour
     //When a player touches this checkpoint, activate it
     void OnCollisionEnter2D(Collision2D coll)
     {
-        activated = true;
+        activate();
     }
 
     /**
@@ -36,10 +36,15 @@ public class CheckPointChecker : MonoBehaviour
     {
         trigger();
     }
+    public void activate()
+    {
+        activated = true;
+        GameManager.saveMemory(this);
+    }
     public void trigger()
     {
         current = this.gameObject;
-        activated = true;
+        activate();
         ghost.SetActive(false);
         plyrController.setIsInCheckPoint(true);
         player.transform.position = this.gameObject.transform.position;
@@ -56,7 +61,7 @@ public class CheckPointChecker : MonoBehaviour
         if (current == this.gameObject)
         {
             plyrController.setIsInCheckPoint(false);
-            activated = true;
+            activate();
             clearPostTeleport(true);
             current = null;
         }
@@ -130,4 +135,40 @@ public class CheckPointChecker : MonoBehaviour
             }
         }
     }
+
+    public override MemoryObject getMemoryObject()
+    {
+        return new CheckPointCheckerMemory(this);
+    }
 }
+
+//
+//Class that saves the important variables of this class
+//2016-11-26: copied from SecretAreaTrigger::SecretAreaTriggerMemory
+//
+public class CheckPointCheckerMemory : MemoryObject
+{
+    public CheckPointCheckerMemory() { }//only called by the method that reads it from the file
+    public CheckPointCheckerMemory(CheckPointChecker cpc) : base(cpc)
+    {
+        saveState(cpc);
+    }
+
+    public override void loadState(GameObject go)
+    {
+        CheckPointChecker cpc = go.GetComponent<CheckPointChecker>();
+        if (cpc != null)
+        {
+            if (this.found)
+            {
+                cpc.activate();
+            }
+        }
+    }
+    public override void saveState(MemoryMonoBehaviour mmb)
+    {
+        CheckPointChecker cpc = ((CheckPointChecker)mmb);
+        this.found = cpc.activated;
+    }
+}
+

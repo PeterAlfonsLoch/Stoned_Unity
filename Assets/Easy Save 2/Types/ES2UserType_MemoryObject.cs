@@ -8,10 +8,10 @@ public class ES2UserType_MemoryObject : ES2Type
 	public override void Write(object obj, ES2Writer writer)
 	{
 		MemoryObject data = (MemoryObject)obj;
-        if (obj.GetType() == typeof(SecretAreaTriggerMemory))//2016-11-23: copied from ES2UserType_SavableObject.Write(..)
+        if (obj.GetType() == typeof(HiddenAreaMemory))//2016-11-23: copied from ES2UserType_SavableObject.Write(..)
         {
-            SecretAreaTriggerMemory satm = (SecretAreaTriggerMemory)obj;
-            writer.Write("SecretAreaTriggerMemory");
+            HiddenAreaMemory satm = (HiddenAreaMemory)obj;
+            writer.Write("HiddenAreaMemory");
         }
         else if (obj.GetType() == typeof(CheckPointCheckerMemory))//2016-11-26
         {
@@ -34,9 +34,9 @@ public class ES2UserType_MemoryObject : ES2Type
 	{
         MemoryObject data; 
         string objType = reader.Read<string>();
-        if (objType == "SecretAreaTriggerMemory")//2016-11-23: copied from ES2UserType_SavableObject.Read(.)
+        if (objType == "HiddenAreaMemory")//2016-11-23: copied from ES2UserType_SavableObject.Read(.)
         {
-            data = new SecretAreaTriggerMemory();           
+            data = new HiddenAreaMemory();           
         }
         else if (objType == "CheckPointCheckerMemory")//2016-11-26
         {

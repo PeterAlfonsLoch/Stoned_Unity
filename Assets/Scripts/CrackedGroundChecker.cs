@@ -39,13 +39,13 @@ public class CrackedGroundChecker : SavableMonoBehaviour
         }
         if (nowCracked)
         {
-            if (secretHider != null)
+            if (secretHider != null && !ReferenceEquals(secretHider, null))//2016-11-26: reference equal null test copied from an answer by sindrijo: http://answers.unity3d.com/questions/13840/how-to-detect-if-a-gameobject-has-been-destroyed.html
             {
-                Destroy(secretHider);
+                secretHider.GetComponent<HiddenArea>().previouslyDiscovered();
             }
-            if (secretHider2 != null)
+            if (secretHider2 != null && !ReferenceEquals(secretHider2, null))
             {
-                Destroy(secretHider2);
+                secretHider2.GetComponent<HiddenArea>().previouslyDiscovered();
             }
         }
     }

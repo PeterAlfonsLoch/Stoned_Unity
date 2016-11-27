@@ -37,6 +37,17 @@ public class CrackedGroundChecker : SavableMonoBehaviour
             transform.position = new Vector3(transform.position.x, transform.position.y, -10);
             bc2d.enabled = false;
         }
+        if (nowCracked)
+        {
+            if (secretHider != null)
+            {
+                Destroy(secretHider);
+            }
+            if (secretHider2 != null)
+            {
+                Destroy(secretHider2);
+            }
+        }
     }
 
     void OnCollisionEnter2D(Collision2D coll)

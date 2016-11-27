@@ -57,7 +57,7 @@ public class ObjectState
         if (go == null || !ReferenceEquals(go, null))//2016-11-20: reference equals test copied from an answer by sindrijo: http://answers.unity3d.com/questions/13840/how-to-detect-if-a-gameobject-has-been-destroyed.html
         {
             Scene scene = SceneManager.GetSceneByName(sceneName);
-            if (scene.IsValid())
+            if (scene.IsValid() && scene.isLoaded)
             {
                 foreach (GameObject sceneGo in scene.GetRootGameObjects())
                 {

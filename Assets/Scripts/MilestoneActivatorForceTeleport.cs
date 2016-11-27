@@ -5,6 +5,6 @@ public class MilestoneActivatorForceTeleport : MilestoneActivator
 
    public override void activateEffect()
     {
-        playerObject.GetComponent<ForceTeleportAbility>().enabled = true;
+        GameManager.getPlayerObject().GetComponent<ForceTeleportAbility>().enabled = true;
     }
 }

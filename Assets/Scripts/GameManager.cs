@@ -12,7 +12,7 @@ public class GameManager : MonoBehaviour
     public bool load = false;
     public int chosenId = 0;
     public int amount = 0;
-    public GameObject playerGhost;//this is to show Merky in the past
+    public GameObject playerGhost;//this is to show Merky in the past (prefab)
     private int rewindId = 0;//the id to eventually load back to
     private List<GameState> gameStates = new List<GameState>();
     private List<SceneLoader> sceneLoaders = new List<SceneLoader>();
@@ -21,6 +21,7 @@ public class GameManager : MonoBehaviour
     private List<MemoryObject> memories = new List<MemoryObject>();
 
     private static GameManager instance;
+    private static GameObject playerObject;//the player object
     private CameraController camCtr;
     private float actionTime = 0;//used to determine how often to rewind
     private const float rewindDelay = 0.05f;//how much to delay each rewind transition by
@@ -30,6 +31,7 @@ public class GameManager : MonoBehaviour
     // Use this for initialization
     void Start()
     {
+        playerObject = GameObject.FindGameObjectWithTag("Player");
         foreach (GameObject go in SceneManager.GetSceneByName("SceneLoaderTriggers").GetRootGameObjects())
         {
             sceneLoaders.Add(go.GetComponent<SceneLoader>());
@@ -240,6 +242,11 @@ public class GameManager : MonoBehaviour
     {
         Save();
         saveToFile();
+    }
+
+    public static GameObject getPlayerObject()
+    {
+        return playerObject;
     }
 
     public void showPlayerGhosts()

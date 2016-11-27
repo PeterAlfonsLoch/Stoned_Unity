@@ -6,7 +6,6 @@ public abstract class MilestoneActivator : MemoryMonoBehaviour {
     public GameObject particle;
     public int starAmount = 25;
     public int starSpawnDuration = 25;
-    protected GameObject playerObject;
     
     public bool used = false;
     private float minX, maxX, minY, maxY;
@@ -14,7 +13,6 @@ public abstract class MilestoneActivator : MemoryMonoBehaviour {
     // Use this for initialization
     void Start()
     {
-        playerObject = GameObject.FindGameObjectWithTag("Player");
         Bounds bounds = GetComponentInParent<SpriteRenderer>().bounds;
         float extra = 0.1f;
         minX = bounds.min.x - extra;
@@ -25,7 +23,7 @@ public abstract class MilestoneActivator : MemoryMonoBehaviour {
 
     void OnTriggerEnter2D(Collider2D coll)
     {
-        if (!used && coll.gameObject.Equals(playerObject))
+        if (!used && coll.gameObject.Equals(GameManager.getPlayerObject()))
         {
             sparkle();
             used = true;

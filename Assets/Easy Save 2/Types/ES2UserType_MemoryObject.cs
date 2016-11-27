@@ -18,6 +18,11 @@ public class ES2UserType_MemoryObject : ES2Type
             CheckPointCheckerMemory cpcm = (CheckPointCheckerMemory)obj;
             writer.Write("CheckPointCheckerMemory");
         }
+        else if (obj.GetType() == typeof(MilestoneActivatorMemory))//2016-11-26
+        {
+            MilestoneActivatorMemory mam = (MilestoneActivatorMemory)obj;
+            writer.Write("MilestoneActivatorMemory");
+        }
         else
         {
             writer.Write("None");
@@ -41,6 +46,10 @@ public class ES2UserType_MemoryObject : ES2Type
         else if (objType == "CheckPointCheckerMemory")//2016-11-26
         {
             data = new CheckPointCheckerMemory();
+        }
+        else if (objType == "MilestoneActivatorMemory")//2016-11-26
+        {
+            data = new MilestoneActivatorMemory();
         }
         else
         {

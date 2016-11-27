@@ -1,14 +1,14 @@
 ﻿using UnityEngine;
 
-public abstract class MilestoneActivator : MonoBehaviour {
+public abstract class MilestoneActivator : MemoryMonoBehaviour {
 
     public int incrementAmount = 1;
     public GameObject particle;
     public int starAmount = 25;
     public int starSpawnDuration = 25;
-
     protected GameObject playerObject;
-    protected bool used = false;
+    
+    public bool used = false;
     private float minX, maxX, minY, maxY;
 
     // Use this for initialization
@@ -30,6 +30,7 @@ public abstract class MilestoneActivator : MonoBehaviour {
             sparkle();
             used = true;
             activateEffect();
+            GameManager.saveMemory(this);
             Destroy(this);//makes sure it can only be used once
         }
     }
@@ -47,5 +48,40 @@ public abstract class MilestoneActivator : MonoBehaviour {
             tsu.position();
             tsu.turnOn(true);
         }
+    }
+
+    public override MemoryObject getMemoryObject()
+    {
+        return new MilestoneActivatorMemory(this);
+    }
+}
+
+//
+//Class that saves the important variables of this class
+//
+public class MilestoneActivatorMemory : MemoryObject
+{
+    public MilestoneActivatorMemory() { }//only called by the method that reads it from the file
+    public MilestoneActivatorMemory(MilestoneActivator ha) : base(ha)
+    {
+        saveState(ha);
+    }
+
+    public override void loadState(GameObject go)
+    {
+        MilestoneActivator ma = go.GetComponent<MilestoneActivator>();
+        if (ma != null)
+        {
+            if (this.found)
+            {
+                ma.used = true;
+                ma.activateEffect();
+            }
+        }
+    }
+    public override void saveState(MemoryMonoBehaviour mmb)
+    {
+        MilestoneActivator ma = ((MilestoneActivator)mmb);
+        this.found = ma.used;
     }
 }

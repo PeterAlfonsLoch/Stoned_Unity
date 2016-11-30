@@ -10,6 +10,8 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/SceneLoaderTriggers.unity
   - enabled: 1
+    path: Assets/Scenes/CheckPointScene.unity
+  - enabled: 1
     path: Assets/Scenes/TutScene01b.unity
   - enabled: 1
     path: Assets/Scenes/ForceTeleportScene03.unity

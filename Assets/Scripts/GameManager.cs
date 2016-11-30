@@ -19,6 +19,8 @@ public class GameManager : MonoBehaviour
     private List<GameObject> gameObjects = new List<GameObject>();
     //Memories
     private List<MemoryObject> memories = new List<MemoryObject>();
+    //Checkpoints
+    private List<CheckPointChecker> activeCheckPoints = new List<CheckPointChecker>();
 
     private static GameManager instance;
     private static GameObject playerObject;//the player object
@@ -170,6 +172,10 @@ public class GameManager : MonoBehaviour
             instance.memories.Add(mmb.getMemoryObject());
         }
     }
+    public static void saveCheckPoint(CheckPointChecker cpc)//checkpoints have to work across levels, so they need to be saved separately
+    {
+        instance.activeCheckPoints.Add(cpc);
+    }
     public void Load(int gamestateId)
     {
         chosenId = gamestateId;
@@ -242,6 +248,11 @@ public class GameManager : MonoBehaviour
     {
         Save();
         saveToFile();
+    }
+
+    public static List<CheckPointChecker> getActiveCheckPoints()
+    {
+        return instance.activeCheckPoints;
     }
 
     public static GameObject getPlayerObject()

@@ -40,6 +40,8 @@ public class CheckPointChecker : MemoryMonoBehaviour
     {
         activated = true;
         GameManager.saveMemory(this);
+        GameManager.saveCheckPoint(this);
+        DontDestroyOnLoad(gameObject);
     }
     public void trigger()
     {
@@ -48,11 +50,11 @@ public class CheckPointChecker : MemoryMonoBehaviour
         ghost.SetActive(false);
         plyrController.setIsInCheckPoint(true);
         player.transform.position = this.gameObject.transform.position;
-        foreach (GameObject go in GameObject.FindGameObjectsWithTag("Checkpoint_Root"))
+        foreach (CheckPointChecker cpc in GameManager.getActiveCheckPoints())
         {
-            if (!go.Equals(this.gameObject))
+            if (!cpc.Equals(this))
             {
-                go.GetComponent<CheckPointChecker>().showRelativeTo(this.gameObject);
+                cpc.showRelativeTo(this.gameObject);
             }
         }
     }
@@ -79,11 +81,11 @@ public class CheckPointChecker : MemoryMonoBehaviour
             ghostBounds = ghost.GetComponent<SpriteRenderer>().bounds;
 
             //check to make sure its ghost does not intersect other CP ghosts
-            foreach (GameObject go in GameObject.FindGameObjectsWithTag("Checkpoint_Root"))
+            foreach (CheckPointChecker cpc in GameManager.getActiveCheckPoints())
             {
-                if (go != gameObject)
+                if (cpc != this)
                 {
-                    CheckPointChecker cpc = go.GetComponent<CheckPointChecker>();
+                    GameObject go = cpc.gameObject;
                     if (cpc.activated && cpc.ghost.activeSelf)
                     {
                         if (ghostBounds.Intersects(cpc.ghostBounds))

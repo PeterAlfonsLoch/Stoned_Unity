@@ -242,7 +242,8 @@ public class GameManager : MonoBehaviour
             Destroy(gameObject);
             return;
         }
-        SceneManager.LoadScene(1, LoadSceneMode.Additive);//load the SceneLoaderTrigger scene
+        SceneManager.LoadScene("SceneLoaderTriggers", LoadSceneMode.Additive);//load the SceneLoaderTriggers scene
+        SceneManager.LoadScene("CheckPointScene", LoadSceneMode.Additive);//load the CheckPointScene scene
     }
     void OnApplicationQuit()
     {

@@ -41,7 +41,6 @@ public class CheckPointChecker : MemoryMonoBehaviour
         activated = true;
         GameManager.saveMemory(this);
         GameManager.saveCheckPoint(this);
-        DontDestroyOnLoad(gameObject);
     }
     public void trigger()
     {

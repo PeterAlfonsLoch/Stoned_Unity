@@ -79,8 +79,8 @@ public class CheckPointChecker : MemoryMonoBehaviour
         checkpointCamera.gameObject.SetActive(true);
         checkpointCamera.gameObject.transform.position = gameObject.transform.position + new Vector3(0,0,-10);
         //2016-12-06: The following code copied from an answer by jashan: http://answers.unity3d.com/questions/22954/how-to-save-a-picture-take-screenshot-from-a-camer.html
-        int resWidth = 100;
-        int resHeight = 100;
+        int resWidth = 300;
+        int resHeight = 300;
         RenderTexture rt = new RenderTexture(resWidth, resHeight, 24);
         checkpointCamera.targetTexture = rt;
         Texture2D screenShot = new Texture2D(resWidth, resHeight, TextureFormat.RGB24, false);

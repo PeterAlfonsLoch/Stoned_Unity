@@ -12,6 +12,7 @@ public class CheckPointChecker : MemoryMonoBehaviour
     public GameObject ghostPrefab;
     private GameObject player;
     private PlayerController plyrController;
+    private static Camera checkpointCamera;
 
     // Use this for initialization
     void Start()
@@ -21,6 +22,10 @@ public class CheckPointChecker : MemoryMonoBehaviour
         ghostBounds = ghost.GetComponent<SpriteRenderer>().bounds;
         player = GameObject.FindGameObjectWithTag("Player");
         plyrController = player.GetComponent<PlayerController>();
+        if (checkpointCamera == null) {
+            checkpointCamera = GameObject.Find("CP BG Camera").GetComponent<Camera>();
+            checkpointCamera.gameObject.SetActive(false);
+        }
     }
 
     //When a player touches this checkpoint, activate it
@@ -56,6 +61,7 @@ public class CheckPointChecker : MemoryMonoBehaviour
                 cpc.showRelativeTo(this.gameObject);
             }
         }
+        grabCheckPointCameraData();
     }
     void OnTriggerExit2D(Collider2D coll)
     {
@@ -66,6 +72,28 @@ public class CheckPointChecker : MemoryMonoBehaviour
             clearPostTeleport(true);
             current = null;
         }
+    }
+
+    void grabCheckPointCameraData()//2016-12-06: grabs image data from the camera designated for checkpoints
+    {
+        checkpointCamera.gameObject.SetActive(true);
+        checkpointCamera.gameObject.transform.position = gameObject.transform.position + new Vector3(0,0,-10);
+        //2016-12-06: The following code copied from an answer by jashan: http://answers.unity3d.com/questions/22954/how-to-save-a-picture-take-screenshot-from-a-camer.html
+        int resWidth = 100;
+        int resHeight = 100;
+        RenderTexture rt = new RenderTexture(resWidth, resHeight, 24);
+        checkpointCamera.targetTexture = rt;
+        Texture2D screenShot = new Texture2D(resWidth, resHeight, TextureFormat.RGB24, false);
+        checkpointCamera.Render();        
+        RenderTexture.active = rt;
+        screenShot.ReadPixels(new Rect(0,0,rt.width,rt.height), 0, 0);
+        screenShot.Apply();
+        checkpointCamera.targetTexture = null;
+        RenderTexture.active = null; // JC: added to avoid errors
+        Destroy(rt);
+        SpriteRenderer sr = ghost.GetComponent<SpriteRenderer>();
+        sr.sprite = Sprite.Create(screenShot, new Rect(0, 0, screenShot.width, screenShot.height), new Vector2(0.5f, 0.5f));
+        checkpointCamera.gameObject.SetActive(false);
     }
 
     /**

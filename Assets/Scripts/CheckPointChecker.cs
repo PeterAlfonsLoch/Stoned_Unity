@@ -12,6 +12,7 @@ public class CheckPointChecker : MemoryMonoBehaviour
     public GameObject ghostPrefab;
     private GameObject player;
     private PlayerController plyrController;
+    private SpriteRenderer gsr;
     private static Camera checkpointCamera;
 
     // Use this for initialization
@@ -19,7 +20,8 @@ public class CheckPointChecker : MemoryMonoBehaviour
     {
         ghost = (GameObject)Instantiate(ghostPrefab);
         ghost.SetActive(false);
-        ghostBounds = ghost.GetComponent<SpriteRenderer>().bounds;
+        gsr = ghost.GetComponent<SpriteRenderer>();
+        ghostBounds = GetComponent<BoxCollider2D>().bounds;
         player = GameObject.FindGameObjectWithTag("Player");
         plyrController = player.GetComponent<PlayerController>();
         if (checkpointCamera == null) {
@@ -91,8 +93,7 @@ public class CheckPointChecker : MemoryMonoBehaviour
         checkpointCamera.targetTexture = null;
         RenderTexture.active = null; // JC: added to avoid errors
         Destroy(rt);
-        SpriteRenderer sr = ghost.GetComponent<SpriteRenderer>();
-        sr.sprite = Sprite.Create(screenShot, new Rect(0, 0, screenShot.width, screenShot.height), new Vector2(0.5f, 0.5f));
+        gsr.sprite = Sprite.Create(screenShot, new Rect(0, 0, screenShot.width, screenShot.height), new Vector2(0.5f, 0.5f));
         checkpointCamera.gameObject.SetActive(false);
     }
 

@@ -192,6 +192,31 @@ public class CheckPointChecker : MemoryMonoBehaviour
         }
     }
 
+    //public void setGhostSprite(Sprite s)
+    //{
+    //    gsr.sprite = s;
+    //}
+
+    //public Sprite getGhostSprite()
+    //{
+    //    if (gsr == null)
+    //    {
+    //        initializeGhost();
+    //    }
+    //    if (!activated)
+    //    {
+    //        if (ghostSprite == null)
+    //        {
+    //            grabCheckPointCameraData();
+    //        }
+    //        else
+    //        {
+    //            gsr.sprite = ghostSprite;
+    //        }
+    //    }
+    //    return gsr.sprite;
+    //}
+
     public override MemoryObject getMemoryObject()
     {
         return new CheckPointCheckerMemory(this);
@@ -220,6 +245,7 @@ public class CheckPointCheckerMemory : MemoryObject
             if (this.found)
             {
                 cpc.activate();
+                //cpc.setGhostSprite(ghostSprite);
             }
         }
     }
@@ -227,6 +253,7 @@ public class CheckPointCheckerMemory : MemoryObject
     {
         CheckPointChecker cpc = ((CheckPointChecker)mmb);
         this.found = cpc.activated;
+        //this.ghostSprite = cpc.getGhostSprite();
     }
 }
 

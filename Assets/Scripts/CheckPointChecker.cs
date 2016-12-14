@@ -7,6 +7,7 @@ public class CheckPointChecker : MemoryMonoBehaviour
     public static GameObject current = null;//the current checkpoint
 
     public bool activated = false;
+    public Sprite ghostSprite;
     private GameObject ghost;
     public Bounds ghostBounds;
     public GameObject ghostPrefab;
@@ -18,16 +19,23 @@ public class CheckPointChecker : MemoryMonoBehaviour
     // Use this for initialization
     void Start()
     {
-        ghost = (GameObject)Instantiate(ghostPrefab);
-        ghost.SetActive(false);
-        gsr = ghost.GetComponent<SpriteRenderer>();
-        ghostBounds = GetComponent<BoxCollider2D>().bounds;
+        if (ghost == null)
+        {
+            initializeGhost();
+        }
         player = GameObject.FindGameObjectWithTag("Player");
         plyrController = player.GetComponent<PlayerController>();
         if (checkpointCamera == null) {
             checkpointCamera = GameObject.Find("CP BG Camera").GetComponent<Camera>();
             checkpointCamera.gameObject.SetActive(false);
         }
+    }
+    void initializeGhost()
+    {
+        ghost = (GameObject)Instantiate(ghostPrefab);
+        ghost.SetActive(false);
+        gsr = ghost.GetComponent<SpriteRenderer>();
+        ghostBounds = GetComponent<BoxCollider2D>().bounds;
     }
 
     //When a player touches this checkpoint, activate it
@@ -48,10 +56,22 @@ public class CheckPointChecker : MemoryMonoBehaviour
         activated = true;
         GameManager.saveMemory(this);
         GameManager.saveCheckPoint(this);
+        if (ghostSprite != null)
+        {
+            if (gsr == null)
+            {
+                initializeGhost();
+            }
+            gsr.sprite = ghostSprite;
+        }
     }
     public void trigger()
     {
         current = this.gameObject;
+        if (ghostSprite == null)
+        {
+            grabCheckPointCameraData();
+        }
         activate();
         ghost.SetActive(false);
         plyrController.setIsInCheckPoint(true);
@@ -63,7 +83,6 @@ public class CheckPointChecker : MemoryMonoBehaviour
                 cpc.showRelativeTo(this.gameObject);
             }
         }
-        grabCheckPointCameraData();
     }
     void OnTriggerExit2D(Collider2D coll)
     {
@@ -78,6 +97,11 @@ public class CheckPointChecker : MemoryMonoBehaviour
 
     void grabCheckPointCameraData()//2016-12-06: grabs image data from the camera designated for checkpoints
     {
+        if (checkpointCamera == null)
+        {
+            checkpointCamera = GameObject.Find("CP BG Camera").GetComponent<Camera>();
+            checkpointCamera.gameObject.SetActive(false);
+        }
         checkpointCamera.gameObject.SetActive(true);
         checkpointCamera.gameObject.transform.position = gameObject.transform.position + new Vector3(0,0,-10);
         //2016-12-06: The following code copied from an answer by jashan: http://answers.unity3d.com/questions/22954/how-to-save-a-picture-take-screenshot-from-a-camer.html
@@ -95,6 +119,8 @@ public class CheckPointChecker : MemoryMonoBehaviour
         Destroy(rt);
         gsr.sprite = Sprite.Create(screenShot, new Rect(0, 0, screenShot.width, screenShot.height), new Vector2(0.5f, 0.5f));
         checkpointCamera.gameObject.SetActive(false);
+        string filename = gameObject.name + ".png";
+        ES2.SaveImage(screenShot, filename);
     }
 
     /**
@@ -178,6 +204,8 @@ public class CheckPointChecker : MemoryMonoBehaviour
 //
 public class CheckPointCheckerMemory : MemoryObject
 {
+    public Sprite ghostSprite;
+
     public CheckPointCheckerMemory() { }//only called by the method that reads it from the file
     public CheckPointCheckerMemory(CheckPointChecker cpc) : base(cpc)
     {

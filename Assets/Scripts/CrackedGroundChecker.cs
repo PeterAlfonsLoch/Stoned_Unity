@@ -26,6 +26,10 @@ public class CrackedGroundChecker : SavableMonoBehaviour
 
     public void setCracked(bool nowCracked)
     {
+        if (bc2d == null)
+        {
+            bc2d = gameObject.GetComponent<BoxCollider2D>();
+        }
         this.cracked = nowCracked;
         if (!cracked)
         {

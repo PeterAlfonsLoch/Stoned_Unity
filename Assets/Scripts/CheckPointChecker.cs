@@ -5,6 +5,7 @@ public class CheckPointChecker : MemoryMonoBehaviour
 {
 
     public static GameObject current = null;//the current checkpoint
+    public static float CP_GHOST_BUFFER = 4.5f;//the buffer distance between the current checkpoint and any other checkpoint's ghost
 
     public bool activated = false;
     public Sprite ghostSprite;
@@ -131,7 +132,7 @@ public class CheckPointChecker : MemoryMonoBehaviour
         if (activated)
         {
             ghost.SetActive(true);
-            ghost.transform.position = currentCheckpoint.transform.position + (gameObject.transform.position - currentCheckpoint.transform.position).normalized * 4;
+            ghost.transform.position = currentCheckpoint.transform.position + (gameObject.transform.position - currentCheckpoint.transform.position).normalized * CP_GHOST_BUFFER;
             ghostBounds = ghost.GetComponent<SpriteRenderer>().bounds;
 
             //check to make sure its ghost does not intersect other CP ghosts

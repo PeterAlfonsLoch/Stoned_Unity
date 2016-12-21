@@ -13,6 +13,7 @@ public class CameraController : MonoBehaviour
     private float moveTime = 0f;//used to delay the camera refocusing on the player
     private bool wasDelayed = false;
     private GestureManager gm;
+    private GameManager gameManager;
     private PlayerController plyrController;
 
     private int prevScreenWidth;
@@ -47,6 +48,7 @@ public class CameraController : MonoBehaviour
         cam = GetComponent<Camera>();
         playerRB2D = player.GetComponent<Rigidbody2D>();
         gm = GameObject.FindGameObjectWithTag("GestureManager").GetComponent<GestureManager>();
+        gameManager = GameObject.FindObjectOfType<GameManager>();
         plyrController = player.GetComponent<PlayerController>();
         scale = cam.orthographicSize;
         //Initialize ScalePoints
@@ -166,6 +168,18 @@ public class CameraController : MonoBehaviour
                 newY = -b.extents.y;
             }
             offset = new Vector3(newX, newY, offset.z);
+        }
+        
+        //GestureProfile switcher
+        if (this.scalePointIndex == scalePoints.Count - 1)
+        {
+            gm.currentGP = gm.gestureProfiles["Rewind"];
+            gameManager.showPlayerGhosts();
+        }
+        else
+        {
+            gm.currentGP = gm.gestureProfiles["Main"];
+            gameManager.hidePlayerGhosts();
         }
     }
     public void adjustScalePoint(int addend)

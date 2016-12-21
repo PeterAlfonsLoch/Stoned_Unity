@@ -1,32 +1,48 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class CheckPointChecker : MonoBehaviour
+public class CheckPointChecker : MemoryMonoBehaviour
 {
 
     public static GameObject current = null;//the current checkpoint
+    public static float CP_GHOST_BUFFER = 4.5f;//the buffer distance between the current checkpoint and any other checkpoint's ghost
 
     public bool activated = false;
+    public Sprite ghostSprite;
     private GameObject ghost;
     public Bounds ghostBounds;
     public GameObject ghostPrefab;
     private GameObject player;
     private PlayerController plyrController;
+    private SpriteRenderer gsr;
+    private static Camera checkpointCamera;
 
     // Use this for initialization
     void Start()
     {
-        ghost = (GameObject)Instantiate(ghostPrefab);
-        ghost.SetActive(false);
-        ghostBounds = ghost.GetComponent<SpriteRenderer>().bounds;
+        if (ghost == null)
+        {
+            initializeGhost();
+        }
         player = GameObject.FindGameObjectWithTag("Player");
         plyrController = player.GetComponent<PlayerController>();
+        if (checkpointCamera == null) {
+            checkpointCamera = GameObject.Find("CP BG Camera").GetComponent<Camera>();
+            checkpointCamera.gameObject.SetActive(false);
+        }
+    }
+    void initializeGhost()
+    {
+        ghost = (GameObject)Instantiate(ghostPrefab);
+        ghost.SetActive(false);
+        gsr = ghost.GetComponent<SpriteRenderer>();
+        ghostBounds = GetComponent<BoxCollider2D>().bounds;
     }
 
     //When a player touches this checkpoint, activate it
     void OnCollisionEnter2D(Collision2D coll)
     {
-        activated = true;
+        activate();
     }
 
     /**
@@ -36,18 +52,36 @@ public class CheckPointChecker : MonoBehaviour
     {
         trigger();
     }
+    public void activate()
+    {
+        activated = true;
+        GameManager.saveMemory(this);
+        GameManager.saveCheckPoint(this);
+        if (ghostSprite != null)
+        {
+            if (gsr == null)
+            {
+                initializeGhost();
+            }
+            gsr.sprite = ghostSprite;
+        }
+    }
     public void trigger()
     {
         current = this.gameObject;
-        activated = true;
+        if (ghostSprite == null)
+        {
+            grabCheckPointCameraData();
+        }
+        activate();
         ghost.SetActive(false);
         plyrController.setIsInCheckPoint(true);
         player.transform.position = this.gameObject.transform.position;
-        foreach (GameObject go in GameObject.FindGameObjectsWithTag("Checkpoint_Root"))
+        foreach (CheckPointChecker cpc in GameManager.getActiveCheckPoints())
         {
-            if (!go.Equals(this.gameObject))
+            if (!cpc.Equals(this))
             {
-                go.GetComponent<CheckPointChecker>().showRelativeTo(this.gameObject);
+                cpc.showRelativeTo(this.gameObject);
             }
         }
     }
@@ -56,10 +90,38 @@ public class CheckPointChecker : MonoBehaviour
         if (current == this.gameObject)
         {
             plyrController.setIsInCheckPoint(false);
-            activated = true;
+            activate();
             clearPostTeleport(true);
             current = null;
         }
+    }
+
+    void grabCheckPointCameraData()//2016-12-06: grabs image data from the camera designated for checkpoints
+    {
+        if (checkpointCamera == null)
+        {
+            checkpointCamera = GameObject.Find("CP BG Camera").GetComponent<Camera>();
+            checkpointCamera.gameObject.SetActive(false);
+        }
+        checkpointCamera.gameObject.SetActive(true);
+        checkpointCamera.gameObject.transform.position = gameObject.transform.position + new Vector3(0,0,-10);
+        //2016-12-06: The following code copied from an answer by jashan: http://answers.unity3d.com/questions/22954/how-to-save-a-picture-take-screenshot-from-a-camer.html
+        int resWidth = 300;
+        int resHeight = 300;
+        RenderTexture rt = new RenderTexture(resWidth, resHeight, 24);
+        checkpointCamera.targetTexture = rt;
+        Texture2D screenShot = new Texture2D(resWidth, resHeight, TextureFormat.RGB24, false);
+        checkpointCamera.Render();        
+        RenderTexture.active = rt;
+        screenShot.ReadPixels(new Rect(0,0,rt.width,rt.height), 0, 0);
+        screenShot.Apply();
+        checkpointCamera.targetTexture = null;
+        RenderTexture.active = null; // JC: added to avoid errors
+        Destroy(rt);
+        gsr.sprite = Sprite.Create(screenShot, new Rect(0, 0, screenShot.width, screenShot.height), new Vector2(0.5f, 0.5f));
+        checkpointCamera.gameObject.SetActive(false);
+        string filename = gameObject.name + ".png";
+        ES2.SaveImage(screenShot, filename);
     }
 
     /**
@@ -70,15 +132,15 @@ public class CheckPointChecker : MonoBehaviour
         if (activated)
         {
             ghost.SetActive(true);
-            ghost.transform.position = currentCheckpoint.transform.position + (gameObject.transform.position - currentCheckpoint.transform.position).normalized * 4;
+            ghost.transform.position = currentCheckpoint.transform.position + (gameObject.transform.position - currentCheckpoint.transform.position).normalized * CP_GHOST_BUFFER;
             ghostBounds = ghost.GetComponent<SpriteRenderer>().bounds;
 
             //check to make sure its ghost does not intersect other CP ghosts
-            foreach (GameObject go in GameObject.FindGameObjectsWithTag("Checkpoint_Root"))
+            foreach (CheckPointChecker cpc in GameManager.getActiveCheckPoints())
             {
-                if (go != gameObject)
+                if (cpc != this)
                 {
-                    CheckPointChecker cpc = go.GetComponent<CheckPointChecker>();
+                    GameObject go = cpc.gameObject;
                     if (cpc.activated && cpc.ghost.activeSelf)
                     {
                         if (ghostBounds.Intersects(cpc.ghostBounds))
@@ -104,14 +166,14 @@ public class CheckPointChecker : MonoBehaviour
     */
     public bool checkGhostActivation()
     {
-        return ghost.GetComponent<BoxCollider2D>().bounds.Intersects(player.GetComponent<PolygonCollider2D>().bounds);
+        return ghost.GetComponent<CircleCollider2D>().bounds.Intersects(player.GetComponent<PolygonCollider2D>().bounds);
     }
     /**
     * Checks to see if this checkpoint's ghost contains the targetPos 
     */
     public bool checkGhostActivation(Vector3 targetPos)
     {
-        return ghost.GetComponent<BoxCollider2D>().bounds.Contains(targetPos);
+        return ghost.GetComponent<CircleCollider2D>().bounds.Contains(targetPos);
     }
     /**
     * So now the player has teleported and the checkpoint ghosts need to go away
@@ -130,4 +192,42 @@ public class CheckPointChecker : MonoBehaviour
             }
         }
     }
+
+    public override MemoryObject getMemoryObject()
+    {
+        return new CheckPointCheckerMemory(this);
+    }
 }
+
+//
+//Class that saves the important variables of this class
+//2016-11-26: copied from SecretAreaTrigger::SecretAreaTriggerMemory
+//
+public class CheckPointCheckerMemory : MemoryObject
+{
+    public Sprite ghostSprite;
+
+    public CheckPointCheckerMemory() { }//only called by the method that reads it from the file
+    public CheckPointCheckerMemory(CheckPointChecker cpc) : base(cpc)
+    {
+        saveState(cpc);
+    }
+
+    public override void loadState(GameObject go)
+    {
+        CheckPointChecker cpc = go.GetComponent<CheckPointChecker>();
+        if (cpc != null)
+        {
+            if (this.found)
+            {
+                cpc.activate();
+            }
+        }
+    }
+    public override void saveState(MemoryMonoBehaviour mmb)
+    {
+        CheckPointChecker cpc = ((CheckPointChecker)mmb);
+        this.found = cpc.activated;
+    }
+}
+

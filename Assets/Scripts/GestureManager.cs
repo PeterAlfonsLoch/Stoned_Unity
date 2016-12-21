@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class GestureManager : MonoBehaviour {
 
@@ -13,6 +14,10 @@ public class GestureManager : MonoBehaviour {
     public float dragThreshold = 10;//how far from the original mouse position the current position has to be to count as a drag
     public float holdThreshold = 0.1f;//how long the tap has to be held to count as a hold (in seconds)
     public float orthoZoomSpeed = 0.5f;
+
+    //Gesture Profiles
+    public GestureProfile currentGP;//the current gesture profile
+    public Dictionary<string, GestureProfile> gestureProfiles = new Dictionary<string, GestureProfile>();//dict of valid gesture profiles
 
     //Original Positions
     private Vector3 origMP;//"original mouse position": the mouse position at the last mouse down (or tap down) event
@@ -51,6 +56,11 @@ public class GestureManager : MonoBehaviour {
         plrController = player.GetComponent<PlayerController>();
         rb2dPlayer = player.GetComponent<Rigidbody2D>();
         cmaController = cam.GetComponent<CameraController>();
+
+        gestureProfiles.Add("Main", new GestureProfile());
+        gestureProfiles.Add("Rewind", new RewindGestureProfile());
+        currentGP = gestureProfiles["Main"];
+
         Input.simulateMouseWithTouches = false;
     }
 	
@@ -224,7 +234,7 @@ public class GestureManager : MonoBehaviour {
                 }
                 else if (isHoldGesture)
                 {
-                    plrController.processHoldGesture(curMPWorld, holdTime, false);
+                    currentGP.processHoldGesture(curMPWorld, holdTime, false);
                 }
             }
             else if (clickState == ClickState.Ended)
@@ -235,7 +245,7 @@ public class GestureManager : MonoBehaviour {
                 }
                 else if (isHoldGesture)
                 {
-                    plrController.processHoldGesture(curMPWorld, holdTime, true);
+                    currentGP.processHoldGesture(curMPWorld, holdTime, true);
                 }
                 else if (isTapGesture)
                 {
@@ -247,14 +257,14 @@ public class GestureManager : MonoBehaviour {
                             if (go.GetComponent<CheckPointChecker>().checkGhostActivation(curMPWorld))
                             {
                                 checkPointPort = true;
-                                plrController.processTapGesture(go);
+                                currentGP.processTapGesture(go);
                                 break;
                             }
                         }
                     }
                     if (!checkPointPort)
                     {
-                        plrController.processTapGesture(curMPWorld);
+                        currentGP.processTapGesture(curMPWorld);
                     }
                 }
 

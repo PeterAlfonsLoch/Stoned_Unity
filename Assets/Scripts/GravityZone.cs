@@ -32,5 +32,14 @@ public class GravityZone : MonoBehaviour
                 }
             }
         }
+        //Check to see if the camera rotation needs updated
+        if (Camera.main.transform.rotation != transform.rotation)
+        {
+            //Check to see if Merky is in this GravityZone
+            if (coll.OverlapPoint(GameManager.getPlayerObject().GetComponent<PolygonCollider2D>().bounds.center))
+            {
+                Camera.main.transform.rotation = transform.rotation;
+            }
+        }
     }
 }

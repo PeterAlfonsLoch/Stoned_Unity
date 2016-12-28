@@ -2,29 +2,35 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GravityZone : MonoBehaviour {
+public class GravityZone : MonoBehaviour
+{
 
     private BoxCollider2D coll;
-    public float gravityScale = 1f;
+    public float gravityScale = 9.81f;
+    private Vector3 gravityVector;
 
-	// Use this for initialization
-	void Start () {
+    // Use this for initialization
+    void Start()
+    {
         coll = GetComponent<BoxCollider2D>();
-	}
-	
-	void FixedUpdate () {
+        gravityVector = -transform.up.normalized * gravityScale;
+    }
+
+    void FixedUpdate()
+    {
         List<Collider2D> c2ds = new List<Collider2D>();
         c2ds = GameManager.gravityColliderList;
-        //Debug.Log("Collider list: " + c2ds.Count);
-        foreach (Collider2D c2d in c2ds){
+        foreach (Collider2D c2d in c2ds)
+        {
             if (true || coll.bounds.Contains(c2d.bounds.center))
             {
-                //Debug.Log("Found object: " + c2d.gameObject);
-                //;//transform.rotation.eulerAngles
-                Vector3 vector = new Vector3(-3, -4,0).normalized * gravityScale * Time.fixedDeltaTime;
-                //Debug.Log("Applying vector: " + vector);
-                c2d.gameObject.GetComponent<Rigidbody2D>().AddForce(vector);
+                if ( ! ReferenceEquals(c2d.gameObject, null))
+                {
+                    Rigidbody2D rb2d = c2d.gameObject.GetComponent<Rigidbody2D>();
+                    Vector3 vector = gravityVector * rb2d.mass;
+                    rb2d.AddForce(vector);
+                }
             }
         }
-	}
+    }
 }

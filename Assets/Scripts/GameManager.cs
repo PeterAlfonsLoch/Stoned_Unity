@@ -131,7 +131,7 @@ public class GameManager : MonoBehaviour
                 gravityColliderList.Add(coll);
             }
             else {
-                coll = go.GetComponent<PolygonCollider2D>();
+                coll = go.GetComponent<BoxCollider2D>();
                 if (coll != null)
                 {
                     gravityColliderList.Add(coll);

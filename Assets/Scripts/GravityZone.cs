@@ -22,7 +22,7 @@ public class GravityZone : MonoBehaviour
         c2ds = GameManager.gravityColliderList;
         foreach (Collider2D c2d in c2ds)
         {
-            if (true || coll.bounds.Contains(c2d.bounds.center))
+            if (coll.OverlapPoint(c2d.bounds.center))
             {
                 if ( ! ReferenceEquals(c2d.gameObject, null))
                 {

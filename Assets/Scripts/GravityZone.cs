@@ -5,14 +5,14 @@ using UnityEngine;
 public class GravityZone : MonoBehaviour
 {
 
-    private BoxCollider2D coll;
+    private PolygonCollider2D coll;
     public float gravityScale = 9.81f;
     private Vector3 gravityVector;
 
     // Use this for initialization
     void Start()
     {
-        coll = GetComponent<BoxCollider2D>();
+        coll = GetComponent<PolygonCollider2D>();
         gravityVector = -transform.up.normalized * gravityScale;
     }
 

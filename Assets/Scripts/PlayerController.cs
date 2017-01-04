@@ -371,7 +371,7 @@ public class PlayerController : MonoBehaviour
             Vector2 dir2 = new Vector2(0, length);
             Debug.DrawLine(start, start + dir2, Color.black);
             RaycastHit2D rch2d = Physics2D.Raycast(start, dir2, length);// -1*(start), 1f);
-            if (rch2d && rch2d.collider != null)
+            if (rch2d && rch2d.collider != null && ! rch2d.collider.isTrigger)
             {
                 GameObject ground = rch2d.collider.gameObject;
                 if (ground != null && !ground.Equals(transform.gameObject))

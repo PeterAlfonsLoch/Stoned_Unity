@@ -101,7 +101,7 @@ public class PlayerController : MonoBehaviour
         //    Debug.DrawLine(pos2, start, Color.black);
         //}
         bool wasInAir = !grounded;
-        checkGroundedState();
+        checkGroundedState(false);
         if (wasInAir && grounded)//just landed on something
         {
             giveGravityImmunityDelayCounter = gGIDCinit;
@@ -184,6 +184,7 @@ public class PlayerController : MonoBehaviour
             //{
             mainCamCtr.delayMovement(0.3f);
             //}
+            checkGroundedState(true);
             return true;
         }
         return false;
@@ -337,7 +338,7 @@ public class PlayerController : MonoBehaviour
         tri.updateRange();
     }
 
-    void checkGroundedState()
+    void checkGroundedState(bool exhaust)
     {
         if (isGrounded())
         {
@@ -345,7 +346,7 @@ public class PlayerController : MonoBehaviour
             setRange(baseRange);
         }
         else {
-            if (airPorts >= maxAirPorts)
+            if (exhaust && airPorts >= maxAirPorts)
             {
                 setRange(exhaustRange);
             }

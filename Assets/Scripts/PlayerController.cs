@@ -176,6 +176,30 @@ public class PlayerController : MonoBehaviour
             {
                 AudioSource.PlayClipAtPoint(teleportSound, oldPos);
             }
+            //Momentum Dampening
+            if (rb2d.velocity.magnitude > 0.001f)//if Merky is moving
+            {
+                Vector3 direction = newPos - oldPos;
+                float newX = rb2d.velocity.x;//the new x velocity
+                float newY = rb2d.velocity.y;
+                if (Mathf.Sign(rb2d.velocity.x) != Mathf.Sign(direction.x))
+                {
+                    newX = rb2d.velocity.x + direction.x;
+                    if (Mathf.Sign(rb2d.velocity.x) != Mathf.Sign(newX))
+                    {//keep from exploiting boost in opposite direction
+                        newX = 0;
+                    }
+                }
+                if (Mathf.Sign(rb2d.velocity.y) != Mathf.Sign(direction.y))
+                {
+                    newY = rb2d.velocity.y + direction.y;
+                    if (Mathf.Sign(rb2d.velocity.y) != Mathf.Sign(newY))
+                    {//keep from exploiting boost in opposite direction
+                        newY = 0;
+                    }
+                }
+                rb2d.velocity = new Vector2(newX, newY);
+            }
             //Gravity Immunity
             grounded = false;
             velocityNeedsReloaded = false;//discards previous velocity if was in gravity immunity bubble

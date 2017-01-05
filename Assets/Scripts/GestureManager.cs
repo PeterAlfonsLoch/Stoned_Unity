@@ -223,12 +223,13 @@ public class GestureManager : MonoBehaviour {
                 }
                 if (isDrag)
                 {
+                    //Check to make sure Merky doesn't get dragged off camera
                     Vector3 delta = cam.ScreenToWorldPoint(origMP) - cam.ScreenToWorldPoint(curMP);
                     Vector3 newPos = player.transform.position + origCP + delta;
-                    Vector3 size = cam.ScreenToWorldPoint(new Vector3(cam.pixelWidth, cam.pixelHeight)) - cam.ScreenToWorldPoint(new Vector3(0, 0)) + new Vector3(0, 0, 20);
-                    Bounds b = new Bounds(newPos, size);
-                    if (b.Contains(player.transform.position))
+                    Vector3 playerUIpos = cam.WorldToViewportPoint(player.transform.position + (new Vector3(cam.transform.position.x, cam.transform.position.y) - newPos));
+                    if (playerUIpos.x >= 0 && playerUIpos.x <= 1 && playerUIpos.y >= 0 && playerUIpos.y <= 1)
                     {
+                        //Move the camera
                         cam.transform.position = newPos;
                     }
                 }

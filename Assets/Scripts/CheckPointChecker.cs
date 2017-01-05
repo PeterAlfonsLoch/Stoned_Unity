@@ -133,6 +133,7 @@ public class CheckPointChecker : MemoryMonoBehaviour
         {
             ghost.SetActive(true);
             ghost.transform.position = currentCheckpoint.transform.position + (gameObject.transform.position - currentCheckpoint.transform.position).normalized * CP_GHOST_BUFFER;
+            ghost.transform.localRotation = currentCheckpoint.transform.localRotation;
             ghostBounds = ghost.GetComponent<SpriteRenderer>().bounds;
 
             //check to make sure its ghost does not intersect other CP ghosts

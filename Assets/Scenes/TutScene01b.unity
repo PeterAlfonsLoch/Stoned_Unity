@@ -15595,6 +15595,15 @@ Prefab:
       propertyPath: m_Points.m_Paths.Array.data[0].Array.data[0].y
       value: 71.137085
       objectReference: {fileID: 0}
+    - target: {fileID: 212599541683145680, guid: ef1a665b1f726fd488ff4230134b5782,
+        type: 2}
+      propertyPath: m_SortingLayerID
+      value: 1659163103
+      objectReference: {fileID: 0}
+    - target: {fileID: 1794488409389916, guid: ef1a665b1f726fd488ff4230134b5782, type: 2}
+      propertyPath: m_Layer
+      value: 2
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: ef1a665b1f726fd488ff4230134b5782, type: 2}
   m_IsPrefabParent: 0

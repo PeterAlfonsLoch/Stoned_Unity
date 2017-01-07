@@ -19,6 +19,8 @@ public class FloatCubeController : MonoBehaviour {
     //private Vector3 stableVector;
     private bool increasingLastTime = false;
     private float initAngDrag;
+    private Vector3 upDirection;//used to determine the up direction of the float cube
+    private Quaternion upAngle;//used to determine which direction the float cube should rotate towards
     //Particles
     private ParticleSystem psTrail;
     private ParticleSystem psSparks;
@@ -46,6 +48,8 @@ public class FloatCubeController : MonoBehaviour {
             psSparks.Pause();
             psSparks.Clear();
         }
+        upDirection = transform.up;
+        upAngle = Quaternion.Euler(transform.eulerAngles);
         //Debug.Log("diff: " + maxHeight + "-" + transform.position.y + "= " + (maxHeight - transform.position.y));
         //stableVector = new Vector2(0, 90);
     }
@@ -72,7 +76,7 @@ public class FloatCubeController : MonoBehaviour {
             {//use new system
                 rb.angularDrag = initAngDrag;
                 rb.freezeRotation = true;
-                transform.rotation = Quaternion.RotateTowards(transform.rotation, Quaternion.identity, 5);
+                transform.rotation = Quaternion.RotateTowards(transform.rotation, upAngle, 5);
                 //float velX = rb.velocity.x;
                 //if (velX > 0)
                 //{
@@ -84,7 +88,8 @@ public class FloatCubeController : MonoBehaviour {
                 //}
                 bool propping1 = false;
                 bool propping2 = false;
-                Vector2 start = (Vector2)transform.position + new Vector2(0, -propulsionHeight);
+
+                Vector2 start = getGroundVector(propulsionHeight);
                 Debug.DrawLine(start, transform.position, Color.black);
                 RaycastHit2D rch2d = Physics2D.Raycast(start, Vector2.up, propulsionHeight);
                 if (rch2d && rch2d.collider != null)
@@ -95,7 +100,7 @@ public class FloatCubeController : MonoBehaviour {
                         propping1 = true;
                     }
                 }
-                start = (Vector2)transform.position + new Vector2(0, -(propulsionHeight + variance));
+                start = getGroundVector(-(propulsionHeight + variance));
                 rch2d = Physics2D.Raycast(start, Vector2.up, propulsionHeight + variance);
                 if (rch2d && rch2d.collider != null)
                 {
@@ -218,6 +223,11 @@ public class FloatCubeController : MonoBehaviour {
             lockAxes(rb, false, false);
             //rb.isKinematic = false;
         }
+    }
+
+    Vector3 getGroundVector(float propulsionHeight)//returns a vector with magnitude propulsionHeight and angle this.upDirection
+    {
+        return transform.position - upDirection.normalized * propulsionHeight;
     }
 
     /**

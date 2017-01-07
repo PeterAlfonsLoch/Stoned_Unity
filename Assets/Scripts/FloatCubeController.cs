@@ -21,6 +21,7 @@ public class FloatCubeController : MonoBehaviour {
     private float initAngDrag;
     private Vector3 upDirection;//used to determine the up direction of the float cube
     private Quaternion upAngle;//used to determine which direction the float cube should rotate towards
+    public float gravityScale = -1;//used to make its own artificial gravity
     //Particles
     private ParticleSystem psTrail;
     private ParticleSystem psSparks;
@@ -66,6 +67,7 @@ public class FloatCubeController : MonoBehaviour {
         {
             if (psTrail != null)
             {
+                psTrail.transform.localRotation = transform.localRotation;
                 psTrail.Play();
             }
             if (psSparks != null)
@@ -91,7 +93,7 @@ public class FloatCubeController : MonoBehaviour {
 
                 Vector2 start = getGroundVector(propulsionHeight);
                 Debug.DrawLine(start, transform.position, Color.black);
-                RaycastHit2D rch2d = Physics2D.Raycast(start, Vector2.up, propulsionHeight);
+                RaycastHit2D rch2d = Physics2D.Raycast(start, upDirection, propulsionHeight);
                 if (rch2d && rch2d.collider != null)
                 {
                     GameObject ground = rch2d.collider.gameObject;
@@ -100,8 +102,8 @@ public class FloatCubeController : MonoBehaviour {
                         propping1 = true;
                     }
                 }
-                start = getGroundVector(-(propulsionHeight + variance));
-                rch2d = Physics2D.Raycast(start, Vector2.up, propulsionHeight + variance);
+                start = getGroundVector((propulsionHeight + variance));
+                rch2d = Physics2D.Raycast(start, upDirection, propulsionHeight + variance);
                 if (rch2d && rch2d.collider != null)
                 {
                     GameObject ground = rch2d.collider.gameObject;
@@ -112,17 +114,18 @@ public class FloatCubeController : MonoBehaviour {
                 }
                 if (propping1 && propping2)
                 {
-                    if (rb.gravityScale > -0.5f)
+                    if (gravityScale > -0.5f)
                     {
-                        rb.gravityScale = -0.5f;
+                        gravityScale = -0.5f;
                     }
                     if (rb.velocity.y <= 0)
                     {
-                        rb.gravityScale--;
-                        if (rb.velocity.y > velocityThreshold)
+                        gravityScale--;
+                        if (rb.velocity.magnitude > velocityThreshold)
                         {
-                            rb.velocity = new Vector2(rb.velocity.x, velocityThreshold);
-                            rb.gravityScale++;
+                            //rb.velocity = new Vector2(rb.velocity.x, velocityThreshold);
+                            rb.AddForce(-upDirection * (rb.velocity.magnitude - velocityThreshold));
+                            gravityScale++;
                         }
                     }
                     //if (rb.velocity.y == 0)
@@ -143,20 +146,23 @@ public class FloatCubeController : MonoBehaviour {
                 }
                 else if (!propping1 && propping2)
                 {
-                    rb.gravityScale = 0;
-                    lockAxes(rb, false, true);
-                    rb.velocity = new Vector2(rb.velocity.x, 0);
+                    gravityScale = -1;
+                    //lockAxes(rb, false, true);
+                    //rb.velocity = new Vector2(rb.velocity.x, 0);
+                    rb.AddForce(-rb.velocity);
                     //rb.isKinematic = true;
                     //liftForce -= rb.velocity.y;
                 }
                 else
                 {
-                    rb.gravityScale = 1;
-                    if (rb.velocity.y > 0)
-                    {
-                        rb.velocity = new Vector2(rb.velocity.x, 0);
-                    }
-                    lockAxes(rb, false, false);
+                    gravityScale = 0;
+
+                    Debug.DrawLine(start, transform.position, Color.red);
+                    //if (rb.velocity.y > 0)
+                    //{
+                    //rb.velocity = new Vector2(rb.velocity.x, 0);
+                    //}
+                    //lockAxes(rb, false, false);
                     //rb.velocity = Vector2.zero;
                     //liftForce = 0;
                 }
@@ -170,19 +176,19 @@ public class FloatCubeController : MonoBehaviour {
                 //    rb.AddForce(upVector);
                 //}
             }
-            else {//use old system (will be removed in the future)
+            else if (false){//use old system (will be removed in the future)
                 rb.angularDrag = initAngDrag;
                 transform.rotation = Quaternion.RotateTowards(transform.rotation, Quaternion.identity, 1);
                 if (transform.position.y < maxHeight)// && rb.velocity.magnitude < 100)
                 {
                     rb.AddForce(upVector);
-                    if (rb.gravityScale > 0)
+                    if (gravityScale > 0)
                     {
-                        rb.gravityScale -= 0.1f;
+                        gravityScale -= 0.1f;
                     }
-                    if (rb.gravityScale < 0)
+                    if (gravityScale < 0)
                     {
-                        rb.gravityScale = 0;
+                        gravityScale = 0;
                     }
                     //Vector3.MoveTowards(transform.position, new Vector3(0, 20), Time.deltaTime * 5);
                     increasingLastTime = true;
@@ -196,7 +202,7 @@ public class FloatCubeController : MonoBehaviour {
                     }
                     if (transform.position.y > maxHeight)
                     {
-                        rb.gravityScale += 0.1f;
+                        gravityScale += 0.1f;
                     }
                     //rb.gravityScale = 0.5;
                     //rb.isKinematic = true;
@@ -218,10 +224,23 @@ public class FloatCubeController : MonoBehaviour {
                 psSparks.Clear();
             }
             rb.angularDrag = 0.05f;
-            rb.gravityScale = 1;
+            gravityScale = 0;
             rb.freezeRotation = false;
             lockAxes(rb, false, false);
             //rb.isKinematic = false;
+        }
+    }
+
+    void FixedUpdate()
+    {
+        if (switchObj.GetComponent<WeightSwitchActivator>().pressed)
+        {
+            if (gravityScale != 0)
+            {
+                Vector3 forceVector = -gravityScale * 9.81f * upDirection;
+                Debug.DrawLine(transform.position, transform.position + forceVector, Color.green);
+                rb.AddForce(forceVector);
+            }
         }
     }
 

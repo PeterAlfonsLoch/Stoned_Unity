@@ -10,6 +10,7 @@ public class GameManager : MonoBehaviour
 {
     public bool save = false;
     public bool load = false;
+    public bool demoBuild = false;//true to not load on open and save with date/timestamp in filename
     public int chosenId = 0;
     public int amount = 0;
     public GameObject playerGhost;//this is to show Merky in the past (prefab)
@@ -45,7 +46,7 @@ public class GameManager : MonoBehaviour
         cam.recenter();
         cam.refocus();
         chosenId = -1;
-        if (ES2.Exists("merky.txt"))
+        if (!demoBuild && ES2.Exists("merky.txt"))
         {
             loadFromFile();
             chosenId = rewindId = gameStates.Count - 1;
@@ -247,8 +248,15 @@ public class GameManager : MonoBehaviour
     }
     public void saveToFile()
     {
-        ES2.Save(memories, "merky.txt?tag=memories");
-        ES2.Save(gameStates, "merky.txt?tag=states");
+        string fileName = "merky";
+        if (demoBuild)
+        {
+            System.DateTime now = System.DateTime.Now;
+            fileName += "-" + now.Ticks;
+        }
+        fileName += ".txt";
+        ES2.Save(memories, fileName+"?tag=memories");
+        ES2.Save(gameStates, fileName+"?tag=states");
     }
     public void loadFromFile()
     {

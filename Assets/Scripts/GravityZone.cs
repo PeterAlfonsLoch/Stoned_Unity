@@ -22,9 +22,9 @@ public class GravityZone : MonoBehaviour
         c2ds = GameManager.gravityColliderList;
         foreach (Collider2D c2d in c2ds)
         {
-            if ( ! ReferenceEquals(c2d, null) && coll.OverlapPoint(c2d.bounds.center))
+            if (c2d!=null && (!ReferenceEquals(c2d, null)) && coll.OverlapPoint(c2d.bounds.center))
             {
-                if ( ! ReferenceEquals(c2d.gameObject, null))
+                if (!ReferenceEquals(c2d.gameObject, null))
                 {
                     Rigidbody2D rb2d = c2d.gameObject.GetComponent<Rigidbody2D>();
                     Vector3 vector = gravityVector * rb2d.mass;
@@ -43,7 +43,7 @@ public class GravityZone : MonoBehaviour
             //Check to see if Merky is in this GravityZone
             if (coll.OverlapPoint(GameManager.getPlayerObject().GetComponent<PolygonCollider2D>().bounds.center))
             {
-                Camera.main.transform.rotation = Quaternion.Lerp(Camera.main.transform.rotation, transform.rotation,3*Time.deltaTime);
+                Camera.main.transform.rotation = Quaternion.Lerp(Camera.main.transform.rotation, transform.rotation, 3 * Time.deltaTime);
             }
         }
     }

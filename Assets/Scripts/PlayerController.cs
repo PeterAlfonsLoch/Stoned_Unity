@@ -26,6 +26,8 @@ public class PlayerController : MonoBehaviour
     private Vector2 savedVelocity;
     private float savedAngularVelocity;
     private bool velocityNeedsReloaded = false;//because you can't set a Vector2 to null, using this to see when the velocity needs reloaded
+    private Vector3 gravityVector = new Vector3(0, 0);//the direction of gravity pull (for calculating grounded state)
+    private Vector3 sideVector = new Vector3(0, 0);//the direction perpendicular to the gravity direction (for calculating grounded state)
 
     private bool inCheckPoint = false;//whether or not the player is inside a checkpoint
 
@@ -362,6 +364,17 @@ public class PlayerController : MonoBehaviour
         tri.updateRange();
     }
 
+    public void setGravityVector(Vector2 gravity)
+    {
+        if (gravity.x != gravityVector.x || gravity.y != gravityVector.y)
+        {
+            gravityVector = gravity;
+            //v = P2 - P1    //2016-01-10: copied from an answer by cjdev: http://answers.unity3d.com/questions/564166/how-to-find-perpendicular-line-in-2d.html
+            //P3 = (-v.y, v.x) / Sqrt(v.x ^ 2 + v.y ^ 2) * h
+            sideVector = new Vector3(-gravityVector.y, gravityVector.x) / Mathf.Sqrt(gravityVector.x * gravityVector.x + gravityVector.y * gravityVector.y);
+        }
+    }
+
     void checkGroundedState(bool exhaust)
     {
         if (isGrounded())
@@ -388,12 +401,13 @@ public class PlayerController : MonoBehaviour
         Bounds bounds = GetComponent<PolygonCollider2D>().bounds;
         float width = bounds.max.x - bounds.min.x;
         float increment = width / (numberOfLines - 1);//-1 because the last one doesn't take up any space
+        float negativeOffset = increment * (numberOfLines-1) / 2;
         Vector3 startV = bounds.min;
         float length = 0.75f;
         for (int i = 0; i < numberOfLines; i++)
         {
-            Vector2 start = new Vector2(startV.x + i * increment, pos.y - length);
-            Vector2 dir2 = new Vector2(0, length);
+            Vector3 dir2 = -gravityVector.normalized * length;
+            Vector3 start = pos + (sideVector.normalized * ((i * increment)-negativeOffset)) - dir2;
             Debug.DrawLine(start, start + dir2, Color.black);
             RaycastHit2D rch2d = Physics2D.Raycast(start, dir2, length);// -1*(start), 1f);
             if (rch2d && rch2d.collider != null)

@@ -29,6 +29,11 @@ public class GravityZone : MonoBehaviour
                     Rigidbody2D rb2d = c2d.gameObject.GetComponent<Rigidbody2D>();
                     Vector3 vector = gravityVector * rb2d.mass;
                     rb2d.AddForce(vector);
+                    //Tell the player where gravity is
+                    if (c2d.gameObject.tag == "Player")
+                    {
+                        GameManager.getPlayerObject().GetComponent<PlayerController>().setGravityVector(this.gravityVector);
+                    }
                 }
             }
         }

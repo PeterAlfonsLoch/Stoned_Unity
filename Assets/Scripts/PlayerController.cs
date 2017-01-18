@@ -28,6 +28,7 @@ public class PlayerController : MonoBehaviour
     private bool velocityNeedsReloaded = false;//because you can't set a Vector2 to null, using this to see when the velocity needs reloaded
     private Vector3 gravityVector = new Vector3(0, 0);//the direction of gravity pull (for calculating grounded state)
     private Vector3 sideVector = new Vector3(0, 0);//the direction perpendicular to the gravity direction (for calculating grounded state)
+    private float halfWidth = 0;//half of Merky's sprite width
 
     private bool inCheckPoint = false;//whether or not the player is inside a checkpoint
 
@@ -88,6 +89,7 @@ public class PlayerController : MonoBehaviour
         rb2d = GetComponent<Rigidbody2D>();
         mainCamCtr = Camera.main.GetComponent<CameraController>();
         gm = GameObject.FindGameObjectWithTag("GestureManager").GetComponent<GestureManager>();
+        halfWidth = GetComponent<SpriteRenderer>().bounds.extents.magnitude;
         fta = GetComponent<ForceTeleportAbility>();
         sba = GetComponent<ShieldBubbleAbility>();
     }
@@ -508,23 +510,28 @@ public class PlayerController : MonoBehaviour
 
     public void processHoldGesture(Vector3 gpos, float holdTime, bool finished)
     {
-        //if (fta.enabled)//2017-01-17 TEMP OMMISSION
-        //{
-        //    Vector3 newPos = findTeleportablePosition(gpos);
-        //    if (finished)
-        //    {
-        //        if (teleport(newPos,false))
-        //        {
-        //            fta.processHoldGesture(newPos, holdTime, finished);
-        //        }
-        //    }
-        //    else {
-        //        fta.processHoldGesture(newPos, holdTime, finished);
-        //    }
-        //}
-        if (sba.enabled)//2017-01-17: copied from fta section above
+        Debug.DrawLine(transform.position, transform.position + new Vector3(0, halfWidth, 0), Color.blue, 10);
+        //Check Shield Bubble
+        if (sba.enabled && Vector3.Distance(gpos,transform.position) < halfWidth)
         {
+            fta.dropHoldGesture();
             sba.processHoldGesture(gpos, holdTime, finished);
+        }
+        //Check Force Wave
+        else if (fta.enabled)
+        {
+            sba.dropHoldGesture();
+            Vector3 newPos = findTeleportablePosition(gpos);
+            if (finished)
+            {
+                if (teleport(newPos, false))
+                {
+                    fta.processHoldGesture(newPos, holdTime, finished);
+                }
+            }
+            else {
+                fta.processHoldGesture(newPos, holdTime, finished);
+            }
         }
     }
 }

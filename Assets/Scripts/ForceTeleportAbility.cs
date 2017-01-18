@@ -74,6 +74,15 @@ public class ForceTeleportAbility : PlayerAbility
         }
     }
 
+    public void dropHoldGesture()
+    {
+        if (frii != null)
+        {
+            Destroy(frii);
+            frii = null;
+        }
+    }
+
     /**
     * 2016-03-25: copied from "2D Explosion Force" Asset: https://www.assetstore.unity3d.com/en/#!/content/24077
     * 2016-03-29: moved here from PlayerController

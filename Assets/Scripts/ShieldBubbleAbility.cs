@@ -49,6 +49,15 @@ public class ShieldBubbleAbility : PlayerAbility
         }
     }
 
+    public void dropHoldGesture()
+    {
+        if (srii != null)
+        {
+            Destroy(srii);
+            srii = null;
+        }
+    }
+
     void spawnShieldBubble(Vector2 pos, float range, float energy)
     {
         GameObject newSB = (GameObject)Instantiate(shieldBubblePrefab);

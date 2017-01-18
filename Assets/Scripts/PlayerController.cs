@@ -14,7 +14,7 @@ public class PlayerController : MonoBehaviour
     public float gravityImmuneTimeAmount = 0.2f;//amount of time Merky is immune to gravity after landing (in seconds)
     private int giveGravityImmunityDelayCounter = -1;//used to delay granting gravity immunity until the next cycle
     public int gGIDCinit = 2;//note: this may go away once the teleport lookahead detector is improved
-    
+
     public GameObject teleportStreak;
     public GameObject teleportStar;
     public bool useStreak = false;
@@ -31,13 +31,14 @@ public class PlayerController : MonoBehaviour
 
     private bool inCheckPoint = false;//whether or not the player is inside a checkpoint
 
-    
+
     public AudioClip teleportSound;
 
     private CameraController mainCamCtr;//the camera controller for the main camera
     private GestureManager gm;
 
     private ForceTeleportAbility fta;
+    private ShieldBubbleAbility sba;
 
     //Vector3[] dirs = new Vector3[]
     //        {//for checking if Merky is grounded
@@ -59,7 +60,7 @@ public class PlayerController : MonoBehaviour
     //            //new Vector3(.5f,-1),
     //            //new Vector3(-.5f,-1),
     //        };
-    
+
     Vector3[] checkDirs = new Vector3[]
                 {//for checking area around teleport target point
                 Vector3.up,
@@ -88,6 +89,7 @@ public class PlayerController : MonoBehaviour
         mainCamCtr = Camera.main.GetComponent<CameraController>();
         gm = GameObject.FindGameObjectWithTag("GestureManager").GetComponent<GestureManager>();
         fta = GetComponent<ForceTeleportAbility>();
+        sba = GetComponent<ShieldBubbleAbility>();
     }
 
     void FixedUpdate()
@@ -155,7 +157,7 @@ public class PlayerController : MonoBehaviour
     {
         return teleport(targetPos, true);
     }
-    private bool teleport(Vector3 targetPos,bool playSound)//targetPos is in world coordinations (NOT UI coordinates)
+    private bool teleport(Vector3 targetPos, bool playSound)//targetPos is in world coordinations (NOT UI coordinates)
     {
         if (teleportTime <= Time.time)
         {
@@ -401,13 +403,13 @@ public class PlayerController : MonoBehaviour
         Bounds bounds = GetComponent<PolygonCollider2D>().bounds;
         float width = bounds.max.x - bounds.min.x;
         float increment = width / (numberOfLines - 1);//-1 because the last one doesn't take up any space
-        float negativeOffset = increment * (numberOfLines-1) / 2;
+        float negativeOffset = increment * (numberOfLines - 1) / 2;
         Vector3 startV = bounds.min;
         float length = 0.75f;
         for (int i = 0; i < numberOfLines; i++)
         {
             Vector3 dir2 = -gravityVector.normalized * length;
-            Vector3 start = pos + (sideVector.normalized * ((i * increment)-negativeOffset)) - dir2;
+            Vector3 start = pos + (sideVector.normalized * ((i * increment) - negativeOffset)) - dir2;
             Debug.DrawLine(start, start + dir2, Color.black);
             RaycastHit2D rch2d = Physics2D.Raycast(start, dir2, length);// -1*(start), 1f);
             if (rch2d && rch2d.collider != null)
@@ -506,19 +508,23 @@ public class PlayerController : MonoBehaviour
 
     public void processHoldGesture(Vector3 gpos, float holdTime, bool finished)
     {
-        if (fta.enabled)
+        //if (fta.enabled)//2017-01-17 TEMP OMMISSION
+        //{
+        //    Vector3 newPos = findTeleportablePosition(gpos);
+        //    if (finished)
+        //    {
+        //        if (teleport(newPos,false))
+        //        {
+        //            fta.processHoldGesture(newPos, holdTime, finished);
+        //        }
+        //    }
+        //    else {
+        //        fta.processHoldGesture(newPos, holdTime, finished);
+        //    }
+        //}
+        if (sba.enabled)//2017-01-17: copied from fta section above
         {
-            Vector3 newPos = findTeleportablePosition(gpos);
-            if (finished)
-            {
-                if (teleport(newPos,false))
-                {
-                    fta.processHoldGesture(newPos, holdTime, finished);
-                }
-            }
-            else {
-                fta.processHoldGesture(newPos, holdTime, finished);
-            }
+            sba.processHoldGesture(gpos, holdTime, finished);
         }
     }
 }

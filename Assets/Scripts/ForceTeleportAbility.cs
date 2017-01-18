@@ -3,7 +3,7 @@ using System.Collections;
 
 public class ForceTeleportAbility : PlayerAbility
 {
-    public GameObject forceRangeIndicator;
+    public GameObject forceRangeIndicator;//prefab
     private TeleportRangeIndicatorUpdater friu;//"force range indicator updater"
     private GameObject frii;//"force range indicator instance"
     public GameObject explosionEffect;

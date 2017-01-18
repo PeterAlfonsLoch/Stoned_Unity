@@ -921,6 +921,22 @@ Prefab:
 GameObject:
   m_PrefabParentObject: {fileID: 100086, guid: 5913bd1e88aefff4988c7dfee6595611, type: 2}
   m_PrefabInternal: {fileID: 1792176464}
+--- !u!114 &1792176466
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1792176465}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e2356b527d93de14798de1ef5c9ef78a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  shieldRangeIndicator: {fileID: 138864, guid: e641b70e2c145a64fb8ebdc296d4871b, type: 2}
+  shieldBubblePrefab: {fileID: 138864, guid: e641b70e2c145a64fb8ebdc296d4871b, type: 2}
+  maxRange: 3
+  maxHoldTime: 1
+  shieldBubbleSound: {fileID: 8300000, guid: 64801fca428cf394fa91e011dab21557, type: 3}
 --- !u!1001 &2073786045
 Prefab:
   m_ObjectHideFlags: 0

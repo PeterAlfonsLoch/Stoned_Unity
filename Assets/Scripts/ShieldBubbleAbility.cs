@@ -7,10 +7,6 @@ public class ShieldBubbleAbility : PlayerAbility
     private TeleportRangeIndicatorUpdater sriu;//"shield range indicator updater"
     private GameObject srii;//"shield range indicator instance"
     public GameObject shieldBubblePrefab;//prefab used to spawn shield bubbles
-    //public GameObject explosionEffect;
-
-    //public float maxForceAmount = 5000;
-    //public float forceAmount = 10;//how much force to apply = forceAmount * 2^(holdTime*10)
     public float maxRange = 3;
     public float maxHoldTime = 1;//how long until the max range is reached
 
@@ -36,7 +32,7 @@ public class ShieldBubbleAbility : PlayerAbility
         if (finished)
         {
             //Spawn Shield Bubble
-            spawnShieldBubble(pos, range);
+            spawnShieldBubble(pos, range, 100*range/maxRange);
             AudioSource.PlayClipAtPoint(shieldBubbleSound, pos);
             Destroy(srii);
             srii = null;
@@ -53,10 +49,10 @@ public class ShieldBubbleAbility : PlayerAbility
         }
     }
 
-    void spawnShieldBubble(Vector2 pos, float range)
+    void spawnShieldBubble(Vector2 pos, float range, float energy)
     {
         GameObject newSB = (GameObject)Instantiate(shieldBubblePrefab);
         newSB.transform.position = pos;
-        newSB.GetComponent<ShieldBubbleController>().setRange(range);
+        newSB.GetComponent<ShieldBubbleController>().init(range, energy);
     }
 }

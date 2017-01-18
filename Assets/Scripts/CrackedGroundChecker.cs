@@ -26,6 +26,10 @@ public class CrackedGroundChecker : SavableMonoBehaviour
 
     public void setCracked(bool nowCracked)
     {
+        if (bc2d == null)
+        {
+            bc2d = gameObject.GetComponent<BoxCollider2D>();
+        }
         this.cracked = nowCracked;
         if (!cracked)
         {
@@ -132,7 +136,7 @@ public class CrackedGroundChecker : SavableMonoBehaviour
                     {
                         if (hc.GetComponent<BoxCollider2D>() || hc.GetComponent<PolygonCollider2D>())
                         {
-                            if (!hc.transform.parent.gameObject.tag.Equals("HideableArea"))
+                            if (hc.transform.parent == null || !hc.transform.parent.gameObject.tag.Equals("HideableArea"))
                             {
                                 Debug.Log("Intersecting static object: " + hc);
                                 //If it is, make the rubble static

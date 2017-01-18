@@ -26,6 +26,8 @@ public class PlayerController : MonoBehaviour
     private Vector2 savedVelocity;
     private float savedAngularVelocity;
     private bool velocityNeedsReloaded = false;//because you can't set a Vector2 to null, using this to see when the velocity needs reloaded
+    private Vector3 gravityVector = new Vector3(0, 0);//the direction of gravity pull (for calculating grounded state)
+    private Vector3 sideVector = new Vector3(0, 0);//the direction perpendicular to the gravity direction (for calculating grounded state)
 
     private bool inCheckPoint = false;//whether or not the player is inside a checkpoint
 
@@ -101,7 +103,7 @@ public class PlayerController : MonoBehaviour
         //    Debug.DrawLine(pos2, start, Color.black);
         //}
         bool wasInAir = !grounded;
-        checkGroundedState();
+        checkGroundedState(false);
         if (wasInAir && grounded)//just landed on something
         {
             giveGravityImmunityDelayCounter = gGIDCinit;
@@ -176,6 +178,30 @@ public class PlayerController : MonoBehaviour
             {
                 AudioSource.PlayClipAtPoint(teleportSound, oldPos);
             }
+            //Momentum Dampening
+            if (rb2d.velocity.magnitude > 0.001f)//if Merky is moving
+            {
+                Vector3 direction = newPos - oldPos;
+                float newX = rb2d.velocity.x;//the new x velocity
+                float newY = rb2d.velocity.y;
+                if (Mathf.Sign(rb2d.velocity.x) != Mathf.Sign(direction.x))
+                {
+                    newX = rb2d.velocity.x + direction.x;
+                    if (Mathf.Sign(rb2d.velocity.x) != Mathf.Sign(newX))
+                    {//keep from exploiting boost in opposite direction
+                        newX = 0;
+                    }
+                }
+                if (Mathf.Sign(rb2d.velocity.y) != Mathf.Sign(direction.y))
+                {
+                    newY = rb2d.velocity.y + direction.y;
+                    if (Mathf.Sign(rb2d.velocity.y) != Mathf.Sign(newY))
+                    {//keep from exploiting boost in opposite direction
+                        newY = 0;
+                    }
+                }
+                rb2d.velocity = new Vector2(newX, newY);
+            }
             //Gravity Immunity
             grounded = false;
             velocityNeedsReloaded = false;//discards previous velocity if was in gravity immunity bubble
@@ -184,6 +210,7 @@ public class PlayerController : MonoBehaviour
             //{
             mainCamCtr.delayMovement(0.3f);
             //}
+            checkGroundedState(true);
             return true;
         }
         return false;
@@ -337,7 +364,18 @@ public class PlayerController : MonoBehaviour
         tri.updateRange();
     }
 
-    void checkGroundedState()
+    public void setGravityVector(Vector2 gravity)
+    {
+        if (gravity.x != gravityVector.x || gravity.y != gravityVector.y)
+        {
+            gravityVector = gravity;
+            //v = P2 - P1    //2016-01-10: copied from an answer by cjdev: http://answers.unity3d.com/questions/564166/how-to-find-perpendicular-line-in-2d.html
+            //P3 = (-v.y, v.x) / Sqrt(v.x ^ 2 + v.y ^ 2) * h
+            sideVector = new Vector3(-gravityVector.y, gravityVector.x) / Mathf.Sqrt(gravityVector.x * gravityVector.x + gravityVector.y * gravityVector.y);
+        }
+    }
+
+    void checkGroundedState(bool exhaust)
     {
         if (isGrounded())
         {
@@ -345,7 +383,7 @@ public class PlayerController : MonoBehaviour
             setRange(baseRange);
         }
         else {
-            if (airPorts >= maxAirPorts)
+            if (exhaust && airPorts >= maxAirPorts)
             {
                 setRange(exhaustRange);
             }
@@ -363,12 +401,13 @@ public class PlayerController : MonoBehaviour
         Bounds bounds = GetComponent<PolygonCollider2D>().bounds;
         float width = bounds.max.x - bounds.min.x;
         float increment = width / (numberOfLines - 1);//-1 because the last one doesn't take up any space
+        float negativeOffset = increment * (numberOfLines-1) / 2;
         Vector3 startV = bounds.min;
         float length = 0.75f;
         for (int i = 0; i < numberOfLines; i++)
         {
-            Vector2 start = new Vector2(startV.x + i * increment, pos.y - length);
-            Vector2 dir2 = new Vector2(0, length);
+            Vector3 dir2 = -gravityVector.normalized * length;
+            Vector3 start = pos + (sideVector.normalized * ((i * increment)-negativeOffset)) - dir2;
             Debug.DrawLine(start, start + dir2, Color.black);
             RaycastHit2D rch2d = Physics2D.Raycast(start, dir2, length);// -1*(start), 1f);
             if (rch2d && rch2d.collider != null)
@@ -403,21 +442,24 @@ public class PlayerController : MonoBehaviour
             {
                 if (rch2d.collider != null)
                 {
-                    GameObject ground = rch2d.collider.gameObject;
-                    if (ground != null && !ground.Equals(transform.gameObject))
+                    if (!rch2d.collider.isTrigger)
                     {
-                        //test opposite direction
-                        start = (pos2 + -1 * dir2);
-                        rch2d = Physics2D.Raycast(start, dir2, length);
-                        Debug.DrawLine(start, start + dir2, Color.black, 1);
-                        if (rch2d && rch2d.collider != null)
+                        GameObject ground = rch2d.collider.gameObject;
+                        if (ground != null && !ground.Equals(transform.gameObject))
                         {
-                            ground = rch2d.collider.gameObject;
-                            if (ground != null && !ground.Equals(transform.gameObject))
+                            //test opposite direction
+                            start = (pos2 + -1 * dir2);
+                            rch2d = Physics2D.Raycast(start, dir2, length);
+                            Debug.DrawLine(start, start + dir2, Color.black, 1);
+                            if (rch2d && rch2d.collider != null)
                             {
-                                return true;//yep, it's occupied on both sides
+                                ground = rch2d.collider.gameObject;
+                                if (ground != null && !ground.Equals(transform.gameObject))
+                                {
+                                    return true;//yep, it's occupied on both sides
+                                }
+                                //nope, it's occupied on one side but not the other
                             }
-                            //nope, it's occupied on one side but not the other
                         }
                     }
                 }

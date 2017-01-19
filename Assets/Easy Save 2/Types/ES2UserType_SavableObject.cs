@@ -15,6 +15,13 @@ public class ES2UserType_SavableObject : ES2Type
             writer.Write("CrackedGroundCheckerSavable");
             writer.Write(cgcs.cracked);
         }
+        else if (obj.GetType() == typeof(ShieldBubbleControllerSavable))//2017-01-18: copied from the section above for CrackedGroundCheckerSavable
+        {
+            ShieldBubbleControllerSavable sbcs = (ShieldBubbleControllerSavable)obj;
+            writer.Write("ShieldBubbleControllerSavable");
+            writer.Write(sbcs.range);
+            writer.Write(sbcs.energy);
+        }
         else
         {
             writer.Write("None");
@@ -30,6 +37,13 @@ public class ES2UserType_SavableObject : ES2Type
             CrackedGroundCheckerSavable cgcs = new CrackedGroundCheckerSavable();
             cgcs.cracked = reader.Read<bool>();
             return cgcs;
+        }
+        else if (objType == "ShieldBubbleControllerSavable")//2017-01-18: copied from the section above for CrackedGroundCheckerSavable
+        {
+            ShieldBubbleControllerSavable sbcs = new ShieldBubbleControllerSavable();
+            sbcs.range = reader.Read<float>();
+            sbcs.energy = reader.Read<float>();
+            return sbcs;
         }
         return ObjectState.dummySO;
     }

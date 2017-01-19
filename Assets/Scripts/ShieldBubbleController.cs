@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ShieldBubbleController : MonoBehaviour
+public class ShieldBubbleController : SavableMonoBehaviour
 {
     public float range = 3;//how big the shield is
     private float baseWidth = 0;
@@ -18,6 +18,11 @@ public class ShieldBubbleController : MonoBehaviour
         Vector3 bsize = sr.bounds.size;
         baseWidth = bsize.x;
         baseHeight = bsize.y;
+    }
+
+    public override SavableObject getSavableObject()
+    {
+        return new ShieldBubbleControllerSavable(this);
     }
 
     // Update is called once per frame
@@ -54,5 +59,36 @@ public class ShieldBubbleController : MonoBehaviour
                 }
             }
         }
+    }
+}
+
+//
+//Class that saves the important variables of this class
+//2017-01-18: copied from CrackedGroundCheckerSavable
+//
+public class ShieldBubbleControllerSavable : SavableObject
+{
+    public float range;
+    public float energy;
+
+    public ShieldBubbleControllerSavable() { }//only called by the method that reads it from the file
+    public ShieldBubbleControllerSavable(ShieldBubbleController sbc)
+    {
+        saveState(sbc);
+    }
+
+    public override void loadState(GameObject go)
+    {
+        ShieldBubbleController sbc = go.GetComponent<ShieldBubbleController>();
+        if (sbc != null)
+        {
+            sbc.init(this.range, this.energy);
+        }
+    }
+    public override void saveState(SavableMonoBehaviour smb)
+    {
+        ShieldBubbleController sbc = ((ShieldBubbleController)smb);
+        this.range = sbc.range;
+        this.energy = sbc.energy;
     }
 }

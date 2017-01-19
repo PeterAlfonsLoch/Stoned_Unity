@@ -32,7 +32,8 @@ public class ShieldBubbleAbility : PlayerAbility
         if (finished)
         {
             //Spawn Shield Bubble
-            spawnShieldBubble(pos, range, 100*range/maxRange);
+            GameObject newSB = spawnShieldBubble(pos, range, 100*range/maxRange);
+            GameManager.addObject(newSB);
             AudioSource.PlayClipAtPoint(shieldBubbleSound, pos);
             Destroy(srii);
             srii = null;
@@ -58,10 +59,11 @@ public class ShieldBubbleAbility : PlayerAbility
         }
     }
 
-    void spawnShieldBubble(Vector2 pos, float range, float energy)
+    public GameObject spawnShieldBubble(Vector2 pos, float range, float energy)
     {
         GameObject newSB = (GameObject)Instantiate(shieldBubblePrefab);
         newSB.transform.position = pos;
         newSB.GetComponent<ShieldBubbleController>().init(range, energy);
+        return newSB;
     }
 }

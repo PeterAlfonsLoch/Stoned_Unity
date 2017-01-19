@@ -58,12 +58,20 @@ public class GameManager : MonoBehaviour
         SceneManager.sceneLoaded += sceneLoaded;
         SceneManager.sceneUnloaded += sceneUnloaded;
     }
+    public static void addObject(GameObject go)
+    {
+        instance.gameObjects.Add(go);
+    }
     public void addAll(List<GameObject> list)
     {
         foreach (GameObject go in list)
         {
             gameObjects.Add(go);
         }
+    }
+    public static void removeObject(GameObject go)
+    {
+        instance.gameObjects.Remove(go);
     }
 
      // Update is called once per frame

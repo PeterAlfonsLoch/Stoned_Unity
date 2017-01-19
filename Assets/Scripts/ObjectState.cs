@@ -70,6 +70,16 @@ public class ObjectState
                         }
                     }
                 }
+                //if not found, do stuff
+                if (go == null || !ReferenceEquals(go, null))
+                {
+                    //if is spawned object, make it
+                    if (so.isSpawnedObject())
+                    {
+                        go = so.spawnObject();
+                        go.name = this.objectName;
+                    }
+                }
             }
             else
             {

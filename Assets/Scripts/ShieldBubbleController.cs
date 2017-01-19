@@ -55,10 +55,16 @@ public class ShieldBubbleController : SavableMonoBehaviour
                 //Debug.Log("SHIELD force: " + force + ", velocity: " + rb2d.velocity.magnitude+", energy: "+energy);
                 if (energy <= 0)
                 {
-                    Destroy(gameObject);
+                    dissipate();
                 }
             }
         }
+    }
+
+    void dissipate()
+    {
+        GameManager.removeObject(this.gameObject);
+        Destroy(gameObject);
     }
 }
 
@@ -75,6 +81,15 @@ public class ShieldBubbleControllerSavable : SavableObject
     public ShieldBubbleControllerSavable(ShieldBubbleController sbc)
     {
         saveState(sbc);
+    }
+
+    public override bool isSpawnedObject()
+    {
+        return true;
+    }
+    public override GameObject spawnObject()
+    {
+        return GameManager.getPlayerObject().GetComponent<ShieldBubbleAbility>().spawnShieldBubble(Vector2.zero, this.range, this.energy);//position will be set later in the load process
     }
 
     public override void loadState(GameObject go)

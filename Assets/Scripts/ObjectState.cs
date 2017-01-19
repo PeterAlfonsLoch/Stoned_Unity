@@ -54,30 +54,37 @@ public class ObjectState
     }
     public void loadState()
     {
-        if (go == null || !ReferenceEquals(go, null))//2016-11-20: reference equals test copied from an answer by sindrijo: http://answers.unity3d.com/questions/13840/how-to-detect-if-a-gameobject-has-been-destroyed.html
+        if (go == null || ReferenceEquals(go, null))//2016-11-20: reference equals test copied from an answer by sindrijo: http://answers.unity3d.com/questions/13840/how-to-detect-if-a-gameobject-has-been-destroyed.html
         {
             Scene scene = SceneManager.GetSceneByName(sceneName);
             if (scene.IsValid() && scene.isLoaded)
             {
                 foreach (GameObject sceneGo in scene.GetRootGameObjects())
                 {
-                    foreach (Transform childTransform in sceneGo.GetComponentsInChildren<Transform>())
+                    if (sceneGo.name.Equals(objectName))
                     {
-                        GameObject childGo = childTransform.gameObject;
-                        if (childGo.name.Equals(objectName))
+                        this.go = sceneGo;
+                    }
+                    else {
+                        foreach (Transform childTransform in sceneGo.GetComponentsInChildren<Transform>())
                         {
-                            this.go = childGo;
+                            GameObject childGo = childTransform.gameObject;
+                            if (childGo.name.Equals(objectName))
+                            {
+                                this.go = childGo;
+                            }
                         }
                     }
                 }
                 //if not found, do stuff
-                if (go == null || !ReferenceEquals(go, null))
+                if (go == null || ReferenceEquals(go, null))
                 {
                     //if is spawned object, make it
                     if (so.isSpawnedObject())
                     {
                         go = so.spawnObject();
                         go.name = this.objectName;
+                        GameManager.addObject(go);
                     }
                 }
             }

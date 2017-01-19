@@ -64,6 +64,7 @@ public class ShieldBubbleAbility : PlayerAbility
         GameObject newSB = (GameObject)Instantiate(shieldBubblePrefab);
         newSB.transform.position = pos;
         newSB.GetComponent<ShieldBubbleController>().init(range, energy);
+        newSB.name += System.DateTime.Now.Ticks;
         return newSB;
     }
 }

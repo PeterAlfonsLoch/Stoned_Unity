@@ -12,6 +12,7 @@ public class GameState
     public static int nextid = 0;
     public GameObject representation;//the player ghost that represents this game state
 
+    //Instantiation
     public GameState() {
         id = nextid;
         nextid++;
@@ -28,6 +29,7 @@ public class GameState
             }
         }
     }
+    //Loading
     public void load()
     {
         foreach (ObjectState os in states)
@@ -47,6 +49,39 @@ public class GameState
         }
         return false;
     }
+    //
+    //Spawned Objects
+    //
+
+    //
+    //Gets the list of the game objects that have object states in this game state
+    //
+    public List<GameObject> getGameObjects()
+    {
+        List<GameObject> objects = new List<GameObject>();
+        foreach (ObjectState os in states)
+        {
+            objects.Add(os.getGameObject());
+        }
+        return objects;
+    }
+    //Returns true IFF the given GameObject has an ObjectState in this GameState
+    public bool hasGameObject(GameObject go)
+    {
+        if (go == null)
+        {
+            return false;
+        }
+        foreach (ObjectState os in states)
+        {
+            if (os.objectName == go.name && os.sceneName == go.scene.name)
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+    //Representation (check point ghost)
     public void showRepresentation(GameObject ghostPrefab)
     {
         if (representation == null)

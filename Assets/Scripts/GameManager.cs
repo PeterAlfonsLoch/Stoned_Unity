@@ -95,6 +95,11 @@ public class GameManager : MonoBehaviour
                 Load(chosenId - 1);
             }
         }
+        else if (chosenId == rewindId)//rewind just finished processing
+        {
+            refreshGameObjects();
+            rewindId++;//make it greater than chosenId so that it doesn't refresh game objects every frame
+        }
         foreach (SceneLoader sl in sceneLoaders)
         {
             sl.check();
@@ -211,6 +216,16 @@ public class GameManager : MonoBehaviour
     }
     public void Load(int gamestateId)
     {
+        //Destroy objects not spawned yet in the new selected state
+        //chosenId is the previous current gamestate, which is in the future compared to gamestateId
+        foreach (GameObject go in gameStates[chosenId].getGameObjects())
+        {
+            if (!gameStates[gamestateId].hasGameObject(go))
+            {
+                Destroy(go);
+            }
+        }
+        //
         chosenId = gamestateId;
         gameStates[gamestateId].load();
         for (int i = gameStates.Count - 1; i > gamestateId ; i--)

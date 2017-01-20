@@ -54,6 +54,32 @@ public class ObjectState
     }
     public void loadState()
     {
+        getGameObject();//finds and sets the game object
+        if (go == null)
+        {
+            return;//don't load the state if go is null
+        }
+        go.transform.position = position;
+        go.transform.localScale = localScale;
+        go.transform.rotation = rotation;
+        rb2d = go.GetComponent<Rigidbody2D>();
+        if (rb2d != null)
+        {
+            rb2d.velocity = velocity;
+            rb2d.angularVelocity = angularVelocity;
+        }
+        if (this.so != null)
+        {
+            this.so.loadState(go);
+        }
+    }
+
+    //
+    //Retrieves the variable, go,
+    //and if go is null, it finds the correct GameObject and sets go
+    //
+    public GameObject getGameObject()
+    {
         if (go == null || ReferenceEquals(go, null))//2016-11-20: reference equals test copied from an answer by sindrijo: http://answers.unity3d.com/questions/13840/how-to-detect-if-a-gameobject-has-been-destroyed.html
         {
             Scene scene = SceneManager.GetSceneByName(sceneName);
@@ -90,21 +116,9 @@ public class ObjectState
             }
             else
             {
-                return;
+                go = null;
             }
         }
-        go.transform.position = position;
-        go.transform.localScale = localScale;
-        go.transform.rotation = rotation;
-        rb2d = go.GetComponent<Rigidbody2D>();
-        if (rb2d != null)
-        {
-            rb2d.velocity = velocity;
-            rb2d.angularVelocity = angularVelocity;
-        }
-        if (this.so != null)
-        {
-            this.so.loadState(go);
-        }
+        return go;
     }
 }

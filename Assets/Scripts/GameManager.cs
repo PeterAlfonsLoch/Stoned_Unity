@@ -95,11 +95,6 @@ public class GameManager : MonoBehaviour
                 Load(chosenId - 1);
             }
         }
-        else if (chosenId == rewindId)//rewind just finished processing
-        {
-            refreshGameObjects();
-            rewindId++;//make it greater than chosenId so that it doesn't refresh game objects every frame
-        }
         foreach (SceneLoader sl in sceneLoaders)
         {
             sl.check();
@@ -222,6 +217,7 @@ public class GameManager : MonoBehaviour
         {
             if (!gameStates[gamestateId].hasGameObject(go))
             {
+                removeObject(go);//remove it from game objects list
                 Destroy(go);
             }
         }

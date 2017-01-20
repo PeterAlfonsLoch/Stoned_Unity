@@ -96,7 +96,9 @@ PolygonCollider2D:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_UsedByEffector: 0
+  m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
+  m_AutoTiling: 0
   m_Points:
     m_Paths:
     - - {x: 0.32628766, y: -0.4933825}
@@ -227,11 +229,16 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -1013862959
+  m_SortingLayer: 3
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: eb7c2ab9920adf146a653a8f712162bd, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
+  m_DrawMode: 0
+  m_Size: {x: 1, y: 1}
+  m_AdaptiveModeThreshold: 0.5
+  m_SpriteTileMode: 0
 --- !u!212 &21235352
 SpriteRenderer:
   m_ObjectHideFlags: 1
@@ -262,11 +269,16 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -516950649
+  m_SortingLayer: 0
   m_SortingOrder: 1
   m_Sprite: {fileID: 21300000, guid: 6a5da0f2f51e46c4ea9bf652fa4f9d38, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
+  m_DrawMode: 0
+  m_Size: {x: 1, y: 1}
+  m_AdaptiveModeThreshold: 0.5
+  m_SpriteTileMode: 0
 --- !u!1001 &100100000
 Prefab:
   m_ObjectHideFlags: 1
@@ -284,13 +296,14 @@ MonoBehaviour:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 100086}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e2356b527d93de14798de1ef5c9ef78a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  shieldRangeIndicator: {fileID: 138864, guid: e641b70e2c145a64fb8ebdc296d4871b, type: 2}
-  shieldBubblePrefab: {fileID: 138864, guid: e641b70e2c145a64fb8ebdc296d4871b, type: 2}
+  shieldRangeIndicator: {fileID: 138864, guid: 8bc5cba583405f74fa7a24fb1a3e8fd2, type: 2}
+  shieldBubblePrefab: {fileID: 1181304595248282, guid: 67728388103716d44b748f94c401862f,
+    type: 2}
   maxRange: 3
   maxHoldTime: 1
   shieldBubbleSound: {fileID: 8300000, guid: 64801fca428cf394fa91e011dab21557, type: 3}

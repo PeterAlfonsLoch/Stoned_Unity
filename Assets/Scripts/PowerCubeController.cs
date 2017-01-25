@@ -31,6 +31,13 @@ public class PowerCubeController : MonoBehaviour {
         //float newAlpha = ((currentEnergyLevel) * (newHigh) / (curHigh));
         lightEffectRenderer.color = new Color(lightEffectColor.r, lightEffectColor.g, lightEffectColor.b, newAlpha);
     }
+    void LateUpdate()
+    {
+        if (currentEnergyLevel > maxEnergyConsumptionPerSecond)
+        {
+            currentEnergyLevel = maxEnergyConsumptionPerSecond;//to keep it from overloading, put in LastUpdate() to give objects a chance to use energy
+        }
+    }
 
     //
     // Given the max amount of energy available,

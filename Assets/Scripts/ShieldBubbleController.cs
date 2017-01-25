@@ -26,8 +26,27 @@ public class ShieldBubbleController : SavableMonoBehaviour
     }
 
     // Update is called once per frame
-    //void Update () {
-    //}
+    void Update()
+    {
+        //2017-01-24: copied from WeightSwitchActivator.FixedUpdate()
+        Collider2D[] hitColliders = Physics2D.OverlapCircleAll(transform.position, range);
+        for (int i = 0; i < hitColliders.Length; i++)
+        {
+            GameObject hc = hitColliders[i].gameObject;
+            if (!hc.Equals(gameObject))
+            {
+                if (hc.tag == "UsesEnergy")
+                {
+                    float amountTaken = hc.GetComponent<PowerCubeController>().takeEnergyFromSource(energy, Time.deltaTime);
+                    energy -= amountTaken;
+                }
+            }
+        }
+        if (energy <= 0)
+        {
+            dissipate();
+        }
+    }
 
     public void init(float newRange, float startEnergy)
     {
@@ -53,10 +72,6 @@ public class ShieldBubbleController : SavableMonoBehaviour
                 float force = rb2d.velocity.magnitude * rb2d.mass;
                 energy -= force;
                 //Debug.Log("SHIELD force: " + force + ", velocity: " + rb2d.velocity.magnitude+", energy: "+energy);
-                if (energy <= 0)
-                {
-                    dissipate();
-                }
             }
         }
     }

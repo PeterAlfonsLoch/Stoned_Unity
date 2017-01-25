@@ -36,6 +36,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4972664890768416}
   - component: {fileID: 212599593727750228}
+  - component: {fileID: 61629140867813518}
   - component: {fileID: 114464742908626300}
   m_Layer: 0
   m_Name: powercube
@@ -71,6 +72,22 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: -53.33}
+--- !u!61 &61629140867813518
+BoxCollider2D:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1332349059410604}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0.0028994083, y: -0.014639199}
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 1.4357071, y: 1.1623415}
 --- !u!114 &114464742908626300
 MonoBehaviour:
   m_ObjectHideFlags: 1

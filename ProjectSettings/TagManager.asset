@@ -8,6 +8,7 @@ TagManager:
   - GestureManager
   - HideableArea
   - Checkpoint_Root
+  - UsesEnergy
   layers:
   - Default
   - TransparentFX

@@ -55,6 +55,11 @@ public class ForceTeleportAbility : PlayerAbility
                     {
                         cgc.checkForce(force);
                     }
+                    ShieldBubbleController sbc = hitColliders[i].gameObject.GetComponent<ShieldBubbleController>();
+                    if (sbc != null)
+                    {
+                        sbc.checkForce(force);
+                    }
                 }
             }
             showExplosionEffect(transform.position, pos, range*2);

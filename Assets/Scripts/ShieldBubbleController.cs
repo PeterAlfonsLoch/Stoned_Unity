@@ -70,10 +70,15 @@ public class ShieldBubbleController : SavableMonoBehaviour
             if (rb2d != null)
             {
                 float force = rb2d.velocity.magnitude * rb2d.mass;
-                energy -= force;
+                checkForce(force);
                 //Debug.Log("SHIELD force: " + force + ", velocity: " + rb2d.velocity.magnitude+", energy: "+energy);
             }
         }
+    }
+
+    public void checkForce(float force)
+    {
+        energy -= force;
     }
 
     void dissipate()

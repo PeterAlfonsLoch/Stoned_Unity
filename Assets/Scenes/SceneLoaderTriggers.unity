@@ -136,10 +136,10 @@ BoxCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0.11140442, y: -22.890823}
+  m_Offset: {x: -3.2454357, y: -22.890823}
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 72.35672, y: 90.26485}
+  m_Size: {x: 116.55911, y: 90.26485}
 --- !u!4 &133642600
 Transform:
   m_ObjectHideFlags: 0

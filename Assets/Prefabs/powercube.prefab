@@ -100,7 +100,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   lightEffect: {fileID: 1299874186869088}
-  maxEnergyConsumptionPerSecond: 2
+  maxEnergyConsumptionPerSecond: 3
   currentEnergyLevel: 0
 --- !u!212 &212487501239623860
 SpriteRenderer:

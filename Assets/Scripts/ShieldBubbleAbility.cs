@@ -7,7 +7,7 @@ public class ShieldBubbleAbility : PlayerAbility
     private TeleportRangeIndicatorUpdater sriu;//"shield range indicator updater"
     private GameObject srii;//"shield range indicator instance"
     public GameObject shieldBubblePrefab;//prefab used to spawn shield bubbles
-    public float maxRange = 3;
+    public float maxRange = 2.5f;
     public float maxHoldTime = 1;//how long until the max range is reached
 
     public AudioClip shieldBubbleSound;

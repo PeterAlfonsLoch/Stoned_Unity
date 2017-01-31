@@ -22,7 +22,7 @@ public class ShieldBubbleAbility : PlayerAbility
         return true;
     }
 
-    public new void processHoldGesture(Vector2 pos, float holdTime, bool finished)
+    public void processHoldGesture(Vector2 pos, float holdTime, bool finished)
     {
         float range = maxRange * holdTime * GestureManager.holdTimeScaleRecip / maxHoldTime;
         if (range > maxRange)
@@ -32,9 +32,12 @@ public class ShieldBubbleAbility : PlayerAbility
         if (finished)
         {
             //Spawn Shield Bubble
-            GameObject newSB = spawnShieldBubble(pos, range, 100*range/maxRange);
-            GameManager.addObject(newSB);
-            AudioSource.PlayClipAtPoint(shieldBubbleSound, pos);
+            if (canSpawnShieldBubble(pos, range))
+            {
+                GameObject newSB = spawnShieldBubble(pos, range, 100 * range / maxRange);
+                GameManager.addObject(newSB);
+                AudioSource.PlayClipAtPoint(shieldBubbleSound, pos);
+            }
             Destroy(srii);
             srii = null;
         }
@@ -59,8 +62,24 @@ public class ShieldBubbleAbility : PlayerAbility
         }
     }
 
+    public bool canSpawnShieldBubble(Vector2 pos, float range)
+    {
+        //Check to make sure it won't overlap another shield bubble
+        Collider2D[] hitColliders = Physics2D.OverlapCircleAll(pos, range);
+        for (int i = 0; i < hitColliders.Length; i++)
+        {
+            if (hitColliders[i].gameObject.GetComponent<ShieldBubbleController>() != null)
+            {
+                //found another shield bubble
+                return false;
+            }
+        }
+        return true;
+    }
+
     public GameObject spawnShieldBubble(Vector2 pos, float range, float energy)
     {
+        //Spawn New Shield Bubble
         GameObject newSB = (GameObject)Instantiate(shieldBubblePrefab);
         newSB.transform.position = pos;
         newSB.GetComponent<ShieldBubbleController>().init(range, energy);

@@ -49,7 +49,7 @@ public class ShieldBubbleAbility : PlayerAbility
                 srii.GetComponent<SpriteRenderer>().enabled = false;
             }
             srii.transform.position = (Vector2)pos;
-            sriu.setSize(range * 2);
+            sriu.setRange(range);
         }
     }
 

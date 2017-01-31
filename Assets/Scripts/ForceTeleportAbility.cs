@@ -75,7 +75,7 @@ public class ForceTeleportAbility : PlayerAbility
                 frii.GetComponent<SpriteRenderer>().enabled = false;
             }
             frii.transform.position = (Vector2)pos;
-            friu.setSize(range * 2);
+            friu.setRange(range);
         }
     }
 

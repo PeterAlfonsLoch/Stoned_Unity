@@ -8,8 +8,9 @@ public class TeleportRangeIndicatorUpdater : MonoBehaviour {
     private PlayerController controller;
     private float baseWidth=0;
     private float baseHeight=0;
+    private float baseRange = 2.5f;//2017-01-30: got this measurement from a test run. If the sprite size ever changes, this value will also have to change
+    private float baseScale = 1;
     SpriteRenderer sr;
-    float size = 0;
 
     // Use this for initialization
     void Start()
@@ -20,19 +21,9 @@ public class TeleportRangeIndicatorUpdater : MonoBehaviour {
         }
         sr = GetComponent<SpriteRenderer>();
         sr.enabled = true;
-        Vector3 bsize = sr.bounds.size;
-        baseWidth = bsize.x;
-        baseHeight = bsize.y;
-        if (size > 0)
-        {
-            setSize(size);
-        }
+        Debug.Log("TRIU: range: " + baseRange + ", scale: " + baseScale);
     }
-
-    // Update is called once per frame
-    //void Update()
-    //{
-    //}
+    
     public void updateRange()
     {
         if (controller.teleportTime <= Time.time)
@@ -43,37 +34,13 @@ public class TeleportRangeIndicatorUpdater : MonoBehaviour {
         {
             sr.enabled = false;
         }
-        //transform.position = parentObj.transform.position;
-        //transform.localScale = new Vector3(1, 1);
-        float newSize = controller.range * 2;
-        setSize(newSize);
+        float newSize = controller.range;
+        setRange(newSize);
     }
-    public void setSize(float newSize) {
-        //if (Mathf.Abs(baseWidth - newSize) > 1)
-        //{
-        size = newSize;
-        if (baseWidth > 0 && baseHeight > 0)
-        {
-            Vector3 newV = new Vector3(newSize / baseWidth, newSize / baseHeight, 0);
-            //if (Mathf.Abs(transform.localScale.magnitude - newV.magnitude) > 1) {
-            transform.localScale = newV;
-        }
-        // }
-        //}
-        //transform.localScale.y = newSize / height;
-        //GetComponent<SpriteRenderer>().sprite.bounds.SetMinMax(controller.range * 2, controller.range * 2);
+    public void setRange(float range)
+    {
+        float newScale = baseScale * range / baseRange;
+        Vector3 newV = new Vector3(newScale, newScale, 0);
+        transform.localScale = newV;
     }
-
-    //void LastUpdate()
-    //{
-    //    //transform.position = parentObj.transform.position;
-    //    //Vector3 size = GetComponent<SpriteRenderer>().bounds.size;
-    //    //float width = size.x;
-    //    //float height = size.y;
-    //    float newSize = controller.range * 2;
-    //    transform.localScale = new Vector3(1, 1) * newSize;// 100, 100);// newSize / width, newSize / height);
-    //    //transform.localScale.y = newSize / height;
-    //    //GetComponent<SpriteRenderer>().sprite.bounds.SetMinMax(controller.range * 2, controller.range * 2);
-
-    //}
 }

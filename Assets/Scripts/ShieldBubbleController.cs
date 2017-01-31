@@ -5,8 +5,8 @@ using UnityEngine;
 public class ShieldBubbleController : SavableMonoBehaviour
 {
     public float range = 3;//how big the shield is
-    private float baseWidth = 0;
-    private float baseHeight = 0;
+    private float baseWidth = 5;//2017-01-30: if the dimensions of the sprite asset should change, then this value also needs changed
+    private float baseHeight = 5;
 
     public float energy = 100;//how much energy this shield has left
     public float maxEnergy = 100;//how much energy this shield starts off with

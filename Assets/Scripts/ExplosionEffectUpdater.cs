@@ -16,8 +16,8 @@ public class ExplosionEffectUpdater : MonoBehaviour {//2016-04-18: copied from T
     private float startTime;
     private float ratio;
     private SpriteRenderer sr;
-    private float baseWidth = 0;
-    private float baseHeight = 0;
+    private float baseWidth = 5;//2017-01-30: if the size of the sprite asset changes, this value needs updated
+    private float baseHeight = 5;
 
     private float timeShown = 0;
     private bool turnedOn = false;

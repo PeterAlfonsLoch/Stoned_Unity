@@ -467,10 +467,10 @@ public class PlayerController : MonoBehaviour
                         }
                     }
                 }
-                else
+                if (rch2d.transform != null)
                 {
                     GameObject go = rch2d.transform.gameObject;
-                    if (go.tag.Equals("HidableArea") || go.transform.parent.gameObject.tag.Equals("HideableArea"))
+                    if (go.tag.Equals("HidableArea") || (go.transform.parent != null && go.transform.parent.gameObject.tag.Equals("HideableArea")))
                     {
                         return true;//yep, it's occupied by a hidden area
                     }

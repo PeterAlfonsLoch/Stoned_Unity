@@ -18,6 +18,7 @@ public class ShieldBubbleController : SavableMonoBehaviour
         Vector3 bsize = sr.bounds.size;
         baseWidth = bsize.x;
         baseHeight = bsize.y;
+        lockRB2Ds();
     }
 
     public override SavableObject getSavableObject()
@@ -85,6 +86,52 @@ public class ShieldBubbleController : SavableMonoBehaviour
     {
         GameManager.removeObject(this.gameObject);
         Destroy(gameObject);
+    }
+    void OnDestroy()
+    {
+        unlockRB2Ds();
+    }
+    ///<summary>
+    ///Locks all rb2ds in its area
+    ///</summary>
+    void lockRB2Ds()
+    {
+        Collider2D[] hitColliders = Physics2D.OverlapCircleAll(transform.position, range);
+        for (int i = 0; i < hitColliders.Length; i++)
+        {
+            GameObject hc = hitColliders[i].gameObject;
+            if (!hc.Equals(gameObject))
+            {
+                if (hc.GetComponent<Rigidbody2D>() != null)
+                {
+                    lockRB2D(hc);
+                }
+            }
+        }
+    }
+    void lockRB2D(GameObject go)
+    {
+        Rigidbody2DLock gorb2dl = go.GetComponent<Rigidbody2DLock>();
+        if (gorb2dl == null)
+        {
+            gorb2dl = go.AddComponent<Rigidbody2DLock>();
+        }
+        gorb2dl.addLock(this.gameObject);
+    }
+    ///<summary>
+    ///Unlocks all rb2ds this object locked
+    ///</summary>
+    void unlockRB2Ds()
+    {
+        List<Rigidbody2DLock> locks = new List<Rigidbody2DLock>();
+        locks.AddRange(GameObject.FindObjectsOfType<Rigidbody2DLock>());
+        foreach (Rigidbody2DLock rb2dlock in locks)
+        {
+            if (rb2dlock.holdsLock(this.gameObject))
+            {
+                rb2dlock.removeLock(this.gameObject);
+            }
+        }
     }
 }
 

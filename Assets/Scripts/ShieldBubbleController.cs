@@ -9,12 +9,14 @@ public class ShieldBubbleController : SavableMonoBehaviour
     private float baseHeight = 5;
 
     public float energy = 100;//how much energy this shield has left
-    public float maxEnergy = 100;//how much energy this shield starts off with
+    public float MAX_ENERGY = 100;//The max amount of energy for any shield
+
+    private SpriteRenderer sr;
 
     // Use this for initialization
     void Start()
     {
-        SpriteRenderer sr = GetComponent<SpriteRenderer>();
+        sr = GetComponent<SpriteRenderer>();
         Vector3 bsize = sr.bounds.size;
         baseWidth = bsize.x;
         baseHeight = bsize.y;
@@ -39,7 +41,7 @@ public class ShieldBubbleController : SavableMonoBehaviour
                 if (hc.tag == "UsesEnergy")
                 {
                     float amountTaken = hc.GetComponent<PowerCubeController>().takeEnergyFromSource(energy, Time.deltaTime);
-                    energy -= amountTaken;
+                    adjustEnergy(-amountTaken);
                 }
             }
         }
@@ -58,8 +60,8 @@ public class ShieldBubbleController : SavableMonoBehaviour
             Vector3 newV = new Vector3(size / baseWidth, size / baseHeight, 0);
             transform.localScale = newV;
         }
-        maxEnergy = startEnergy;
-        energy = maxEnergy;
+        energy = startEnergy;
+        adjustEnergy(0);
     }
 
     void OnCollisionEnter2D(Collision2D coll)
@@ -79,7 +81,19 @@ public class ShieldBubbleController : SavableMonoBehaviour
 
     public void checkForce(float force)
     {
-        energy -= force;
+        adjustEnergy(-force);
+    }
+    void adjustEnergy(float amount)
+    {
+        energy += amount;
+        if (sr == null)
+        {
+            sr = GetComponent<SpriteRenderer>();
+        }
+        //Shield Bubble VC: change its sprite's alpha value based on its energy
+        Color prevColor = sr.color;
+        float t = energy / MAX_ENERGY;
+        sr.color = new Color(prevColor.r, prevColor.g, prevColor.b, Mathf.SmoothStep(0.2f, 1.0f, t));
     }
 
     void dissipate()

@@ -46,7 +46,8 @@ public class PowerCubeController : MonoBehaviour {
     //
     public float takeEnergyFromSource(float maxAvailable, float deltaTime)
     {
-        float amountTaken = Mathf.Min(maxEnergyConsumptionPerSecond*deltaTime, maxAvailable);
+
+        float amountTaken = Mathf.Min(maxEnergyConsumptionPerSecond-currentEnergyLevel, maxAvailable);
         currentEnergyLevel += amountTaken;
         return amountTaken;
     }

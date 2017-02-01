@@ -11,6 +11,7 @@ public class ShieldBubbleAbility : PlayerAbility
     public float maxHoldTime = 1;//how long until the max range is reached
 
     public AudioClip shieldBubbleSound;
+    public AudioClip shieldBubbleFailSound;//played when a shield cannot be made because it overlaps another shield
 
     public new bool takesGesture()
     {
@@ -37,6 +38,10 @@ public class ShieldBubbleAbility : PlayerAbility
                 GameObject newSB = spawnShieldBubble(pos, range, 100 * range / maxRange);
                 GameManager.addObject(newSB);
                 AudioSource.PlayClipAtPoint(shieldBubbleSound, pos);
+            }
+            else
+            {
+                AudioSource.PlayClipAtPoint(shieldBubbleFailSound, pos);
             }
             Destroy(srii);
             srii = null;

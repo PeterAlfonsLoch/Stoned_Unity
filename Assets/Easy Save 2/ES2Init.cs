@@ -75,6 +75,7 @@ public class ES2Init : MonoBehaviour
 		ES2TypeManager.types[typeof(SavableObject)] = new ES2UserType_SavableObject();
 		ES2TypeManager.types[typeof(ShieldBubbleControllerSavable)] = new ES2UserType_ShieldBubbleControllerSavable();
 		ES2TypeManager.types[typeof(UnityEngine.AudioClip)] = new ES2_AudioClip();
+		ES2TypeManager.types[typeof(GameObjectId)] = new ES2UserType_GameObjectId();
 
 		ES2.initialised = true;
 	}

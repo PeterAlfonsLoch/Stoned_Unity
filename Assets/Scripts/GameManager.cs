@@ -159,7 +159,10 @@ public class GameManager : MonoBehaviour
         //Debug.Log("GM Collider List: " + gravityColliderList.Count);
         foreach (SavableMonoBehaviour smb in FindObjectsOfType<SavableMonoBehaviour>())
         {
-            gameObjects.Add(smb.gameObject);
+            if (!gameObjects.Contains(smb.gameObject))
+            {
+                gameObjects.Add(smb.gameObject);
+            }
         }
         foreach(MemoryMonoBehaviour mmb in FindObjectsOfType<MemoryMonoBehaviour>())
         {

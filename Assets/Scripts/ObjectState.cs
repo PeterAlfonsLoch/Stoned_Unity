@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine.SceneManagement;
 
 public class ObjectState
@@ -13,7 +14,7 @@ public class ObjectState
     public Vector2 velocity;
     public float angularVelocity;
     //Saveable Object
-    public SavableObject so;
+    public List<SavableObject> soList;
     public static SavableObject dummySO = new SavableObject();//for objects that don't have them
     //Name
     public string objectName;
@@ -21,7 +22,7 @@ public class ObjectState
 
     private Rigidbody2D rb2d;
     private GameObject go;
-    private SavableMonoBehaviour smb;
+    private List<SavableMonoBehaviour> smbList;
 
     public ObjectState() { }
     public ObjectState(GameObject goIn)
@@ -30,7 +31,8 @@ public class ObjectState
         objectName = go.name;
         sceneName = go.scene.name;
         rb2d = go.GetComponent<Rigidbody2D>();
-        smb = go.GetComponent<SavableMonoBehaviour>();
+        smbList = new List<SavableMonoBehaviour>();
+        smbList.AddRange(go.GetComponents<SavableMonoBehaviour>());
     }
 
     public void saveState()
@@ -43,13 +45,10 @@ public class ObjectState
             velocity = rb2d.velocity;
             angularVelocity = rb2d.angularVelocity;
         }
-        if (smb != null)
+        soList = new List<SavableObject>();
+        foreach (SavableMonoBehaviour smb in smbList)
         {
-            this.so = smb.getSavableObject();
-        }
-        else
-        {
-            this.so = dummySO;
+            this.soList.Add(smb.getSavableObject());
         }
     }
     public void loadState()
@@ -68,9 +67,9 @@ public class ObjectState
             rb2d.velocity = velocity;
             rb2d.angularVelocity = angularVelocity;
         }
-        if (this.so != null)
+        foreach (SavableObject so in this.soList)
         {
-            this.so.loadState(go);
+            so.loadState(go);
         }
     }
 
@@ -106,11 +105,15 @@ public class ObjectState
                 if (go == null || ReferenceEquals(go, null))
                 {
                     //if is spawned object, make it
-                    if (so.isSpawnedObject())
+                    foreach (SavableObject so in soList)
                     {
-                        go = so.spawnObject();
-                        go.name = this.objectName;
-                        GameManager.addObject(go);
+                        if (so.isSpawnedObject())
+                        {
+                            go = so.spawnObject();
+                            go.name = this.objectName;
+                            GameManager.addObject(go);
+                            break;
+                        }
                     }
                 }
             }

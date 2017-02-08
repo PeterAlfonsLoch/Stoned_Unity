@@ -69,6 +69,10 @@ public class ObjectState
         }
         foreach (SavableObject so in this.soList)
         {
+            if (go.GetComponent(so.getSavableMonobehaviourType()) == null)
+            {
+                so.addScript(go);
+            }
             so.loadState(go);
         }
     }

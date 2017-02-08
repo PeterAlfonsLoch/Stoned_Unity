@@ -21,6 +21,21 @@ public class SavableObject{
         throw new System.MissingMethodException("This method is not supported in this subclass: "+GetType().Name);
     }
 
+    public virtual System.Type getSavableMonobehaviourType()
+    {
+        return typeof(SavableMonoBehaviour);
+    }
+
+    ///<summary>
+    ///Adds this SavableObject's SavableMonobehaviour to the given GameObject
+    ///and sets the variables.
+    ///</summary>
+    ///<param name="go">The GameObject to add the script to</param>
+    public virtual void addScript(GameObject go)
+    {
+        throw new System.MissingMethodException("This method is not supported in this subclass: " + GetType().Name);
+    }
+
     public virtual void loadState(GameObject go) { }
 
     public virtual void saveState(SavableMonoBehaviour go) { }

@@ -22,6 +22,11 @@ public class ES2UserType_SavableObject : ES2Type
             writer.Write(sbcs.range);
             writer.Write(sbcs.energy);
         }
+        else if (obj.GetType() == typeof(Rigidbody2DLockSavable))//2017-02-07: copied from the section above for ShieldBubbleControllerSavable
+        {
+            Rigidbody2DLockSavable rb2dls = (Rigidbody2DLockSavable)obj;
+            writer.Write("Rigidbody2DLockSavable");
+        }
         else
         {
             writer.Write("None");
@@ -44,6 +49,11 @@ public class ES2UserType_SavableObject : ES2Type
             sbcs.range = reader.Read<float>();
             sbcs.energy = reader.Read<float>();
             return sbcs;
+        }
+        else if (objType == "Rigidbody2DLockSavable")//2017-02-07: copied from the section above for ShieldBubbleControllerSavable
+        {
+            Rigidbody2DLockSavable rb2dls = new Rigidbody2DLockSavable();
+            return rb2dls;
         }
         return ObjectState.dummySO;
     }

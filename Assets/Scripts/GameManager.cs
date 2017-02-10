@@ -58,12 +58,20 @@ public class GameManager : MonoBehaviour
         SceneManager.sceneLoaded += sceneLoaded;
         SceneManager.sceneUnloaded += sceneUnloaded;
     }
+    public static void addObject(GameObject go)
+    {
+        instance.gameObjects.Add(go);
+    }
     public void addAll(List<GameObject> list)
     {
         foreach (GameObject go in list)
         {
             gameObjects.Add(go);
         }
+    }
+    public static void removeObject(GameObject go)
+    {
+        instance.gameObjects.Remove(go);
     }
 
      // Update is called once per frame
@@ -151,7 +159,10 @@ public class GameManager : MonoBehaviour
         //Debug.Log("GM Collider List: " + gravityColliderList.Count);
         foreach (SavableMonoBehaviour smb in FindObjectsOfType<SavableMonoBehaviour>())
         {
-            gameObjects.Add(smb.gameObject);
+            if (!gameObjects.Contains(smb.gameObject))
+            {
+                gameObjects.Add(smb.gameObject);
+            }
         }
         foreach(MemoryMonoBehaviour mmb in FindObjectsOfType<MemoryMonoBehaviour>())
         {
@@ -203,6 +214,17 @@ public class GameManager : MonoBehaviour
     }
     public void Load(int gamestateId)
     {
+        //Destroy objects not spawned yet in the new selected state
+        //chosenId is the previous current gamestate, which is in the future compared to gamestateId
+        foreach (GameObject go in gameStates[chosenId].getGameObjects())
+        {
+            if (!gameStates[gamestateId].hasGameObject(go))
+            {
+                removeObject(go);//remove it from game objects list
+                Destroy(go);
+            }
+        }
+        //
         chosenId = gamestateId;
         gameStates[gamestateId].load();
         for (int i = gameStates.Count - 1; i > gamestateId ; i--)

@@ -3,7 +3,7 @@ using System.Collections;
 
 public class ForceTeleportAbility : PlayerAbility
 {
-    public GameObject forceRangeIndicator;
+    public GameObject forceRangeIndicator;//prefab
     private TeleportRangeIndicatorUpdater friu;//"force range indicator updater"
     private GameObject frii;//"force range indicator instance"
     public GameObject explosionEffect;
@@ -55,6 +55,11 @@ public class ForceTeleportAbility : PlayerAbility
                     {
                         cgc.checkForce(force);
                     }
+                    ShieldBubbleController sbc = hitColliders[i].gameObject.GetComponent<ShieldBubbleController>();
+                    if (sbc != null)
+                    {
+                        sbc.checkForce(force);
+                    }
                 }
             }
             showExplosionEffect(transform.position, pos, range*2);
@@ -70,7 +75,16 @@ public class ForceTeleportAbility : PlayerAbility
                 frii.GetComponent<SpriteRenderer>().enabled = false;
             }
             frii.transform.position = (Vector2)pos;
-            friu.setSize(range * 2);
+            friu.setRange(range);
+        }
+    }
+
+    public void dropHoldGesture()
+    {
+        if (frii != null)
+        {
+            Destroy(frii);
+            frii = null;
         }
     }
 

@@ -33,7 +33,7 @@ public class CameraController : MonoBehaviour
         {
             if (relative)
             {
-                return scalePoint * plyrController.range;
+                return scalePoint * plyrController.baseRange;
             }
             return scalePoint;
         }

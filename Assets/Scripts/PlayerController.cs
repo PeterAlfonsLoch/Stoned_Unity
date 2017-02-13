@@ -248,19 +248,26 @@ public class PlayerController : MonoBehaviour
             if (isOccupied(newPos))//test the current newPos first
             {
                 //Back-tracking
-                Vector3 btNewPos = newPos;
+                Vector3 btNewPos = newPos;//"back track new pos"
                 float distance = Vector3.Distance(oldPos, newPos);
                 int pointsToTry = 10;//default to trying 10 points along the line at first
                 float difference = -1 * 1.00f / pointsToTry;//how much the previous jump was different by
-                float percent = 1.00f;
+                float percent = 1.00f - difference;//to start it off trying the actual newPos first
                 bool keepTrying = true;
                 Vector3 norm = (newPos - oldPos).normalized;
-                while (keepTrying)
+                while (keepTrying && percent > 0)
                 {
                     percent += difference;//actually subtraction in usual case, b/c "difference" is usually negative
                     Vector3 testPos = (norm * distance * percent) + oldPos;
                     if (isOccupied(testPos))
                     {
+                        testPos = adjustForOccupant(testPos);
+                        //adjust pos based on occupant
+                        if (!isOccupied(testPos))
+                        {
+                            keepTrying = false;
+                            btNewPos = testPos;
+                        }
                     }
                     else
                     {
@@ -296,8 +303,11 @@ public class PlayerController : MonoBehaviour
                         cdNewPos = oldPos + Vector3.right * distance;
                     }
                 }
+                cdNewPos = adjustForOccupant(cdNewPos);
+                //
                 bool btOcc = isOccupied(btNewPos);
                 bool cdOcc = isOccupied(cdNewPos);
+                Debug.Log("cdOcc: "+cdOcc);
                 if (btOcc && !cdOcc)
                 {
                     newPos = cdNewPos;
@@ -326,7 +336,7 @@ public class PlayerController : MonoBehaviour
                 }
                 else
                 {
-                    //ERROR! It should not be able to come here!
+                    throw new System.Exception("ERROR! It should not be able to come here!");
                 }
             }
         }
@@ -434,50 +444,59 @@ public class PlayerController : MonoBehaviour
     bool isOccupied(Vector3 pos)
     {
         Vector2 pos2 = new Vector2(pos.x, pos.y);
-        foreach (Vector3 checkDir in checkDirs)
+        Vector2 size = transform.localScale;
+        Collider2D[] c2ds = Physics2D.OverlapBoxAll(pos, size, 0);
+        Debug.DrawLine(pos2 + (size / 2), pos2 - (size / 2), Color.black, 15);
+        foreach (Collider2D c2d in c2ds)
         {
-            Vector2 dir2 = new Vector2(checkDir.x, checkDir.y);
-            float length = 0.4f;// 1.7f;
-            dir2 = dir2.normalized * length;
-            Vector2 start = (pos2 + dir2);
-            //Debug.DrawLine(pos2, start, Color.black, 1);
-            RaycastHit2D rch2d = Physics2D.Raycast(start, -1 * dir2, length);// -1*(start), 1f);
-            if (rch2d)
+            GameObject go = c2d.gameObject;
+            if (!c2d.isTrigger)
             {
-                if (rch2d.collider != null)
+                if (!go.Equals(transform.gameObject))
                 {
-                    if (!rch2d.collider.isTrigger)
-                    {
-                        GameObject ground = rch2d.collider.gameObject;
-                        if (ground != null && !ground.Equals(transform.gameObject))
-                        {
-                            //test opposite direction
-                            start = (pos2 + -1 * dir2);
-                            rch2d = Physics2D.Raycast(start, dir2, length);
-                            Debug.DrawLine(start, start + dir2, Color.black, 1);
-                            if (rch2d && rch2d.collider != null)
-                            {
-                                ground = rch2d.collider.gameObject;
-                                if (ground != null && !ground.Equals(transform.gameObject))
-                                {
-                                    return true;//yep, it's occupied on both sides
-                                }
-                                //nope, it's occupied on one side but not the other
-                            }
-                        }
-                    }
+                    return true;
                 }
-                if (rch2d.transform != null)
-                {
-                    GameObject go = rch2d.transform.gameObject;
-                    if (go.tag.Equals("HidableArea") || (go.transform.parent != null && go.transform.parent.gameObject.tag.Equals("HideableArea")))
-                    {
-                        return true;//yep, it's occupied by a hidden area
-                    }
-                }
+
+            }
+            if (go.tag.Equals("HidableArea") || (go.transform.parent != null && go.transform.parent.gameObject.tag.Equals("HideableArea")))
+            {
+                return true;//yep, it's occupied by a hidden area
             }
         }
         return false;//nope, it's not occupied
+    }
+
+    /// <summary>
+    /// Adjusts the given Vector3 to avoid collision with the first object that it collides with
+    /// </summary>
+    /// <param name="pos">The Vector3 to adjust</param>
+    /// <returns>The Vector3, adjusted to avoid collision with first object it collides with</returns>
+    public Vector3 adjustForOccupant(Vector3 pos)
+    {
+        Vector2 pos2 = new Vector2(pos.x, pos.y);
+        Vector2 size = transform.localScale;
+        Collider2D[] c2ds = Physics2D.OverlapBoxAll(pos, size, 0);
+        Debug.DrawLine(pos2 + (size / 2), pos2 - (size / 2), Color.black, 15);
+        foreach (Collider2D c2d in c2ds)
+        {
+            GameObject go = c2d.gameObject;
+            if (!c2d.isTrigger)
+            {
+                if (!go.Equals(transform.gameObject))
+                {
+                    Vector3 closPos = c2d.bounds.ClosestPoint(pos);
+                    Vector3 dir = pos - closPos;
+                    float d2 = (size.magnitude / 2) - Vector3.Distance(pos, closPos);
+                    return pos + dir.normalized * d2;
+                }
+
+            }
+            //if (go.tag.Equals("HidableArea") || (go.transform.parent != null && go.transform.parent.gameObject.tag.Equals("HideableArea")))
+            //{
+            //    return true;//yep, it's occupied by a hidden area
+            //}
+        }
+        return pos;//not adjusted because there's nothing to adjust for
     }
 
     public void setIsInCheckPoint(bool iicp)

@@ -23,6 +23,7 @@ public class PlayerController : MonoBehaviour
     public int airPorts = 0;
     private bool grounded = true;//set in isGrounded()
     private Rigidbody2D rb2d;
+    private PolygonCollider2D pc2d;
     private Vector2 savedVelocity;
     private float savedAngularVelocity;
     private bool velocityNeedsReloaded = false;//because you can't set a Vector2 to null, using this to see when the velocity needs reloaded
@@ -87,6 +88,7 @@ public class PlayerController : MonoBehaviour
     void Start()
     {
         rb2d = GetComponent<Rigidbody2D>();
+        pc2d = GetComponent<PolygonCollider2D>();
         mainCamCtr = Camera.main.GetComponent<CameraController>();
         gm = GameObject.FindGameObjectWithTag("GestureManager").GetComponent<GestureManager>();
         halfWidth = GetComponent<SpriteRenderer>().bounds.extents.magnitude;
@@ -255,7 +257,7 @@ public class PlayerController : MonoBehaviour
                 float percent = 1.00f - difference;//to start it off trying the actual newPos first
                 bool keepTrying = true;
                 Vector3 norm = (newPos - oldPos).normalized;
-                while (keepTrying && percent > 0)
+                while (keepTrying && percent >= 0)
                 {
                     percent += difference;//actually subtraction in usual case, b/c "difference" is usually negative
                     Vector3 testPos = (norm * distance * percent) + oldPos;
@@ -307,7 +309,7 @@ public class PlayerController : MonoBehaviour
                 //
                 bool btOcc = isOccupied(btNewPos);
                 bool cdOcc = isOccupied(cdNewPos);
-                Debug.Log("cdOcc: "+cdOcc);
+                //Debug.Log("btOcc: "+btOcc+", cdOcc: "+cdOcc+", percent(btOcc): "+percent);
                 if (btOcc && !cdOcc)
                 {
                     newPos = cdNewPos;
@@ -412,7 +414,7 @@ public class PlayerController : MonoBehaviour
         Vector3 pos = transform.position;
         Vector2 pos2 = new Vector2(pos.x, pos.y);
         int numberOfLines = 5;
-        Bounds bounds = GetComponent<PolygonCollider2D>().bounds;
+        Bounds bounds = pc2d.bounds;
         float width = bounds.max.x - bounds.min.x;
         float increment = width / (numberOfLines - 1);//-1 because the last one doesn't take up any space
         float negativeOffset = increment * (numberOfLines - 1) / 2;
@@ -443,17 +445,30 @@ public class PlayerController : MonoBehaviour
     */
     bool isOccupied(Vector3 pos)
     {
-        Vector2 pos2 = new Vector2(pos.x, pos.y);
-        Vector2 size = transform.localScale;
-        Collider2D[] c2ds = Physics2D.OverlapBoxAll(pos, size, 0);
-        Debug.DrawLine(pos2 + (size / 2), pos2 - (size / 2), Color.black, 15);
-        foreach (Collider2D c2d in c2ds)
+        //Debug.DrawLine(pos, pos + new Vector3(0,0.25f), Color.green, 5);
+        Vector3 savedOffset = pc2d.offset;
+        Vector3 savedRotation = transform.up;
+        transform.up = new Vector3(0, 1, 0);
+        pc2d.offset += (Vector2)(pos - transform.position);
+        RaycastHit2D[] rh2ds = new RaycastHit2D[10];
+        pc2d.Cast(Vector2.zero, rh2ds, 0, true);
+        //Debug.DrawLine(pc2d.offset+(Vector2)transform.position, pc2d.bounds.center, Color.grey, 10);
+        pc2d.offset = savedOffset;
+        transform.up = savedRotation;
+        foreach (RaycastHit2D rh2d in rh2ds)
         {
-            GameObject go = c2d.gameObject;
-            if (!c2d.isTrigger)
+            //RaycastHit2D rh2d = rh2ds[0];
+            if (rh2d.collider == null)
+            {
+                break;//reached the end of the valid RaycastHit2Ds
+            }
+            GameObject go = rh2d.collider.gameObject;
+            if (!rh2d.collider.isTrigger)
             {
                 if (!go.Equals(transform.gameObject))
                 {
+                    //go.GetComponent<SpriteRenderer>().color = new Color(Random.Range(0,255), Random.Range(0, 255), Random.Range(0, 255));
+                    Debug.Log("Occupying object: " + go.name);
                     return true;
                 }
 
@@ -472,20 +487,30 @@ public class PlayerController : MonoBehaviour
     /// <param name="pos">The Vector3 to adjust</param>
     /// <returns>The Vector3, adjusted to avoid collision with first object it collides with</returns>
     public Vector3 adjustForOccupant(Vector3 pos)
-    {
-        Vector2 pos2 = new Vector2(pos.x, pos.y);
-        Vector2 size = transform.localScale;
-        Collider2D[] c2ds = Physics2D.OverlapBoxAll(pos, size, 0);
-        Debug.DrawLine(pos2 + (size / 2), pos2 - (size / 2), Color.black, 15);
-        foreach (Collider2D c2d in c2ds)
+    {        
+        Vector3 savedOffset = pc2d.offset;
+        Vector3 savedRotation = transform.up;
+        transform.up = new Vector3(0, 1, 0);
+        pc2d.offset += (Vector2)(pos - transform.position);
+        RaycastHit2D[] rh2ds = new RaycastHit2D[10];
+        pc2d.Cast(Vector2.zero, rh2ds, 0, true);
+        pc2d.offset = savedOffset;
+        transform.up = savedRotation;
+        foreach (RaycastHit2D rh2d in rh2ds)
         {
-            GameObject go = c2d.gameObject;
-            if (!c2d.isTrigger)
+            //RaycastHit2D rh2d = rh2ds[0];
+            if (rh2d.collider == null)
+            {
+                break;//reached the end of the valid RaycastHit2Ds
+            }
+            GameObject go = rh2d.collider.gameObject;
+            if (!rh2d.collider.isTrigger)
             {
                 if (!go.Equals(transform.gameObject))
                 {
-                    Vector3 closPos = c2d.bounds.ClosestPoint(pos);
+                    Vector3 closPos = rh2d.point;
                     Vector3 dir = pos - closPos;
+                    Vector3 size = pc2d.bounds.size;
                     float d2 = (size.magnitude / 2) - Vector3.Distance(pos, closPos);
                     return pos + dir.normalized * d2;
                 }

@@ -25,13 +25,13 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 157352}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.032952193, y: -1.12, z: 0}
+  m_LocalRotation: {x: -0, y: -0, z: -0.31910005, w: 0.9477211}
+  m_LocalPosition: {x: 237.24, y: -30.46, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: -37.217003}
 --- !u!61 &6184978
 BoxCollider2D:
   m_ObjectHideFlags: 1
@@ -59,11 +59,11 @@ EdgeCollider2D:
   m_UsedByEffector: 0
   m_Offset: {x: 0, y: 0}
   m_Points:
-  - {x: -0.6802007, y: -0.59313595}
-  - {x: -0.68540215, y: 0.5799558}
-  - {x: 0.75153315, y: 0.5801746}
-  - {x: 0.7270216, y: -0.5939479}
-  - {x: -0.69060344, y: -0.6063173}
+  - {x: -0.7053378, y: -0.6122252}
+  - {x: -0.72124815, y: 0.5923698}
+  - {x: 0.7575642, y: 0.6243933}
+  - {x: 0.7397529, y: -0.6107044}
+  - {x: -0.69060516, y: -0.6063192}
 --- !u!114 &11490148
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -76,7 +76,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   activated: 0
-  ghostSprite: {fileID: 0}
+  ghostSprite: {fileID: 21300000, guid: a8fcd08c98125db4b87e49b11bd3ba58, type: 3}
   ghostBounds:
     m_Center: {x: 0, y: 0, z: 0}
     m_Extent: {x: 0, y: 0, z: 0}

@@ -482,12 +482,13 @@ public class PlayerController : MonoBehaviour
     }
 
     /// <summary>
-    /// Adjusts the given Vector3 to avoid collision with the first object that it collides with
+    /// Adjusts the given Vector3 to avoid collision with the objects that it collides with
     /// </summary>
     /// <param name="pos">The Vector3 to adjust</param>
-    /// <returns>The Vector3, adjusted to avoid collision with first object it collides with</returns>
+    /// <returns>The Vector3, adjusted to avoid collision with objects it collides with</returns>
     public Vector3 adjustForOccupant(Vector3 pos)
-    {        
+    {
+        Vector3 moveDir = new Vector3(0, 0, 0);//the direction to move the pos so that it is valid
         Vector3 savedOffset = pc2d.offset;
         Vector3 savedRotation = transform.up;
         transform.up = new Vector3(0, 1, 0);
@@ -512,7 +513,7 @@ public class PlayerController : MonoBehaviour
                     Vector3 dir = pos - closPos;
                     Vector3 size = pc2d.bounds.size;
                     float d2 = (size.magnitude / 2) - Vector3.Distance(pos, closPos);
-                    return pos + dir.normalized * d2;
+                    moveDir += dir.normalized * d2;
                 }
 
             }
@@ -521,7 +522,7 @@ public class PlayerController : MonoBehaviour
             //    return true;//yep, it's occupied by a hidden area
             //}
         }
-        return pos;//not adjusted because there's nothing to adjust for
+        return pos + moveDir;//not adjusted because there's nothing to adjust for
     }
 
     public void setIsInCheckPoint(bool iicp)

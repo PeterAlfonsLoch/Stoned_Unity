@@ -447,17 +447,16 @@ public class PlayerController : MonoBehaviour
     {
         //Debug.DrawLine(pos, pos + new Vector3(0,0.25f), Color.green, 5);
         Vector3 savedOffset = pc2d.offset;
-        Vector3 savedRotation = transform.up;
-        transform.up = new Vector3(0, 1, 0);
-        pc2d.offset += (Vector2)(pos - transform.position);
+        Vector3 offset = pos - transform.position;
+        float angle = Vector3.Angle(Vector3.up, transform.up);
+        Vector3 rOffset = Quaternion.AngleAxis(-angle, Vector3.forward) * offset;//2017-02-14: copied from an answer by robertbu: http://answers.unity3d.com/questions/620828/how-do-i-rotate-a-vector2d.html
+        pc2d.offset = rOffset;
         RaycastHit2D[] rh2ds = new RaycastHit2D[10];
         pc2d.Cast(Vector2.zero, rh2ds, 0, true);
         //Debug.DrawLine(pc2d.offset+(Vector2)transform.position, pc2d.bounds.center, Color.grey, 10);
         pc2d.offset = savedOffset;
-        transform.up = savedRotation;
         foreach (RaycastHit2D rh2d in rh2ds)
         {
-            //RaycastHit2D rh2d = rh2ds[0];
             if (rh2d.collider == null)
             {
                 break;//reached the end of the valid RaycastHit2Ds
@@ -467,8 +466,7 @@ public class PlayerController : MonoBehaviour
             {
                 if (!go.Equals(transform.gameObject))
                 {
-                    //go.GetComponent<SpriteRenderer>().color = new Color(Random.Range(0,255), Random.Range(0, 255), Random.Range(0, 255));
-                    Debug.Log("Occupying object: " + go.name);
+                    //Debug.Log("Occupying object: " + go.name);
                     return true;
                 }
 
@@ -490,16 +488,15 @@ public class PlayerController : MonoBehaviour
     {
         Vector3 moveDir = new Vector3(0, 0, 0);//the direction to move the pos so that it is valid
         Vector3 savedOffset = pc2d.offset;
-        Vector3 savedRotation = transform.up;
-        transform.up = new Vector3(0, 1, 0);
-        pc2d.offset += (Vector2)(pos - transform.position);
+        Vector3 offset = pos - transform.position;
+        float angle = Vector3.Angle(Vector3.up, transform.up);
+        Vector3 rOffset = Quaternion.AngleAxis(-angle, Vector3.forward) * offset;//2017-02-14: copied from an answer by robertbu: http://answers.unity3d.com/questions/620828/how-do-i-rotate-a-vector2d.html
+        pc2d.offset = rOffset;
         RaycastHit2D[] rh2ds = new RaycastHit2D[10];
         pc2d.Cast(Vector2.zero, rh2ds, 0, true);
         pc2d.offset = savedOffset;
-        transform.up = savedRotation;
         foreach (RaycastHit2D rh2d in rh2ds)
         {
-            //RaycastHit2D rh2d = rh2ds[0];
             if (rh2d.collider == null)
             {
                 break;//reached the end of the valid RaycastHit2Ds

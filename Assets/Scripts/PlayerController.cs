@@ -448,7 +448,7 @@ public class PlayerController : MonoBehaviour
         //Debug.DrawLine(pos, pos + new Vector3(0,0.25f), Color.green, 5);
         Vector3 savedOffset = pc2d.offset;
         Vector3 offset = pos - transform.position;
-        float angle = Vector3.Angle(Vector3.up, transform.up);
+        float angle = transform.localEulerAngles.z;
         Vector3 rOffset = Quaternion.AngleAxis(-angle, Vector3.forward) * offset;//2017-02-14: copied from an answer by robertbu: http://answers.unity3d.com/questions/620828/how-do-i-rotate-a-vector2d.html
         pc2d.offset = rOffset;
         RaycastHit2D[] rh2ds = new RaycastHit2D[10];
@@ -492,7 +492,7 @@ public class PlayerController : MonoBehaviour
         Vector3 moveDir = new Vector3(0, 0, 0);//the direction to move the pos so that it is valid
         Vector3 savedOffset = pc2d.offset;
         Vector3 offset = pos - transform.position;
-        float angle = Vector3.Angle(Vector3.up, transform.up);
+        float angle = transform.localEulerAngles.z;
         Vector3 rOffset = Quaternion.AngleAxis(-angle, Vector3.forward) * offset;//2017-02-14: copied from an answer by robertbu: http://answers.unity3d.com/questions/620828/how-do-i-rotate-a-vector2d.html
         pc2d.offset = rOffset;
         RaycastHit2D[] rh2ds = new RaycastHit2D[10];

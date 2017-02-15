@@ -473,7 +473,10 @@ public class PlayerController : MonoBehaviour
             }
             if (go.tag.Equals("HidableArea") || (go.transform.parent != null && go.transform.parent.gameObject.tag.Equals("HideableArea")))
             {
-                return true;//yep, it's occupied by a hidden area
+                if (go.GetComponent<SecretAreaTrigger>() == null)
+                {
+                    return true;//yep, it's occupied by a hidden area
+                }
             }
         }
         return false;//nope, it's not occupied

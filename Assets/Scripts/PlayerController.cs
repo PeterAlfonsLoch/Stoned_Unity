@@ -1,4 +1,4 @@
-﻿using System.Collections;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerController : MonoBehaviour
@@ -249,97 +249,74 @@ public class PlayerController : MonoBehaviour
         {
             if (isOccupied(newPos))//test the current newPos first
             {
-                //Back-tracking
-                Vector3 btNewPos = newPos;//"back track new pos"
-                float distance = Vector3.Distance(oldPos, newPos);
-                int pointsToTry = 10;//default to trying 10 points along the line at first
-                float difference = -1 * 1.00f / pointsToTry;//how much the previous jump was different by
-                float percent = 1.00f - difference;//to start it off trying the actual newPos first
-                bool keepTrying = true;
-                Vector3 norm = (newPos - oldPos).normalized;
-                while (keepTrying && percent >= 0)
+                List<Vector3> possibleOptions = new List<Vector3>();
+                const int pointsToTry = 10;//default to trying 10 points along the line at first
+                const float difference = -1 * 1.00f / pointsToTry;//how much the previous jump was different by
+                const float variance = 0.5f;//max amount to adjust angle by
+                const int anglesToTry = 11;//default to trying 10 points along the line at first
+                const float anglesDiff = variance * 2 / (anglesToTry-1);
+                //Vary the angle
+                for (float a = -variance; a <= variance; a += anglesDiff)
                 {
-                    percent += difference;//actually subtraction in usual case, b/c "difference" is usually negative
-                    Vector3 testPos = (norm * distance * percent) + oldPos;
-                    if (isOccupied(testPos))
+                    Vector3 dir = (newPos - oldPos).normalized;//the direction
+                    dir = Utility.RotateZ(dir, a);
+                    float oldDist = Vector3.Distance(oldPos, newPos);
+                    Vector3 angledNewPos = oldPos + dir * oldDist;//ANGLED
+                    //Backtrack
+                    float distance = Vector3.Distance(oldPos, angledNewPos);
+                    float percent = 1.00f - difference;//to start it off trying the actual newPos first
+                    Vector3 norm = (angledNewPos - oldPos).normalized;
+                    while (percent >= 0)
                     {
-                        testPos = adjustForOccupant(testPos);
-                        //adjust pos based on occupant
-                        if (!isOccupied(testPos))
+                        percent += difference;//actually subtraction in usual case, b/c "difference" is usually negative
+                        Vector3 testPos = (norm * distance * percent) + oldPos;
+                        if (isOccupied(testPos))
                         {
-                            keepTrying = false;
-                            btNewPos = testPos;
+                            //adjust pos based on occupant
+                            testPos = adjustForOccupant(testPos);
+                            if (!isOccupied(testPos))
+                            {
+                                possibleOptions.Add(testPos);
+                                break;
+                            }
+                        }
+                        else
+                        {
+                            //found an open spot (tho it might not be optimal)
+                            possibleOptions.Add(testPos);
+                            break;
                         }
                     }
-                    else
+                }
+                //Evaluate viability of other options
+                List<Vector3> viableOptions = new List<Vector3>();
+                foreach (Vector3 option in possibleOptions)
+                {
+                    if (!isOccupied(option))
                     {
-                        //found an open spot (tho it might not be optimal)
-                        keepTrying = false;
-                        btNewPos = testPos;
+                        viableOptions.Add(option);
+                    }
+                    else {
+                        Vector3 adjustedOption = adjustForOccupant(option);
+                        if (!isOccupied(adjustedOption))
+                        {
+                            viableOptions.Add(adjustedOption);
+                        }
                     }
                 }
-
-                //Try a cardinal direction
-                //Figure out which cardinal direction is closest to the one they're trying to go to: up, down, left, or right
-                //whichever difference is less, is the one that's closer
-                Vector3 cdNewPos = newPos;
-                if (Mathf.Abs(oldPos.x - newPos.x) < Mathf.Abs(oldPos.y - newPos.y))
-                {//it is closer in x direction, go up or down
-                    if (oldPos.y > newPos.y)
-                    {//go down
-                        cdNewPos = oldPos + Vector3.down * distance;
-                    }
-                    else if (oldPos.y < newPos.y)
-                    {//go up
-                        cdNewPos = oldPos + Vector3.up * distance;
-                    }
-                }
-                else if (Mathf.Abs(oldPos.x - newPos.x) >= Mathf.Abs(oldPos.y - newPos.y))//default: left or right
-                {//it is closer in y direction, go left or right
-                    if (oldPos.x > newPos.x)
-                    {//go left
-                        cdNewPos = oldPos + Vector3.left * distance;
-                    }
-                    else if (oldPos.x < newPos.x)
-                    {//go right
-                        cdNewPos = oldPos + Vector3.right * distance;
-                    }
-                }
-                cdNewPos = adjustForOccupant(cdNewPos);
-                //
-                bool btOcc = isOccupied(btNewPos);
-                bool cdOcc = isOccupied(cdNewPos);
-                //Debug.Log("btOcc: "+btOcc+", cdOcc: "+cdOcc+", percent(btOcc): "+percent);
-                if (btOcc && !cdOcc)
+                //Choose the closest option 
+                float closestDistance = Vector3.Distance(newPos, oldPos);
+                Vector3 closestOption = oldPos;
+                foreach (Vector3 option in viableOptions)
                 {
-                    newPos = cdNewPos;
-                }
-                else if (!btOcc && cdOcc)
-                {
-                    newPos = btNewPos;
-                }
-                else if (btOcc && cdOcc)
-                {
-                    return oldPos;//the back up plan failed, just return, can't teleport
-                }
-                else if (!btOcc && !cdOcc)
-                {
-                    //Whichever new pos is closer to the original new pos is the winner
-                    float btDist = Vector3.Distance(newPos, btNewPos);
-                    float cdDist = Vector3.Distance(newPos, cdNewPos);
-                    if (cdDist < btDist)
+                    float distance = Vector3.Distance(newPos, option);
+                    if (distance < closestDistance)
                     {
-                        newPos = cdNewPos;
-                    }
-                    else //default to btNewPos
-                    {
-                        newPos = btNewPos;
+                        closestDistance = distance;
+                        closestOption = option;
                     }
                 }
-                else
-                {
-                    throw new System.Exception("ERROR! It should not be able to come here!");
-                }
+                return closestOption;
             }
         }
         return newPos;

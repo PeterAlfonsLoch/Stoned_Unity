@@ -250,10 +250,10 @@ public class PlayerController : MonoBehaviour
             if (isOccupied(newPos))//test the current newPos first
             {
                 List<Vector3> possibleOptions = new List<Vector3>();
-                const int pointsToTry = 10;//default to trying 10 points along the line at first
+                const int pointsToTry = 5;//default to trying 10 points along the line at first
                 const float difference = -1 * 1.00f / pointsToTry;//how much the previous jump was different by
                 const float variance = 0.5f;//max amount to adjust angle by
-                const int anglesToTry = 11;//default to trying 10 points along the line at first
+                const int anglesToTry = 5;//default to trying 10 points along the line at first
                 const float anglesDiff = variance * 2 / (anglesToTry-1);
                 //Vary the angle
                 for (float a = -variance; a <= variance; a += anglesDiff)

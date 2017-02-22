@@ -393,7 +393,7 @@ public class PlayerController : MonoBehaviour
 
     void checkGroundedState(bool exhaust)
     {
-        if (isGrounded())
+        if (isGrounded() || rb2d.velocity.magnitude == 0)
         {
             airPorts = 0;
             setRange(baseRange);

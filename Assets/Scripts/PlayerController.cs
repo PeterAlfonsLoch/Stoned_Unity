@@ -1,4 +1,4 @@
-﻿using System.Collections;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerController : MonoBehaviour
@@ -23,6 +23,7 @@ public class PlayerController : MonoBehaviour
     public int airPorts = 0;
     private bool grounded = true;//set in isGrounded()
     private Rigidbody2D rb2d;
+    private PolygonCollider2D pc2d;
     private Vector2 savedVelocity;
     private float savedAngularVelocity;
     private bool velocityNeedsReloaded = false;//because you can't set a Vector2 to null, using this to see when the velocity needs reloaded
@@ -87,6 +88,7 @@ public class PlayerController : MonoBehaviour
     void Start()
     {
         rb2d = GetComponent<Rigidbody2D>();
+        pc2d = GetComponent<PolygonCollider2D>();
         mainCamCtr = Camera.main.GetComponent<CameraController>();
         gm = GameObject.FindGameObjectWithTag("GestureManager").GetComponent<GestureManager>();
         halfWidth = GetComponent<SpriteRenderer>().bounds.extents.magnitude;
@@ -247,87 +249,74 @@ public class PlayerController : MonoBehaviour
         {
             if (isOccupied(newPos))//test the current newPos first
             {
-                //Back-tracking
-                Vector3 btNewPos = newPos;
-                float distance = Vector3.Distance(oldPos, newPos);
-                int pointsToTry = 10;//default to trying 10 points along the line at first
-                float difference = -1 * 1.00f / pointsToTry;//how much the previous jump was different by
-                float percent = 1.00f;
-                bool keepTrying = true;
-                Vector3 norm = (newPos - oldPos).normalized;
-                while (keepTrying)
+                List<Vector3> possibleOptions = new List<Vector3>();
+                const int pointsToTry = 5;//default to trying 10 points along the line at first
+                const float difference = -1 * 1.00f / pointsToTry;//how much the previous jump was different by
+                const float variance = 0.5f;//max amount to adjust angle by
+                const int anglesToTry = 5;//default to trying 10 points along the line at first
+                const float anglesDiff = variance * 2 / (anglesToTry-1);
+                //Vary the angle
+                for (float a = -variance; a <= variance; a += anglesDiff)
                 {
-                    percent += difference;//actually subtraction in usual case, b/c "difference" is usually negative
-                    Vector3 testPos = (norm * distance * percent) + oldPos;
-                    if (isOccupied(testPos))
+                    Vector3 dir = (newPos - oldPos).normalized;//the direction
+                    dir = Utility.RotateZ(dir, a);
+                    float oldDist = Vector3.Distance(oldPos, newPos);
+                    Vector3 angledNewPos = oldPos + dir * oldDist;//ANGLED
+                    //Backtrack
+                    float distance = Vector3.Distance(oldPos, angledNewPos);
+                    float percent = 1.00f - difference;//to start it off trying the actual newPos first
+                    Vector3 norm = (angledNewPos - oldPos).normalized;
+                    while (percent >= 0)
                     {
+                        percent += difference;//actually subtraction in usual case, b/c "difference" is usually negative
+                        Vector3 testPos = (norm * distance * percent) + oldPos;
+                        if (isOccupied(testPos))
+                        {
+                            //adjust pos based on occupant
+                            testPos = adjustForOccupant(testPos);
+                            if (!isOccupied(testPos))
+                            {
+                                possibleOptions.Add(testPos);
+                                break;
+                            }
+                        }
+                        else
+                        {
+                            //found an open spot (tho it might not be optimal)
+                            possibleOptions.Add(testPos);
+                            break;
+                        }
                     }
-                    else
+                }
+                //Evaluate viability of other options
+                List<Vector3> viableOptions = new List<Vector3>();
+                foreach (Vector3 option in possibleOptions)
+                {
+                    if (!isOccupied(option))
                     {
-                        //found an open spot (tho it might not be optimal)
-                        keepTrying = false;
-                        btNewPos = testPos;
+                        viableOptions.Add(option);
+                    }
+                    else {
+                        Vector3 adjustedOption = adjustForOccupant(option);
+                        if (!isOccupied(adjustedOption))
+                        {
+                            viableOptions.Add(adjustedOption);
+                        }
                     }
                 }
-
-                //Try a cardinal direction
-                //Figure out which cardinal direction is closest to the one they're trying to go to: up, down, left, or right
-                //whichever difference is less, is the one that's closer
-                Vector3 cdNewPos = newPos;
-                if (Mathf.Abs(oldPos.x - newPos.x) < Mathf.Abs(oldPos.y - newPos.y))
-                {//it is closer in x direction, go up or down
-                    if (oldPos.y > newPos.y)
-                    {//go down
-                        cdNewPos = oldPos + Vector3.down * distance;
-                    }
-                    else if (oldPos.y < newPos.y)
-                    {//go up
-                        cdNewPos = oldPos + Vector3.up * distance;
-                    }
-                }
-                else if (Mathf.Abs(oldPos.x - newPos.x) >= Mathf.Abs(oldPos.y - newPos.y))//default: left or right
-                {//it is closer in y direction, go left or right
-                    if (oldPos.x > newPos.x)
-                    {//go left
-                        cdNewPos = oldPos + Vector3.left * distance;
-                    }
-                    else if (oldPos.x < newPos.x)
-                    {//go right
-                        cdNewPos = oldPos + Vector3.right * distance;
-                    }
-                }
-                bool btOcc = isOccupied(btNewPos);
-                bool cdOcc = isOccupied(cdNewPos);
-                if (btOcc && !cdOcc)
+                //Choose the closest option 
+                float closestDistance = Vector3.Distance(newPos, oldPos);
+                Vector3 closestOption = oldPos;
+                foreach (Vector3 option in viableOptions)
                 {
-                    newPos = cdNewPos;
-                }
-                else if (!btOcc && cdOcc)
-                {
-                    newPos = btNewPos;
-                }
-                else if (btOcc && cdOcc)
-                {
-                    return oldPos;//the back up plan failed, just return, can't teleport
-                }
-                else if (!btOcc && !cdOcc)
-                {
-                    //Whichever new pos is closer to the original new pos is the winner
-                    float btDist = Vector3.Distance(newPos, btNewPos);
-                    float cdDist = Vector3.Distance(newPos, cdNewPos);
-                    if (cdDist < btDist)
+                    float distance = Vector3.Distance(newPos, option);
+                    if (distance < closestDistance)
                     {
-                        newPos = cdNewPos;
-                    }
-                    else //default to btNewPos
-                    {
-                        newPos = btNewPos;
+                        closestDistance = distance;
+                        closestOption = option;
                     }
                 }
-                else
-                {
-                    //ERROR! It should not be able to come here!
-                }
+                return closestOption;
             }
         }
         return newPos;
@@ -381,7 +370,7 @@ public class PlayerController : MonoBehaviour
 
     void checkGroundedState(bool exhaust)
     {
-        if (isGrounded())
+        if (isGrounded() || rb2d.velocity.magnitude == 0)
         {
             airPorts = 0;
             setRange(baseRange);
@@ -402,7 +391,7 @@ public class PlayerController : MonoBehaviour
         Vector3 pos = transform.position;
         Vector2 pos2 = new Vector2(pos.x, pos.y);
         int numberOfLines = 5;
-        Bounds bounds = GetComponent<PolygonCollider2D>().bounds;
+        Bounds bounds = pc2d.bounds;
         float width = bounds.max.x - bounds.min.x;
         float increment = width / (numberOfLines - 1);//-1 because the last one doesn't take up any space
         float negativeOffset = increment * (numberOfLines - 1) / 2;
@@ -433,51 +422,84 @@ public class PlayerController : MonoBehaviour
     */
     bool isOccupied(Vector3 pos)
     {
-        Vector2 pos2 = new Vector2(pos.x, pos.y);
-        foreach (Vector3 checkDir in checkDirs)
+        //Debug.DrawLine(pos, pos + new Vector3(0,0.25f), Color.green, 5);
+        Vector3 savedOffset = pc2d.offset;
+        Vector3 offset = pos - transform.position;
+        float angle = transform.localEulerAngles.z;
+        Vector3 rOffset = Quaternion.AngleAxis(-angle, Vector3.forward) * offset;//2017-02-14: copied from an answer by robertbu: http://answers.unity3d.com/questions/620828/how-do-i-rotate-a-vector2d.html
+        pc2d.offset = rOffset;
+        RaycastHit2D[] rh2ds = new RaycastHit2D[10];
+        pc2d.Cast(Vector2.zero, rh2ds, 0, true);
+        //Debug.DrawLine(pc2d.offset+(Vector2)transform.position, pc2d.bounds.center, Color.grey, 10);
+        pc2d.offset = savedOffset;
+        foreach (RaycastHit2D rh2d in rh2ds)
         {
-            Vector2 dir2 = new Vector2(checkDir.x, checkDir.y);
-            float length = 0.4f;// 1.7f;
-            dir2 = dir2.normalized * length;
-            Vector2 start = (pos2 + dir2);
-            //Debug.DrawLine(pos2, start, Color.black, 1);
-            RaycastHit2D rch2d = Physics2D.Raycast(start, -1 * dir2, length);// -1*(start), 1f);
-            if (rch2d)
+            if (rh2d.collider == null)
             {
-                if (rch2d.collider != null)
+                break;//reached the end of the valid RaycastHit2Ds
+            }
+            GameObject go = rh2d.collider.gameObject;
+            if (!rh2d.collider.isTrigger)
+            {
+                if (!go.Equals(transform.gameObject))
                 {
-                    if (!rch2d.collider.isTrigger)
-                    {
-                        GameObject ground = rch2d.collider.gameObject;
-                        if (ground != null && !ground.Equals(transform.gameObject))
-                        {
-                            //test opposite direction
-                            start = (pos2 + -1 * dir2);
-                            rch2d = Physics2D.Raycast(start, dir2, length);
-                            Debug.DrawLine(start, start + dir2, Color.black, 1);
-                            if (rch2d && rch2d.collider != null)
-                            {
-                                ground = rch2d.collider.gameObject;
-                                if (ground != null && !ground.Equals(transform.gameObject))
-                                {
-                                    return true;//yep, it's occupied on both sides
-                                }
-                                //nope, it's occupied on one side but not the other
-                            }
-                        }
-                    }
+                    //Debug.Log("Occupying object: " + go.name);
+                    return true;
                 }
-                if (rch2d.transform != null)
+
+            }
+            if (go.tag.Equals("HidableArea") || (go.transform.parent != null && go.transform.parent.gameObject.tag.Equals("HideableArea")))
+            {
+                if (go.GetComponent<SecretAreaTrigger>() == null)
                 {
-                    GameObject go = rch2d.transform.gameObject;
-                    if (go.tag.Equals("HidableArea") || (go.transform.parent != null && go.transform.parent.gameObject.tag.Equals("HideableArea")))
-                    {
-                        return true;//yep, it's occupied by a hidden area
-                    }
+                    return true;//yep, it's occupied by a hidden area
                 }
             }
         }
         return false;//nope, it's not occupied
+    }
+
+    /// <summary>
+    /// Adjusts the given Vector3 to avoid collision with the objects that it collides with
+    /// </summary>
+    /// <param name="pos">The Vector3 to adjust</param>
+    /// <returns>The Vector3, adjusted to avoid collision with objects it collides with</returns>
+    public Vector3 adjustForOccupant(Vector3 pos)
+    {
+        Vector3 moveDir = new Vector3(0, 0, 0);//the direction to move the pos so that it is valid
+        Vector3 savedOffset = pc2d.offset;
+        Vector3 offset = pos - transform.position;
+        float angle = transform.localEulerAngles.z;
+        Vector3 rOffset = Quaternion.AngleAxis(-angle, Vector3.forward) * offset;//2017-02-14: copied from an answer by robertbu: http://answers.unity3d.com/questions/620828/how-do-i-rotate-a-vector2d.html
+        pc2d.offset = rOffset;
+        RaycastHit2D[] rh2ds = new RaycastHit2D[10];
+        pc2d.Cast(Vector2.zero, rh2ds, 0, true);
+        pc2d.offset = savedOffset;
+        foreach (RaycastHit2D rh2d in rh2ds)
+        {
+            if (rh2d.collider == null)
+            {
+                break;//reached the end of the valid RaycastHit2Ds
+            }
+            GameObject go = rh2d.collider.gameObject;
+            if (!rh2d.collider.isTrigger)
+            {
+                if (!go.Equals(transform.gameObject))
+                {
+                    Vector3 closPos = rh2d.point;
+                    Vector3 dir = pos - closPos;
+                    Vector3 size = pc2d.bounds.size;
+                    float d2 = (size.magnitude / 2) - Vector3.Distance(pos, closPos);
+                    moveDir += dir.normalized * d2;
+                }
+
+            }
+            //if (go.tag.Equals("HidableArea") || (go.transform.parent != null && go.transform.parent.gameObject.tag.Equals("HideableArea")))
+            //{
+            //    return true;//yep, it's occupied by a hidden area
+            //}
+        }
+        return pos + moveDir;//not adjusted because there's nothing to adjust for
     }
 
     public void setIsInCheckPoint(bool iicp)

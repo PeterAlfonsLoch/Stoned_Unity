@@ -87,7 +87,7 @@ public class CameraController : MonoBehaviour
                 player.transform.position + offset,
                 (Vector3.Distance(
                     transform.position,
-                    player.transform.position) * 2 + playerRB2D.velocity.magnitude)
+                    player.transform.position) * 1.5f + playerRB2D.velocity.magnitude)
                     * Time.deltaTime);
         }
     }

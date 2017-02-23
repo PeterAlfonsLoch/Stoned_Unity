@@ -87,7 +87,7 @@ public class GameManager : MonoBehaviour
             load = false;
             Load(chosenId);
         }
-        if (chosenId > rewindId)
+        if (isRewinding())
         {
             if (Time.time > actionTime)
             {
@@ -256,6 +256,14 @@ public class GameManager : MonoBehaviour
                 }
             }
         }
+    }
+    public bool isRewinding()
+    {
+        return chosenId > rewindId;
+    }
+    public void cancelRewind()
+    {
+        rewindId = chosenId;
     }
     void Rewind(int gamestateId)//rewinds one state at a time
     {

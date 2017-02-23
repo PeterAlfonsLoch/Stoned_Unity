@@ -26,8 +26,14 @@ public class GestureProfile {
     }
     public virtual void processTapGesture(Vector3 curMPWorld)
     {
-        plrController.processTapGesture(curMPWorld);
-        gm.Save();
+        if (gm.isRewinding())
+        {
+            gm.cancelRewind();
+        }
+        else {
+            plrController.processTapGesture(curMPWorld);
+            gm.Save();
+        }
     }
     public virtual void processHoldGesture(Vector3 curMPWorld, float holdTime, bool finished)
     {

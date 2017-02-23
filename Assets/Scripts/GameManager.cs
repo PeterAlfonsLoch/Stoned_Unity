@@ -341,12 +341,14 @@ public class GameManager : MonoBehaviour
     {
         Debug.Log("GameManager.pTG: curMPWorld: " + curMPWorld);
         GameState final = null;
+        GameState prevFinal = null;
         foreach (GameState gs in gameStates)
         {
             if (gs.checkRepresentation(curMPWorld))
             {
                 if (final == null || gs.id > final.id)//assuming the later ones have higher id values
                 {
+                    prevFinal = final;//keep the second-to-latest one
                     final = gs;//keep the latest one
                 }
             }
@@ -356,7 +358,13 @@ public class GameManager : MonoBehaviour
             hidePlayerGhosts();
             if (final.id == chosenId)
             {
-                Load(final.id);
+                if (prevFinal != null)
+                {//if the current one overlaps a previous one, choose the previous one
+                    Rewind(prevFinal.id);
+                }
+                else {
+                    Load(final.id);
+                }
             }
             else {
                 Rewind(final.id);

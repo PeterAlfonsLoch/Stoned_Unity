@@ -14,6 +14,7 @@ public class PlayerController : MonoBehaviour
     public float gravityImmuneTimeAmount = 0.2f;//amount of time Merky is immune to gravity after landing (in seconds)
     private int giveGravityImmunityDelayCounter = -1;//used to delay granting gravity immunity until the next cycle
     public int gGIDCinit = 2;//note: this may go away once the teleport lookahead detector is improved
+    public bool wallJump = true;//whether or not wall jump is enabled
 
     public GameObject teleportStreak;
     public GameObject teleportStar;
@@ -386,24 +387,35 @@ public class PlayerController : MonoBehaviour
 
     bool isGrounded()
     {
-        bool isGrounded = false;
+        bool isgrounded = isGrounded(gravityVector);
+        if (!isgrounded && wallJump)//if nothing found yet and wall jump is enabled
+        {
+            isgrounded = isGrounded(Utility.PerpendicularRight(-gravityVector));//right side
+            if (!isgrounded)
+            {
+                isgrounded = isGrounded(Utility.PerpendicularLeft(-gravityVector));//left side
+            }
+        }
+        grounded = isgrounded;
+        return isgrounded;
+    }
+    bool isGrounded(Vector3 direction)
+    {
         float length = 0.25f;
         RaycastHit2D[] rh2ds = new RaycastHit2D[10];
-        pc2d.Cast(gravityVector, rh2ds, length, true);
+        pc2d.Cast(direction, rh2ds, length, true);
         foreach (RaycastHit2D rch2d in rh2ds)
         {
-            if (rch2d && rch2d.collider != null && ! rch2d.collider.isTrigger)
+            if (rch2d && rch2d.collider != null && !rch2d.collider.isTrigger)
             {
                 GameObject ground = rch2d.collider.gameObject;
                 if (ground != null && !ground.Equals(transform.gameObject))
                 {
-                    isGrounded = true;
-                    break;
+                    return true;
                 }
             }
         }
-        grounded = isGrounded;
-        return isGrounded;
+        return false;
     }
 
     /**

@@ -20,4 +20,13 @@ public static class Utility  {
 
         return new Vector3(tx, ty);
     }
+
+    public static Vector3 PerpendicularRight(Vector3 v)
+    {
+        return RotateZ(v, -Mathf.PI/2);
+    }
+    public static Vector3 PerpendicularLeft(Vector3 v)
+    {
+        return RotateZ(v, Mathf.PI / 2);
+    }
 }

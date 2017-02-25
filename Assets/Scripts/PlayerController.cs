@@ -387,23 +387,12 @@ public class PlayerController : MonoBehaviour
     bool isGrounded()
     {
         bool isGrounded = false;
-
-        Vector3 pos = transform.position;
-        Vector2 pos2 = new Vector2(pos.x, pos.y);
-        int numberOfLines = 5;
-        Bounds bounds = pc2d.bounds;
-        float width = bounds.max.x - bounds.min.x;
-        float increment = width / (numberOfLines - 1);//-1 because the last one doesn't take up any space
-        float negativeOffset = increment * (numberOfLines - 1) / 2;
-        Vector3 startV = bounds.min;
-        float length = 0.75f;
-        for (int i = 0; i < numberOfLines; i++)
+        float length = 0.25f;
+        RaycastHit2D[] rh2ds = new RaycastHit2D[10];
+        pc2d.Cast(gravityVector, rh2ds, length, true);
+        foreach (RaycastHit2D rch2d in rh2ds)
         {
-            Vector3 dir2 = -gravityVector.normalized * length;
-            Vector3 start = pos + (sideVector.normalized * ((i * increment) - negativeOffset)) - dir2;
-            Debug.DrawLine(start, start + dir2, Color.black);
-            RaycastHit2D rch2d = Physics2D.Raycast(start, dir2, length);// -1*(start), 1f);
-            if (rch2d && rch2d.collider != null)
+            if (rch2d && rch2d.collider != null && ! rch2d.collider.isTrigger)
             {
                 GameObject ground = rch2d.collider.gameObject;
                 if (ground != null && !ground.Equals(transform.gameObject))

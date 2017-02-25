@@ -133,3 +133,23 @@ Prefab:
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: a45652d8eb5429b44995a922e3a41a6a, type: 2}
   m_IsPrefabParent: 0
+--- !u!1 &2043167761 stripped
+GameObject:
+  m_PrefabParentObject: {fileID: 189458, guid: a45652d8eb5429b44995a922e3a41a6a, type: 2}
+  m_PrefabInternal: {fileID: 2043167760}
+--- !u!114 &2043167762
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 2043167761}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2c4f0b88614a44e49842ffb44d818630, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  incrementAmount: 1
+  particle: {fileID: 127114, guid: 84842629c9b04df48a7cd79dca5c22e9, type: 2}
+  starAmount: 25
+  starSpawnDuration: 25
+  used: 0

@@ -110,6 +110,22 @@ public class CameraController : MonoBehaviour
         moveTime = Time.time;
         wasDelayed = false;
     }
+    /// <summary>
+    /// If the player position is near the tap position, discard movement delay
+    /// </summary>
+    /// <param name="tapPos">The world-sapce coordinate where the player tapped</param>
+    /// <param name="playerPos">The world-space coordiante where the player is after teleporting</param>
+    public void checkForAutoMovement(Vector3 tapPos, Vector3 playerPos)
+    {
+        //this times half the screen size is the maximum distance 
+        //between tapPos and playerPos that will discard movementdelay early
+        float DISCARD_DELAY_SENSITIVITY = 0.25f;
+        float threshold = DISCARD_DELAY_SENSITIVITY * (prevScreenWidth+prevScreenHeight) / 2;
+        if (Vector3.Distance(tapPos, playerPos) <= threshold)
+        {
+            discardMovementDelay();
+        }
+    }
 
     //Sets the camera's offset so it stays at this position relative to the player
     public void pinPoint()

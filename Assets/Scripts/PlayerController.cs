@@ -517,6 +517,7 @@ public class PlayerController : MonoBehaviour
     {
         Vector3 newPos = findTeleportablePosition(gpos);
         teleport(newPos);
+        mainCamCtr.checkForAutoMovement(gpos, transform.position);
     }
     public void processTapGesture(GameObject checkPoint)
     {

@@ -21,6 +21,11 @@ public class MemoryObject
 
     public void loadState() {
         GameObject go = findGameObject();
+        //if (go == null)
+        //{
+        //    SceneManager.LoadScene(sceneName);
+        //}
+        //go = findGameObject();
         if (go != null)
         {
             loadState(go);
@@ -40,10 +45,14 @@ public class MemoryObject
     public GameObject findGameObject()
     {
         Scene scene = SceneManager.GetSceneByName(sceneName);
-        if (scene.IsValid() && scene.isLoaded)
+        if (scene.IsValid())
         {
             foreach (GameObject sceneGo in scene.GetRootGameObjects())
             {
+                if (sceneGo.name.Equals(objectName))
+                {
+                    return sceneGo;
+                }
                 foreach (Transform childTransform in sceneGo.GetComponentsInChildren<Transform>())
                 {
                     GameObject childGo = childTransform.gameObject;

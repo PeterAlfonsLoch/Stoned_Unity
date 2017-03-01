@@ -6179,6 +6179,10 @@ Prefab:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 56.694004
       objectReference: {fileID: 0}
+    - target: {fileID: 189458, guid: a45652d8eb5429b44995a922e3a41a6a, type: 2}
+      propertyPath: m_Name
+      value: activator wall jump
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: a45652d8eb5429b44995a922e3a41a6a, type: 2}
   m_IsPrefabParent: 0

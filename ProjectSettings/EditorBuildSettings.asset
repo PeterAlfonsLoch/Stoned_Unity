@@ -15,7 +15,7 @@ EditorBuildSettings:
     path: Assets/Scenes/TutScene01b.unity
   - enabled: 1
     path: Assets/Scenes/ForceTeleportScene03.unity
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/GravityZoneTest.unity
   - enabled: 1
     path: Assets/Scenes/ShieldBubbleIntro.unity

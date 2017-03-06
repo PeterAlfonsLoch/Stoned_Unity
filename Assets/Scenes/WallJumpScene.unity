@@ -1991,7 +1991,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 1794488409389916, guid: ef1a665b1f726fd488ff4230134b5782, type: 2}
       propertyPath: m_Name
-      value: boulderdash_up
+      value: gz_boulderdash_up
       objectReference: {fileID: 0}
     - target: {fileID: 4581311561409420, guid: ef1a665b1f726fd488ff4230134b5782, type: 2}
       propertyPath: m_LocalEulerAnglesHint.z
@@ -2095,6 +2095,11 @@ Prefab:
         type: 2}
       propertyPath: gravityScale
       value: 18
+      objectReference: {fileID: 0}
+    - target: {fileID: 114601865277605330, guid: ef1a665b1f726fd488ff4230134b5782,
+        type: 2}
+      propertyPath: mainGravityZone
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: ef1a665b1f726fd488ff4230134b5782, type: 2}
@@ -3178,7 +3183,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 1794488409389916, guid: ef1a665b1f726fd488ff4230134b5782, type: 2}
       propertyPath: m_Name
-      value: reactor_up (1)
+      value: gz_reactor_up (1)
       objectReference: {fileID: 0}
     - target: {fileID: 4581311561409420, guid: ef1a665b1f726fd488ff4230134b5782, type: 2}
       propertyPath: m_LocalEulerAnglesHint.z
@@ -3283,6 +3288,11 @@ Prefab:
       propertyPath: gravityScale
       value: 18
       objectReference: {fileID: 0}
+    - target: {fileID: 114601865277605330, guid: ef1a665b1f726fd488ff4230134b5782,
+        type: 2}
+      propertyPath: mainGravityZone
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: ef1a665b1f726fd488ff4230134b5782, type: 2}
   m_IsPrefabParent: 0
@@ -3332,7 +3342,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 1794488409389916, guid: ef1a665b1f726fd488ff4230134b5782, type: 2}
       propertyPath: m_Name
-      value: reactor_up
+      value: gz_reactor_up
       objectReference: {fileID: 0}
     - target: {fileID: 4581311561409420, guid: ef1a665b1f726fd488ff4230134b5782, type: 2}
       propertyPath: m_LocalEulerAnglesHint.z
@@ -3436,6 +3446,11 @@ Prefab:
         type: 2}
       propertyPath: gravityScale
       value: 18
+      objectReference: {fileID: 0}
+    - target: {fileID: 114601865277605330, guid: ef1a665b1f726fd488ff4230134b5782,
+        type: 2}
+      propertyPath: mainGravityZone
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: ef1a665b1f726fd488ff4230134b5782, type: 2}
@@ -5365,7 +5380,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 1794488409389916, guid: ef1a665b1f726fd488ff4230134b5782, type: 2}
       propertyPath: m_Name
-      value: boulderdash_right
+      value: gz_boulderdash_right
       objectReference: {fileID: 0}
     - target: {fileID: 4581311561409420, guid: ef1a665b1f726fd488ff4230134b5782, type: 2}
       propertyPath: m_LocalEulerAnglesHint.z
@@ -5464,6 +5479,11 @@ Prefab:
         type: 2}
       propertyPath: m_IsTrigger
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114601865277605330, guid: ef1a665b1f726fd488ff4230134b5782,
+        type: 2}
+      propertyPath: mainGravityZone
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: ef1a665b1f726fd488ff4230134b5782, type: 2}

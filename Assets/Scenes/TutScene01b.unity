@@ -15379,12 +15379,12 @@ Prefab:
     - target: {fileID: 60389983789640220, guid: ef1a665b1f726fd488ff4230134b5782,
         type: 2}
       propertyPath: m_Points.m_Paths.Array.data[0].Array.data[3].x
-      value: 87.82055
+      value: 91.004845
       objectReference: {fileID: 0}
     - target: {fileID: 60389983789640220, guid: ef1a665b1f726fd488ff4230134b5782,
         type: 2}
       propertyPath: m_Points.m_Paths.Array.data[0].Array.data[3].y
-      value: 57.761997
+      value: 71.790085
       objectReference: {fileID: 0}
     - target: {fileID: 60389983789640220, guid: ef1a665b1f726fd488ff4230134b5782,
         type: 2}

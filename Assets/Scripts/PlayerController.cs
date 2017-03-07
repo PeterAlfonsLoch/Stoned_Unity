@@ -12,8 +12,6 @@ public class PlayerController : MonoBehaviour
     public float teleportTime = 0f;//the earliest time that Merky can teleport
     public float gravityImmuneTime = 0f;//Merky is immune to gravity until this time
     public float gravityImmuneTimeAmount = 0.2f;//amount of time Merky is immune to gravity after landing (in seconds)
-    private int giveGravityImmunityDelayCounter = -1;//used to delay granting gravity immunity until the next cycle
-    public int gGIDCinit = 2;//note: this may go away once the teleport lookahead detector is improved
     public bool wallJump = true;//whether or not wall jump is enabled
 
     public GameObject teleportStreak;
@@ -43,48 +41,6 @@ public class PlayerController : MonoBehaviour
     private ForceTeleportAbility fta;
     private ShieldBubbleAbility sba;
 
-    //Vector3[] dirs = new Vector3[]
-    //        {//for checking if Merky is grounded
-    //            //Vector3.up,
-    //            Vector3.down,
-    //            //Vector3.left,
-    //            //Vector3.right,
-    //            //new Vector3(1,1),
-    //            //new Vector3(-1,1),
-    //            new Vector3(0.75f,-1),
-    //            new Vector3(-0.75f,-1),
-
-    //            //new Vector3(1,.5f),
-    //            //new Vector3(-1,.5f),
-    //            //new Vector3(1,-.5f),
-    //            //new Vector3(-1,-.5f),
-    //            //new Vector3(.5f,1),
-    //            //new Vector3(-.5f,1),
-    //            //new Vector3(.5f,-1),
-    //            //new Vector3(-.5f,-1),
-    //        };
-
-    Vector3[] checkDirs = new Vector3[]
-                {//for checking area around teleport target point
-                Vector3.up,
-                Vector3.down,
-                Vector3.left,
-                Vector3.right,
-                new Vector3(1,1),
-                new Vector3(-1,1),
-                new Vector3(1,-1),
-                new Vector3(-1,-1),
-
-                new Vector3(1,.5f),
-                new Vector3(-1,.5f),
-                new Vector3(1,-.5f),
-                new Vector3(-1,-.5f),
-                new Vector3(.5f,1),
-                new Vector3(-.5f,1),
-                new Vector3(.5f,-1),
-                new Vector3(-.5f,-1),
-                };
-
     // Use this for initialization
     void Start()
     {
@@ -101,33 +57,18 @@ public class PlayerController : MonoBehaviour
     {
         Vector3 pos = transform.position;
         Vector2 pos2 = new Vector2(pos.x, pos.y);
-        //foreach (Vector3 dir in dirs)
-        //{
-        //    Vector2 dir2 = new Vector2(dir.x, dir.y);
-        //    float length = 1.3f;
-        //    dir2 = dir2.normalized * length;
-        //    Vector2 start = (pos2 + dir2);
-        //    Debug.DrawLine(pos2, start, Color.black);
-        //}
         bool wasInAir = !grounded;
         checkGroundedState(false);
         if (wasInAir && grounded)//just landed on something
         {
-            giveGravityImmunityDelayCounter = gGIDCinit;
-        }
-        if (giveGravityImmunityDelayCounter == 0 && grounded)
-        {
-            giveGravityImmunityDelayCounter = -1;
             gravityImmuneTime = Time.time + gravityImmuneTimeAmount;
             savedVelocity = rb2d.velocity;
             savedAngularVelocity = rb2d.angularVelocity;
             //Debug.Log("Just Landed" + savedVelocity);
             rb2d.isKinematic = true;
             velocityNeedsReloaded = true;
-        }
-        else if (giveGravityImmunityDelayCounter > 0)
-        {
-            giveGravityImmunityDelayCounter--;
+            rb2d.velocity = new Vector3(0, 0);
+            rb2d.angularVelocity = 0f;
         }
         if (gravityImmuneTime > Time.time)
         {

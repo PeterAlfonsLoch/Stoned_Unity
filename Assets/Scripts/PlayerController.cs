@@ -11,7 +11,7 @@ public class PlayerController : MonoBehaviour
     public float exhaustCoolDownTime = 0.5f;//the cool down time for teleporting while exhausted in seconds
     public float teleportTime = 0f;//the earliest time that Merky can teleport
     public float gravityImmuneTime = 0f;//Merky is immune to gravity until this time
-    public float gravityImmuneTimeAmount = 0.2f;//amount of time Merky is immune to gravity after landing (in seconds)
+    public const float gravityImmuneTimeAmount = 0.2f;//amount of time Merky is immune to gravity after landing (in seconds)
     public bool wallJump = true;//whether or not wall jump is enabled
 
     public GameObject teleportStreak;
@@ -61,14 +61,7 @@ public class PlayerController : MonoBehaviour
         checkGroundedState(false);
         if (wasInAir && grounded)//just landed on something
         {
-            gravityImmuneTime = Time.time + gravityImmuneTimeAmount;
-            savedVelocity = rb2d.velocity;
-            savedAngularVelocity = rb2d.angularVelocity;
-            //Debug.Log("Just Landed" + savedVelocity);
-            rb2d.isKinematic = true;
-            velocityNeedsReloaded = true;
-            rb2d.velocity = new Vector3(0, 0);
-            rb2d.angularVelocity = 0f;
+            grantGravityImmunity();
         }
         if (gravityImmuneTime > Time.time)
         {
@@ -77,14 +70,12 @@ public class PlayerController : MonoBehaviour
             rb2d.isKinematic = false;
             if (velocityNeedsReloaded)
             {
-                //Debug.Log("Immunity over1 "+savedVelocity);
                 rb2d.velocity = savedVelocity;
                 rb2d.angularVelocity = savedAngularVelocity;
-                //Debug.Log("Immunity over2 " + rb2d.velocity);
                 velocityNeedsReloaded = false;
             }
         }
-        if (grounded && !rb2d.isKinematic && rb2d.velocity.magnitude < 0.1f)
+        if (grounded && !rb2d.isKinematic && !isMoving())
         {
             mainCamCtr.discardMovementDelay();
         }
@@ -98,6 +89,27 @@ public class PlayerController : MonoBehaviour
     //void OnCollisionExit2D(Collision2D coll)
     //{
     //}
+
+    void grantGravityImmunity()
+    {
+        gravityImmuneTime = Time.time + gravityImmuneTimeAmount;
+        savedVelocity = rb2d.velocity;
+        savedAngularVelocity = rb2d.angularVelocity;
+        rb2d.isKinematic = true;
+        velocityNeedsReloaded = true;
+        rb2d.velocity = new Vector3(0, 0);
+        rb2d.angularVelocity = 0f;
+    }
+
+    /// <summary>
+    /// Whether or not Merky is moving
+    /// Does not consider rotation
+    /// </summary>
+    /// <returns></returns>
+    bool isMoving()
+    {
+        return rb2d.velocity.magnitude >= 0.1f;
+    }
 
     private bool teleport(Vector3 targetPos)//targetPos is in world coordinations (NOT UI coordinates)
     {
@@ -156,11 +168,17 @@ public class PlayerController : MonoBehaviour
             grounded = false;
             velocityNeedsReloaded = false;//discards previous velocity if was in gravity immunity bubble
             gravityImmuneTime = 0f;
-            //if (!isGrounded())//have to call it again because state has changed
-            //{
             mainCamCtr.delayMovement(0.3f);
-            //}
-            checkGroundedState(true);
+            checkGroundedState(true);//have to call it again because state has changed
+            if (grounded)
+            {
+                //If Merky is grounded but still moving, grant gravity immunity
+                //This is mostly for making wall jump easier
+                if (isMoving())
+                {
+                    grantGravityImmunity();
+                }
+            }
             return true;
         }
         return false;

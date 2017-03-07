@@ -120,7 +120,9 @@ public class CameraController : MonoBehaviour
         //this times half the screen size is the maximum distance 
         //between tapPos and playerPos that will discard movementdelay early
         float DISCARD_DELAY_SENSITIVITY = 0.25f;
-        float threshold = DISCARD_DELAY_SENSITIVITY * (prevScreenWidth+prevScreenHeight) / 2;
+        //Get the average of screen width and height in world distance
+        float distance = Mathf.Abs(cam.ScreenToWorldPoint(new Vector2(0,(prevScreenWidth + prevScreenHeight) / 2)).y - cam.ScreenToWorldPoint(new Vector2(0,0)).y);
+        float threshold = DISCARD_DELAY_SENSITIVITY * distance;
         if (Vector3.Distance(tapPos, playerPos) <= threshold)
         {
             discardMovementDelay();

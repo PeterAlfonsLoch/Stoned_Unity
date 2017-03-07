@@ -184,8 +184,14 @@ public class PlayerController : MonoBehaviour
         return false;
     }
 
+    /// <summary>
+    /// Finds the teleportable position closest to the given targetPos
+    /// </summary>
+    /// <param name="targetPos"></param>
+    /// <returns>targetPos if it is teleportable, else the closest teleportable position to it</returns>
     Vector3 findTeleportablePosition(Vector3 targetPos)
     {
+        //TSFS: Teleport Spot Finding System
         Vector3 newPos = targetPos;
         //Determine if new position is in range
         Vector3 oldPos = transform.position;
@@ -214,8 +220,8 @@ public class PlayerController : MonoBehaviour
                 List<Vector3> possibleOptions = new List<Vector3>();
                 const int pointsToTry = 5;//default to trying 10 points along the line at first
                 const float difference = -1 * 1.00f / pointsToTry;//how much the previous jump was different by
-                const float variance = 0.5f;//max amount to adjust angle by
-                const int anglesToTry = 5;//default to trying 10 points along the line at first
+                const float variance = 0.4f;//max amount to adjust angle by
+                const int anglesToTry = 7;//default to trying 10 points along the line at first
                 const float anglesDiff = variance * 2 / (anglesToTry-1);
                 //Vary the angle
                 for (float a = -variance; a <= variance; a += anglesDiff)
@@ -226,7 +232,7 @@ public class PlayerController : MonoBehaviour
                     Vector3 angledNewPos = oldPos + dir * oldDist;//ANGLED
                     //Backtrack
                     float distance = Vector3.Distance(oldPos, angledNewPos);
-                    float percent = 1.00f - difference;//to start it off trying the actual newPos first
+                    float percent = 1.00f - (difference*2);//to start it off slightly further away
                     Vector3 norm = (angledNewPos - oldPos).normalized;
                     while (percent >= 0)
                     {

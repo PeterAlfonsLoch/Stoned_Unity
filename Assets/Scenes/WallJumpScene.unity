@@ -5366,6 +5366,10 @@ Prefab:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 29.477001
       objectReference: {fileID: 0}
+    - target: {fileID: 104296, guid: 2964a113d33795e4fa2f7f2b88fa9f80, type: 2}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 2964a113d33795e4fa2f7f2b88fa9f80, type: 2}
   m_IsPrefabParent: 0
@@ -6336,11 +6340,11 @@ Prefab:
     m_Modifications:
     - target: {fileID: 434974, guid: a45652d8eb5429b44995a922e3a41a6a, type: 2}
       propertyPath: m_LocalPosition.x
-      value: -51.2
+      value: -51.148
       objectReference: {fileID: 0}
     - target: {fileID: 434974, guid: a45652d8eb5429b44995a922e3a41a6a, type: 2}
       propertyPath: m_LocalPosition.y
-      value: 60.5
+      value: 60.531
       objectReference: {fileID: 0}
     - target: {fileID: 434974, guid: a45652d8eb5429b44995a922e3a41a6a, type: 2}
       propertyPath: m_LocalPosition.z
@@ -6356,11 +6360,11 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 434974, guid: a45652d8eb5429b44995a922e3a41a6a, type: 2}
       propertyPath: m_LocalRotation.z
-      value: 0.4748143
+      value: 0.3505366
       objectReference: {fileID: 0}
     - target: {fileID: 434974, guid: a45652d8eb5429b44995a922e3a41a6a, type: 2}
       propertyPath: m_LocalRotation.w
-      value: 0.88008606
+      value: 0.93654907
       objectReference: {fileID: 0}
     - target: {fileID: 434974, guid: a45652d8eb5429b44995a922e3a41a6a, type: 2}
       propertyPath: m_RootOrder
@@ -6368,12 +6372,17 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 434974, guid: a45652d8eb5429b44995a922e3a41a6a, type: 2}
       propertyPath: m_LocalEulerAnglesHint.z
-      value: 56.694004
+      value: 41.04
       objectReference: {fileID: 0}
     - target: {fileID: 189458, guid: a45652d8eb5429b44995a922e3a41a6a, type: 2}
       propertyPath: m_Name
       value: activator wall jump
       objectReference: {fileID: 0}
+    - target: {fileID: 21290114, guid: a45652d8eb5429b44995a922e3a41a6a, type: 2}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 8d069f2c3e67686418e914a66a242262,
+        type: 3}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: a45652d8eb5429b44995a922e3a41a6a, type: 2}
   m_IsPrefabParent: 0

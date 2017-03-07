@@ -113,7 +113,9 @@ public class PlayerController : MonoBehaviour
             }
             if (airPorts > maxAirPorts)
             {
-                teleportTime = Time.time + exhaustCoolDownTime;
+                //2017-03-06: copied from https://docs.unity3d.com/Manual/AmountVectorMagnitudeInAnotherDirection.html
+                float upAmount = Vector3.Dot((targetPos - transform.position).normalized, -gravityVector.normalized);
+                teleportTime = Time.time + exhaustCoolDownTime * upAmount;
             }
             //Get new position
             Vector3 newPos = targetPos;

@@ -66,6 +66,7 @@ public class ES2Init : MonoBehaviour
 		ES2TypeManager.types[typeof(UnityEngine.Texture)] = new ES2_Texture();
 		ES2TypeManager.types[typeof(CheckPointCheckerMemory)] = new ES2UserType_CheckPointCheckerMemory();
 		ES2TypeManager.types[typeof(CrackedGroundCheckerSavable)] = new ES2UserType_CrackedGroundCheckerSavable();
+		ES2TypeManager.types[typeof(GameObjectId)] = new ES2UserType_GameObjectId();
 		ES2TypeManager.types[typeof(GameState)] = new ES2UserType_GameState();
 		ES2TypeManager.types[typeof(HiddenAreaMemory)] = new ES2UserType_HiddenAreaMemory();
 		ES2TypeManager.types[typeof(MemoryObject)] = new ES2UserType_MemoryObject();
@@ -75,7 +76,7 @@ public class ES2Init : MonoBehaviour
 		ES2TypeManager.types[typeof(SavableObject)] = new ES2UserType_SavableObject();
 		ES2TypeManager.types[typeof(ShieldBubbleControllerSavable)] = new ES2UserType_ShieldBubbleControllerSavable();
 		ES2TypeManager.types[typeof(UnityEngine.AudioClip)] = new ES2_AudioClip();
-		ES2TypeManager.types[typeof(GameObjectId)] = new ES2UserType_GameObjectId();
+		ES2TypeManager.types[typeof(GestureManagerSavable)] = new ES2UserType_GestureManagerSavable();
 
 		ES2.initialised = true;
 	}

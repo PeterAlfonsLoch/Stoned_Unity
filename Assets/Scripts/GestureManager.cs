@@ -2,7 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 
-public class GestureManager : MonoBehaviour
+public class GestureManager : SavableMonoBehaviour
 {
 
     public GameObject player;
@@ -67,6 +67,10 @@ public class GestureManager : MonoBehaviour
         currentGP = gestureProfiles["Main"];
 
         Input.simulateMouseWithTouches = false;
+    }
+    public override SavableObject getSavableObject()
+    {
+        return new GestureManagerSavable(this);
     }
 
     // Update is called once per frame
@@ -385,5 +389,37 @@ public class GestureManager : MonoBehaviour
         {
             holdThresholdScale = 1.0f;//keep it from going lower than the default holdThreshold
         }
+    }
+}
+
+//
+//Class that saves the important variables of this class
+//2017-03-07: copied from CrackedGroundCheckerSavable
+//
+public class GestureManagerSavable : SavableObject
+{
+    public float holdThresholdScale;
+    public int tapCount;
+
+    public GestureManagerSavable() { }//only called by the method that reads it from the file
+    public GestureManagerSavable(GestureManager gm)
+    {
+        saveState(gm);
+    }
+
+    public override void loadState(GameObject go)
+    {
+        GestureManager gm = go.GetComponent<GestureManager>();
+        if (gm != null)
+        {
+            gm.holdThresholdScale = this.holdThresholdScale;
+            gm.tapCount = this.tapCount;
+        }
+    }
+    public override void saveState(SavableMonoBehaviour smb)
+    {
+        GestureManager gm = ((GestureManager)smb);
+        this.holdThresholdScale = gm.holdThresholdScale;
+        this.tapCount = gm.tapCount;
     }
 }

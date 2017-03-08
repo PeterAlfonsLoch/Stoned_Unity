@@ -27,6 +27,13 @@ public class ES2UserType_SavableObject : ES2Type
             Rigidbody2DLockSavable rb2dls = (Rigidbody2DLockSavable)obj;
             writer.Write("Rigidbody2DLockSavable");
         }
+        else if (obj.GetType() == typeof(GestureManagerSavable))//2017-03-07: copied from the section above for ShieldBubbleControllerSavable
+        {
+            GestureManagerSavable gms = (GestureManagerSavable)obj;
+            writer.Write("GestureManagerSavable");
+            writer.Write(gms.holdThresholdScale);
+            writer.Write(gms.tapCount);
+        }
         else
         {
             writer.Write("None");
@@ -54,6 +61,13 @@ public class ES2UserType_SavableObject : ES2Type
         {
             Rigidbody2DLockSavable rb2dls = new Rigidbody2DLockSavable();
             return rb2dls;
+        }
+        else if (objType == "GestureManagerSavable")//2017-03-07: copied from the section above for ShieldBubbleControllerSavable
+        {
+            GestureManagerSavable gms = new GestureManagerSavable();
+            gms.holdThresholdScale = reader.Read<float>();
+            gms.tapCount = reader.Read<int>();
+            return gms;
         }
         return ObjectState.dummySO;
     }

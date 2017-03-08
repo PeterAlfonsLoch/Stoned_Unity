@@ -2,7 +2,8 @@
 using System.Collections;
 using System.Collections.Generic;
 
-public class GestureManager : MonoBehaviour {
+public class GestureManager : MonoBehaviour
+{
 
     public GameObject player;
     private PlayerController plrController;
@@ -34,7 +35,7 @@ public class GestureManager : MonoBehaviour {
     private int touchCount = 0;//how many touches to process, usually only 0 or 1, only 2 if zoom
     private float maxMouseMovement = 0f;//how far the mouse has moved since the last mouse down (or tap down) event
     private float holdTime = 0f;//how long the gesture has been held for
-    private enum ClickState {Began, InProgress, Ended, None};
+    private enum ClickState { Began, InProgress, Ended, None };
     private ClickState clickState = ClickState.None;
     //Flags
     public bool cameraDragInProgress = false;
@@ -43,6 +44,8 @@ public class GestureManager : MonoBehaviour {
     private bool isHoldGesture = false;
     public const float holdTimeScale = 0.5f;
     public const float holdTimeScaleRecip = 1 / holdTimeScale;
+    public bool adaptHoldThreshold = true;//true until Merky gets the force wave ability
+    public float holdThresholdScale = 1.0f;//the amount to multiply the holdThreshold by
     //Cheats
     public const bool CHEATS_ALLOWED = true;//whether or not cheats are allowed (turned off for final version)
     private int cheatTaps = 0;//how many taps have been put in for the cheat
@@ -52,7 +55,8 @@ public class GestureManager : MonoBehaviour {
 
 
     // Use this for initialization
-    void Start () {
+    void Start()
+    {
         plrController = player.GetComponent<PlayerController>();
         rb2dPlayer = player.GetComponent<Rigidbody2D>();
         cmaController = cam.GetComponent<CameraController>();
@@ -63,9 +67,10 @@ public class GestureManager : MonoBehaviour {
 
         Input.simulateMouseWithTouches = false;
     }
-	
-	// Update is called once per frame
-	void Update () {
+
+    // Update is called once per frame
+    void Update()
+    {
         //
         //Input scouting
         //
@@ -131,7 +136,7 @@ public class GestureManager : MonoBehaviour {
         {
             clickState = ClickState.InProgress;
         }
-        else if(Input.touchCount == 0 && !Input.GetMouseButton(0))
+        else if (Input.touchCount == 0 && !Input.GetMouseButton(0))
         {
             touchCount = 0;
             clickState = ClickState.None;
@@ -212,7 +217,7 @@ public class GestureManager : MonoBehaviour {
                         cameraDragInProgress = true;
                     }
                 }
-                if (holdTime > holdThreshold)
+                if (holdTime > holdThreshold*holdThresholdScale)
                 {
                     if (!isDrag)
                     {
@@ -349,5 +354,25 @@ public class GestureManager : MonoBehaviour {
             //Reset cheat taps
             cheatTaps = 0;
         }
+    }
+
+    /// <summary>
+    /// Accepts the given holdTime as not a hold but a tap and adjusts holdThresholdScale
+    /// </summary>
+    /// <param name="holdTime"></param>
+    public void adjustHoldThreshold(float holdTime)
+    {
+        if (adaptHoldThreshold)
+        {
+            holdThresholdScale = (holdThresholdScale + (holdTime / holdThreshold)) / 2;
+        }
+    }
+    
+    /// <summary>
+    /// Finalizes the Hold Threshold value and keeps it from getting edited
+    /// </summary>
+    public void finalizeHoldThreshold()
+    {
+        adaptHoldThreshold = false;
     }
 }

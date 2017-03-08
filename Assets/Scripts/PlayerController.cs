@@ -524,6 +524,14 @@ public class PlayerController : MonoBehaviour
                 fta.processHoldGesture(newPos, holdTime, finished);
             }
         }
+        else
+        {//neither force wave nor shield bubble are active, probably meant to tap
+            if (finished)
+            {
+                gm.adjustHoldThreshold(holdTime);
+                processTapGesture(gpos);
+            }
+        }
     }
 }
 

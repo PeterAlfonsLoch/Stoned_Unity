@@ -37,6 +37,8 @@ public class GestureManager : MonoBehaviour
     private float holdTime = 0f;//how long the gesture has been held for
     private enum ClickState { Began, InProgress, Ended, None };
     private ClickState clickState = ClickState.None;
+    //
+    public int tapCount = 0;//how many taps have ever been made, including tap+holds
     //Flags
     public bool cameraDragInProgress = false;
     private bool isDrag = false;
@@ -44,7 +46,6 @@ public class GestureManager : MonoBehaviour
     private bool isHoldGesture = false;
     public const float holdTimeScale = 0.5f;
     public const float holdTimeScaleRecip = 1 / holdTimeScale;
-    public bool adaptHoldThreshold = true;//true until Merky gets the force wave ability
     public float holdThresholdScale = 1.0f;//the amount to multiply the holdThreshold by
     //Cheats
     public const bool CHEATS_ALLOWED = true;//whether or not cheats are allowed (turned off for final version)
@@ -255,6 +256,8 @@ public class GestureManager : MonoBehaviour
                 }
                 else if (isTapGesture)
                 {
+                    tapCount++;
+                    adjustHoldThreshold(holdTime, false);
                     bool checkPointPort = false;//Merky is in a checkpoint teleporting to another checkpoint
                     if (plrController.getIsInCheckPoint())
                     {
@@ -358,21 +361,29 @@ public class GestureManager : MonoBehaviour
 
     /// <summary>
     /// Accepts the given holdTime as not a hold but a tap and adjusts holdThresholdScale
+    /// Used by outside classes to indicate that a tap gesture was incorrectly classified as a hold gesture
     /// </summary>
     /// <param name="holdTime"></param>
     public void adjustHoldThreshold(float holdTime)
     {
-        if (adaptHoldThreshold)
-        {
-            holdThresholdScale = (holdThresholdScale + (holdTime / holdThreshold)) / 2;
-        }
+        adjustHoldThreshold(holdTime, true);
     }
-    
     /// <summary>
-    /// Finalizes the Hold Threshold value and keeps it from getting edited
+    /// Used by the GestureManager to adapt hold threshold even when gestures are being classified correctly
+    /// Expects tapCount to never be 0 when called directly from GestureManager
     /// </summary>
-    public void finalizeHoldThreshold()
+    /// <param name="holdTime"></param>
+    /// <param name="incrementTapCount"></param>
+    private void adjustHoldThreshold(float holdTime, bool incrementTapCount)
     {
-        adaptHoldThreshold = false;
+        if (incrementTapCount)
+        {
+            tapCount++;
+        }
+        holdThresholdScale = (holdThresholdScale*(tapCount-1) + (holdTime / holdThreshold)) / tapCount;
+        if (holdThresholdScale < 1)
+        {
+            holdThresholdScale = 1.0f;//keep it from going lower than the default holdThreshold
+        }
     }
 }

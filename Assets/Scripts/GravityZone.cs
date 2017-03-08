@@ -7,6 +7,7 @@ public class GravityZone : MonoBehaviour
 
     private PolygonCollider2D coll;
     public float gravityScale = 9.81f;
+    public bool mainGravityZone = true;//true to change camera angle, false to not
     private Vector3 gravityVector;
 
     // Use this for initialization
@@ -30,7 +31,7 @@ public class GravityZone : MonoBehaviour
                     Vector3 vector = gravityVector * rb2d.mass;
                     rb2d.AddForce(vector);
                     //Tell the player where gravity is
-                    if (c2d.gameObject.tag == "Player")
+                    if (mainGravityZone && c2d.gameObject.tag == "Player")
                     {
                         GameManager.getPlayerObject().GetComponent<PlayerController>().setGravityVector(this.gravityVector);
                     }
@@ -38,7 +39,7 @@ public class GravityZone : MonoBehaviour
             }
         }
         //Check to see if the camera rotation needs updated
-        if (Camera.main.transform.rotation != transform.rotation)
+        if (mainGravityZone && Camera.main.transform.rotation != transform.rotation)
         {
             //Check to see if Merky is in this GravityZone
             if (coll.OverlapPoint(GameManager.getPlayerObject().GetComponent<PolygonCollider2D>().bounds.center))

@@ -502,11 +502,12 @@ public class PlayerController : MonoBehaviour
     public void processHoldGesture(Vector3 gpos, float holdTime, bool finished)
     {
         Debug.DrawLine(transform.position, transform.position + new Vector3(0, halfWidth, 0), Color.blue, 10);
+        float reducedHoldTime = holdTime - gm.getHoldThreshold();
         //Check Shield Bubble
         if (sba.enabled && Vector3.Distance(gpos,transform.position) < halfWidth)
         {
             fta.dropHoldGesture();
-            sba.processHoldGesture(gpos, holdTime, finished);
+            sba.processHoldGesture(gpos, reducedHoldTime, finished);
         }
         //Check Force Wave
         else if (fta.enabled)
@@ -517,11 +518,11 @@ public class PlayerController : MonoBehaviour
             {
                 if (teleport(newPos, false))
                 {
-                    fta.processHoldGesture(newPos, holdTime, finished);
+                    fta.processHoldGesture(newPos, reducedHoldTime, finished);
                 }
             }
             else {
-                fta.processHoldGesture(newPos, holdTime, finished);
+                fta.processHoldGesture(newPos, reducedHoldTime, finished);
             }
         }
         else

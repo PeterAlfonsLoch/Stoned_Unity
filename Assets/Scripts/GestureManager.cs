@@ -390,6 +390,14 @@ public class GestureManager : SavableMonoBehaviour
             holdThresholdScale = 1.0f;//keep it from going lower than the default holdThreshold
         }
     }
+    /// <summary>
+    /// Returns the absolute hold threshold, including its scale
+    /// </summary>
+    /// <returns></returns>
+    public float getHoldThreshold()
+    {
+        return holdThreshold * holdThresholdScale;
+    }
 }
 
 //

@@ -369,8 +369,9 @@ public class GameManager : MonoBehaviour
             else {
                 Rewind(final.id);
             }
-            camCtr.adjustScalePoint(-1);
         }
+        //leave this zoom level even if no past merky was chosen
+        camCtr.adjustScalePoint(-1);
     }
 }
 

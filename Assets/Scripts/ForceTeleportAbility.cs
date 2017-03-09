@@ -66,6 +66,7 @@ public class ForceTeleportAbility : PlayerAbility
             AudioSource.PlayClipAtPoint(forceTeleportSound, pos);
             Destroy(frii);
             frii = null;
+            playerController.activateTeleportParticleSystem(false);
         }
         else {
             if (frii == null)
@@ -76,6 +77,8 @@ public class ForceTeleportAbility : PlayerAbility
             }
             frii.transform.position = (Vector2)pos;
             friu.setRange(range);
+            //Particle effects
+            playerController.activateTeleportParticleSystem(true, effectColor, pos, range);            
         }
     }
 
@@ -86,6 +89,7 @@ public class ForceTeleportAbility : PlayerAbility
             Destroy(frii);
             frii = null;
         }
+        playerController.activateTeleportParticleSystem(false);
     }
 
     /**

@@ -260,7 +260,7 @@ ParticleSystem:
   moveWithTransform: 0
   moveWithCustomTransform: {fileID: 0}
   scalingMode: 1
-  randomSeed: 219483965
+  randomSeed: -1795370873
   InitialModule:
     serializedVersion: 3
     enabled: 1
@@ -3052,6 +3052,26 @@ Prefab:
       value: 0.40344828
       objectReference: {fileID: 0}
     - target: {fileID: 11407370, guid: 5913bd1e88aefff4988c7dfee6595611, type: 2}
+      propertyPath: effectColor.a
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114334892854798522, guid: 5913bd1e88aefff4988c7dfee6595611,
+        type: 2}
+      propertyPath: effectColor.r
+      value: 0.31735292
+      objectReference: {fileID: 0}
+    - target: {fileID: 114334892854798522, guid: 5913bd1e88aefff4988c7dfee6595611,
+        type: 2}
+      propertyPath: effectColor.g
+      value: 0.567529
+      objectReference: {fileID: 0}
+    - target: {fileID: 114334892854798522, guid: 5913bd1e88aefff4988c7dfee6595611,
+        type: 2}
+      propertyPath: effectColor.b
+      value: 0.9764706
+      objectReference: {fileID: 0}
+    - target: {fileID: 114334892854798522, guid: 5913bd1e88aefff4988c7dfee6595611,
+        type: 2}
       propertyPath: effectColor.a
       value: 1
       objectReference: {fileID: 0}

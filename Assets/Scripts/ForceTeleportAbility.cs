@@ -89,7 +89,6 @@ public class ForceTeleportAbility : PlayerAbility
             Destroy(frii);
             frii = null;
         }
-        playerController.activateTeleportParticleSystem(false);
     }
 
     /**

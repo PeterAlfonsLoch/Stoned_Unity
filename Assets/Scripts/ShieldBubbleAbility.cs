@@ -45,6 +45,7 @@ public class ShieldBubbleAbility : PlayerAbility
             }
             Destroy(srii);
             srii = null;
+            playerController.activateTeleportParticleSystem(false);
         }
         else {
             if (srii == null)
@@ -55,6 +56,8 @@ public class ShieldBubbleAbility : PlayerAbility
             }
             srii.transform.position = (Vector2)pos;
             sriu.setRange(range);
+            //Particle effects
+            playerController.activateTeleportParticleSystem(true, effectColor, pos, range);
         }
     }
 

@@ -553,13 +553,10 @@ public class PlayerController : MonoBehaviour
         else if (fta.enabled)
         {
             sba.dropHoldGesture();
-            Vector3 newPos = findTeleportablePosition(gpos);
+            Vector3 newPos = gpos;
             if (finished)
             {
-                if (teleport(newPos, false))
-                {
-                    fta.processHoldGesture(newPos, reducedHoldTime, finished);
-                }
+                fta.processHoldGesture(newPos, reducedHoldTime, finished);
             }
             else {
                 fta.processHoldGesture(newPos, reducedHoldTime, finished);

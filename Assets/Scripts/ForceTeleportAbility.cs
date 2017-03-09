@@ -62,7 +62,7 @@ public class ForceTeleportAbility : PlayerAbility
                     }
                 }
             }
-            showExplosionEffect(transform.position, pos, range*2);
+            showExplosionEffect(pos, range*2);
             AudioSource.PlayClipAtPoint(forceTeleportSound, pos);
             Destroy(frii);
             frii = null;
@@ -107,11 +107,10 @@ public class ForceTeleportAbility : PlayerAbility
         body.AddForce(dir.normalized * expForce * calc);
     }
     
-    void showExplosionEffect(Vector2 oldp, Vector2 newp, float finalSize)
+    void showExplosionEffect(Vector2 pos, float finalSize)
     {
         GameObject newTS = (GameObject)Instantiate(explosionEffect);
-        newTS.GetComponent<ExplosionEffectUpdater>().start = oldp;
-        newTS.GetComponent<ExplosionEffectUpdater>().end = newp;
+        newTS.GetComponent<ExplosionEffectUpdater>().start = pos;
         newTS.GetComponent<ExplosionEffectUpdater>().finalSize = finalSize;
         newTS.GetComponent<ExplosionEffectUpdater>().position();
         newTS.GetComponent<ExplosionEffectUpdater>().init();

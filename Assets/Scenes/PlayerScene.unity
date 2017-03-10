@@ -120,7 +120,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   save: 0
   load: 0
-  demoBuild: 0
+  demoBuild: 1
   chosenId: 0
   amount: 0
   playerGhost: {fileID: 1000011127396842, guid: 9606e6e6819228048814d508f93b193e,
@@ -2985,11 +2985,11 @@ Prefab:
     m_Modifications:
     - target: {fileID: 464668, guid: 5913bd1e88aefff4988c7dfee6595611, type: 2}
       propertyPath: m_LocalPosition.x
-      value: 0
+      value: 228.7
       objectReference: {fileID: 0}
     - target: {fileID: 464668, guid: 5913bd1e88aefff4988c7dfee6595611, type: 2}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: -22.9
       objectReference: {fileID: 0}
     - target: {fileID: 464668, guid: 5913bd1e88aefff4988c7dfee6595611, type: 2}
       propertyPath: m_LocalPosition.z
@@ -3040,7 +3040,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 11407370, guid: 5913bd1e88aefff4988c7dfee6595611, type: 2}
       propertyPath: m_Enabled
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 114334892854798522, guid: 5913bd1e88aefff4988c7dfee6595611,
         type: 2}

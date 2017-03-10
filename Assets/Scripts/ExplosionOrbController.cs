@@ -30,16 +30,26 @@ public class ExplosionOrbController : MonoBehaviour {
                 Debug.Log("Collision!");
                 if (chargeTime >= fta.maxHoldTime)
                 {
-                    fta.processHoldGesture(transform.position, chargeTime, true);
-                    chargeTime = 0;
+                    trigger();
                 }
             }
             if (chargesAutomatically)
             {
-                chargeTime += Time.deltaTime;
-                fta.processHoldGesture(transform.position, chargeTime, false);
+                charge(Time.deltaTime);
             }
         }
+    }
+
+    public void charge(float deltaChargeTime)
+    {
+        chargeTime += deltaChargeTime;
+        fta.processHoldGesture(transform.position, chargeTime, false);
+    }
+
+    public void trigger()
+    {
+        fta.processHoldGesture(transform.position, chargeTime, true);
+        chargeTime = 0;
     }
 
 }

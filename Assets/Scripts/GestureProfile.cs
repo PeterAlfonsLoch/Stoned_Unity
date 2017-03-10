@@ -31,13 +31,27 @@ public class GestureProfile {
             gm.cancelRewind();
         }
         else {
-            plrController.processTapGesture(curMPWorld);
-            gm.Save();
+            GestureAccepter ga = Utility.findGestureAccepter(curMPWorld);
+            if (ga != null && ga.acceptsTapGesture())
+            {
+                ga.processTapGesture();
+            }
+            else {
+                plrController.processTapGesture(curMPWorld);
+                gm.Save();
+            }
         }
     }
     public virtual void processHoldGesture(Vector3 curMPWorld, float holdTime, bool finished)
     {
-        plrController.processHoldGesture(curMPWorld, holdTime, finished);
+        GestureAccepter ga = Utility.findGestureAccepter(curMPWorld);
+        if (ga != null && ga.acceptsHoldGesture())
+        {
+            ga.processHoldGesture(finished);
+        }
+        else {
+            plrController.processHoldGesture(curMPWorld, holdTime, finished);
+        }
     }
     public void processDragGesture()
     {

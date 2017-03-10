@@ -17,7 +17,7 @@ public class ExplosionOrbController : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-        if (cc2D.Cast(Vector2.zero, rh2ds, 0, true) > 0)
+        if (cc2D.Cast(Vector2.zero, rh2ds, 0, true) > 0 && !rh2ds[0].collider.isTrigger)
         {
             Debug.Log("Collision!");
             if (Time.time - timeSinceLastExplosion > fta.maxHoldTime)

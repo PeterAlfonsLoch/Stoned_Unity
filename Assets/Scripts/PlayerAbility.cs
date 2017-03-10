@@ -4,14 +4,15 @@ using System.Collections;
 public class PlayerAbility : MonoBehaviour {
 
     GameObject player;
-    protected PlayerController playerController;
+    public GameObject teleportParticleEffects;
+    protected ParticleSystemController particleController;
     public Color effectColor;//the color used for the particle system upon activation
 
     // Use this for initialization
     protected void Start () {
         player = gameObject;
-        playerController = GetComponent<PlayerController>();
-	}
+        particleController = teleportParticleEffects.GetComponent<ParticleSystemController>();
+    }
 
     public bool effectsGroundCheck()
     {

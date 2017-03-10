@@ -46,7 +46,7 @@ public class ForceTeleportAbility : PlayerAbility
                 Rigidbody2D orb2d = hitColliders[i].gameObject.GetComponent<Rigidbody2D>();
                 if (orb2d != null)
                 {
-                    AddExplosionForce(orb2d, force, pos, range);
+                    Utility.AddExplosionForce(orb2d, force, pos, range);
                 }
                 else
                 {
@@ -66,7 +66,7 @@ public class ForceTeleportAbility : PlayerAbility
             AudioSource.PlayClipAtPoint(forceTeleportSound, pos);
             Destroy(frii);
             frii = null;
-            playerController.activateTeleportParticleSystem(false);
+            particleController.activateTeleportParticleSystem(false);
         }
         else {
             if (frii == null)
@@ -78,7 +78,7 @@ public class ForceTeleportAbility : PlayerAbility
             frii.transform.position = (Vector2)pos;
             friu.setRange(range);
             //Particle effects
-            playerController.activateTeleportParticleSystem(true, effectColor, pos, range);            
+            particleController.activateTeleportParticleSystem(true, effectColor, pos, range);            
         }
     }
 
@@ -91,21 +91,7 @@ public class ForceTeleportAbility : PlayerAbility
         }
     }
 
-    /**
-    * 2016-03-25: copied from "2D Explosion Force" Asset: https://www.assetstore.unity3d.com/en/#!/content/24077
-    * 2016-03-29: moved here from PlayerController
-    */
-    static void AddExplosionForce(Rigidbody2D body, float expForce, Vector3 expPosition, float expRadius)
-    {
-        var dir = (body.transform.position - expPosition);
-        float calc = 1 - (dir.magnitude / expRadius);
-        if (calc <= 0)
-        {
-            calc = 0;
-        }
-
-        body.AddForce(dir.normalized * expForce * calc);
-    }
+    
     
     void showExplosionEffect(Vector2 pos, float finalSize)
     {

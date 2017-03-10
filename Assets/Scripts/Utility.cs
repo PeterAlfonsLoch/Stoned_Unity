@@ -29,4 +29,21 @@ public static class Utility  {
     {
         return RotateZ(v, Mathf.PI / 2);
     }
+
+    /**
+    * 2016-03-25: copied from "2D Explosion Force" Asset: https://www.assetstore.unity3d.com/en/#!/content/24077
+    * 2016-03-29: moved here from PlayerController
+    * 2017-03-09: moved here from ForceTeleportAbility
+    */
+    public static void AddExplosionForce(Rigidbody2D body, float expForce, Vector3 expPosition, float expRadius)
+    {
+        var dir = (body.transform.position - expPosition);
+        float calc = 1 - (dir.magnitude / expRadius);
+        if (calc <= 0)
+        {
+            calc = 0;
+        }
+
+        body.AddForce(dir.normalized * expForce * calc);
+    }
 }

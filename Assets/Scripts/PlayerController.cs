@@ -508,13 +508,13 @@ public class PlayerController : MonoBehaviour
         //Check Shield Bubble
         if (sba.enabled && Vector3.Distance(gpos,transform.position) < halfWidth)
         {
-            fta.dropHoldGesture();
+            if (fta.enabled) { fta.dropHoldGesture(); }
             sba.processHoldGesture(gpos, reducedHoldTime, finished);
         }
         //Check Force Wave
         else if (fta.enabled)
         {
-            sba.dropHoldGesture();
+            if (sba.enabled) { sba.dropHoldGesture(); }
             Vector3 newPos = gpos;
             if (finished)
             {

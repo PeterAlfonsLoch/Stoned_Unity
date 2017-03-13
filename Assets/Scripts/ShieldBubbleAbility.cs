@@ -68,6 +68,7 @@ public class ShieldBubbleAbility : PlayerAbility
             Destroy(srii);
             srii = null;
         }
+        particleController.activateTeleportParticleSystem(false);
     }
 
     public bool canSpawnShieldBubble(Vector2 pos, float range)

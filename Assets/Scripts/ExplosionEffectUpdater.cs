@@ -6,7 +6,6 @@ public class ExplosionEffectUpdater : MonoBehaviour {//2016-04-18: copied from T
     //2016-03-03 copied from TeleportStreakUpdater
     public float maxTimeShown = 50;
     public Vector2 start;
-    public Vector2 end;
     public float startSize = 0.1f;
     public float finalSize;//how big it should be when it finishes
     public float waitTime = 0;

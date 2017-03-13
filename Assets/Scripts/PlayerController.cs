@@ -318,6 +318,8 @@ public class PlayerController : MonoBehaviour
         newTS.GetComponent<TeleportStarUpdater>().turnOn(true);
     }
 
+    
+
     void setRange(float newRange)
     {
         range = newRange;
@@ -506,20 +508,17 @@ public class PlayerController : MonoBehaviour
         //Check Shield Bubble
         if (sba.enabled && Vector3.Distance(gpos,transform.position) < halfWidth)
         {
-            fta.dropHoldGesture();
+            if (fta.enabled) { fta.dropHoldGesture(); }
             sba.processHoldGesture(gpos, reducedHoldTime, finished);
         }
         //Check Force Wave
         else if (fta.enabled)
         {
-            sba.dropHoldGesture();
-            Vector3 newPos = findTeleportablePosition(gpos);
+            if (sba.enabled) { sba.dropHoldGesture(); }
+            Vector3 newPos = gpos;
             if (finished)
             {
-                if (teleport(newPos, false))
-                {
-                    fta.processHoldGesture(newPos, reducedHoldTime, finished);
-                }
+                fta.processHoldGesture(newPos, reducedHoldTime, finished);
             }
             else {
                 fta.processHoldGesture(newPos, reducedHoldTime, finished);

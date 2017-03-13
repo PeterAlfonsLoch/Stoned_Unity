@@ -12,7 +12,7 @@ public class GestureManager : SavableMonoBehaviour
     private CameraController cmaController;
 
     //Settings
-    public float dragThreshold = 10;//how far from the original mouse position the current position has to be to count as a drag
+    public float dragThreshold = 50;//how far from the original mouse position the current position has to be to count as a drag
     public float holdThreshold = 0.1f;//how long the tap has to be held to count as a hold (in seconds)
     public float orthoZoomSpeed = 0.5f;
 
@@ -76,6 +76,14 @@ public class GestureManager : SavableMonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        //
+        //Threshold updating
+        //
+        float newDT = Mathf.Min(Screen.width, Screen.height) / 20;
+        if (dragThreshold != newDT)
+        {
+            dragThreshold = newDT;
+        }
         //
         //Input scouting
         //
@@ -213,7 +221,7 @@ public class GestureManager : SavableMonoBehaviour
             }
             else if (clickState == ClickState.InProgress)
             {
-                if (maxMouseMovement > dragThreshold && rb2dPlayer.velocity.magnitude < 1)
+                if (maxMouseMovement > dragThreshold)
                 {
                     if (!isHoldGesture)
                     {

@@ -175,30 +175,16 @@ public class CameraController : MonoBehaviour
         updateOrthographicSize();
 
         //Make sure player is still in view
-        Vector3 size = cam.ScreenToWorldPoint(new Vector3(cam.pixelWidth, cam.pixelHeight)) - cam.ScreenToWorldPoint(new Vector3(0, 0)) + new Vector3(0, 0, 20);
-        Bounds b = new Bounds(cam.transform.position, size);
-        if (!b.Contains(player.transform.position))
+        float width = Vector3.Distance(cam.ScreenToWorldPoint(new Vector3(cam.pixelWidth, 0)), cam.ScreenToWorldPoint(new Vector3(0, 0)));
+        float height = Vector3.Distance(cam.ScreenToWorldPoint(new Vector3(0, cam.pixelHeight)), cam.ScreenToWorldPoint(new Vector3(0, 0)));
+        float radius = Mathf.Min(width, height) / 2;
+        float curDistance = Vector3.Distance(player.transform.position, transform.position);
+        if (curDistance > radius)
         {
-            float newX = offset.x;
-            float newY = offset.y;
-            Vector3 ppos = player.transform.position;
-            if (ppos.x < b.min.x)
-            {
-                newX = b.extents.x;
-            }
-            else if (ppos.x > b.max.x)
-            {
-                newX = -b.extents.x;
-            }
-            if (ppos.y < b.min.y)
-            {
-                newY = b.extents.y;
-            }
-            else if (ppos.y > b.max.y)
-            {
-                newY = -b.extents.y;
-            }
-            offset = new Vector3(newX, newY, offset.z);
+            float prevZ = offset.z;
+            offset = new Vector2(offset.x, offset.y).normalized * radius;
+            offset.z = prevZ;
+            refocus();
         }
         
         //GestureProfile switcher

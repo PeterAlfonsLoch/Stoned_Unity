@@ -53,6 +53,7 @@ public class CameraController : MonoBehaviour
         gameManager = GameObject.FindObjectOfType<GameManager>();
         plyrController = player.GetComponent<PlayerController>();
         scale = cam.orthographicSize;
+        rotation = transform.rotation;
         //Initialize ScalePoints
         scalePoints.Add(new ScalePoint(1, false, plyrController));
         scalePoints.Add(new ScalePoint(1, true, plyrController));

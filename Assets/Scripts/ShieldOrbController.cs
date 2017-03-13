@@ -29,7 +29,7 @@ public class ShieldOrbController : MonoBehaviour
         {
             if (sba.canSpawnShieldBubble(transform.position, sba.maxRange))
             {
-                if (generatesUponContact && cc2D.Cast(Vector2.zero, rh2ds, 0, true) > 0 && !rh2ds[0].collider.isTrigger)
+                if (generatesUponContact && isBeingTriggered())
                 {
                     Debug.Log("Collision!");
                     if (chargeTime >= sba.maxHoldTime)
@@ -45,8 +45,14 @@ public class ShieldOrbController : MonoBehaviour
             else
             {
                 sba.dropHoldGesture();
+
             }
         }
+    }
+
+    public bool isBeingTriggered()
+    {
+        return cc2D.Cast(Vector2.zero, rh2ds, 0, true) > 0 && !rh2ds[0].collider.isTrigger;
     }
 
     public void charge(float deltaChargeTime)
@@ -57,8 +63,16 @@ public class ShieldOrbController : MonoBehaviour
 
     public void trigger()
     {
-        sba.processHoldGesture(transform.position, chargeTime, true);
-        chargeTime = 0;
+        //Shield Orbs require to be at full capacity to deploy a shield
+        if (sba.maxHoldTime <= chargeTime)
+        {
+            sba.processHoldGesture(transform.position, chargeTime, true);
+            chargeTime = 0;
+        }
+        else
+        {
+            sba.dropHoldGesture();
+        }
     }
 
 }

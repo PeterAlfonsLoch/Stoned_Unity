@@ -19,8 +19,9 @@ public class CameraController : MonoBehaviour
 
     private int prevScreenWidth;
     private int prevScreenHeight;
-    
-    struct ScalePoint{
+
+    struct ScalePoint
+    {
         private float scalePoint;
         private bool relative;//true if relative to player's range, false if absolute
         private PlayerController plyrController;
@@ -129,7 +130,7 @@ public class CameraController : MonoBehaviour
         //between tapPos and playerPos that will discard movementdelay early
         float DISCARD_DELAY_SENSITIVITY = 0.25f;
         //Get the average of screen width and height in world distance
-        float distance = Mathf.Abs(cam.ScreenToWorldPoint(new Vector2(0,(prevScreenWidth + prevScreenHeight) / 2)).y - cam.ScreenToWorldPoint(new Vector2(0,0)).y);
+        float distance = Mathf.Abs(cam.ScreenToWorldPoint(new Vector2(0, (prevScreenWidth + prevScreenHeight) / 2)).y - cam.ScreenToWorldPoint(new Vector2(0, 0)).y);
         float threshold = DISCARD_DELAY_SENSITIVITY * distance;
         if (Vector3.Distance(tapPos, playerPos) <= threshold)
         {
@@ -156,7 +157,7 @@ public class CameraController : MonoBehaviour
 
     public void setRotation(Quaternion rotation)
     {
-        this.rotation = rotation;        
+        this.rotation = rotation;
     }
 
     public void setScalePoint(int scalePointIndex)
@@ -186,7 +187,7 @@ public class CameraController : MonoBehaviour
             offset.z = prevZ;
             refocus();
         }
-        
+
         //GestureProfile switcher
         if (this.scalePointIndex == scalePoints.Count - 1)
         {

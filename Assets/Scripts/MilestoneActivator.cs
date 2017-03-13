@@ -13,19 +13,25 @@ public abstract class MilestoneActivator : MemoryMonoBehaviour {
     // Use this for initialization
     void Start()
     {
-        Bounds bounds = GetComponentInParent<SpriteRenderer>().bounds;
-        float extra = 0.1f;
-        minX = bounds.min.x - extra;
-        maxX = bounds.max.x + extra;
-        minY = bounds.min.y - extra;
-        maxY = bounds.max.y + extra;
+        if (transform.parent != null)
+        {
+            Bounds bounds = GetComponentInParent<SpriteRenderer>().bounds;
+            float extra = 0.1f;
+            minX = bounds.min.x - extra;
+            maxX = bounds.max.x + extra;
+            minY = bounds.min.y - extra;
+            maxY = bounds.max.y + extra;
+        }
     }
 
     void OnTriggerEnter2D(Collider2D coll)
     {
         if (!used && coll.gameObject.Equals(GameManager.getPlayerObject()))
         {
-            sparkle();
+            if (transform.parent != null)
+            {
+                sparkle();
+            }
             used = true;
             activateEffect();
             GameManager.saveMemory(this);

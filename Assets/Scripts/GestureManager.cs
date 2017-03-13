@@ -221,7 +221,7 @@ public class GestureManager : SavableMonoBehaviour
             }
             else if (clickState == ClickState.InProgress)
             {
-                if (maxMouseMovement > dragThreshold && rb2dPlayer.velocity.magnitude < 1)
+                if (maxMouseMovement > dragThreshold)
                 {
                     if (!isHoldGesture)
                     {

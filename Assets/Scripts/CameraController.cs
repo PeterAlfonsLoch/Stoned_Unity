@@ -7,6 +7,7 @@ public class CameraController : MonoBehaviour
     public GameObject player;
 
     private Vector3 offset;
+    private Quaternion rotation;//the rotation the camera should be rotated towards
     private float scale = 1;//scale used to determine orthographicSize, independent of (landscape or portrait) orientation
     private Camera cam;
     private Rigidbody2D playerRB2D;
@@ -90,6 +91,13 @@ public class CameraController : MonoBehaviour
                     player.transform.position) * 1.5f + playerRB2D.velocity.magnitude)
                     * Time.deltaTime);
         }
+        if (transform.rotation != rotation)
+        {
+            float deltaTime = 3 * Time.deltaTime;
+            float angle = Quaternion.Angle(transform.rotation, rotation) * deltaTime;
+            transform.rotation = Quaternion.Lerp(transform.rotation, rotation, deltaTime);
+            offset = Quaternion.AngleAxis(angle, Vector3.forward) * offset;
+        }
     }
 
     /**
@@ -144,6 +152,11 @@ public class CameraController : MonoBehaviour
     public void refocus()
     {
         transform.position = player.transform.position + offset;
+    }
+
+    public void setRotation(Quaternion rotation)
+    {
+        this.rotation = rotation;        
     }
 
     public void setScalePoint(int scalePointIndex)

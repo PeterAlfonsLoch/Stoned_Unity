@@ -44,7 +44,7 @@ public class GravityZone : MonoBehaviour
             //Check to see if Merky is in this GravityZone
             if (coll.OverlapPoint(GameManager.getPlayerObject().GetComponent<PolygonCollider2D>().bounds.center))
             {
-                Camera.main.transform.rotation = Quaternion.Lerp(Camera.main.transform.rotation, transform.rotation, 3 * Time.deltaTime);
+                Camera.main.GetComponent<CameraController>().setRotation(transform.rotation);
             }
         }
     }

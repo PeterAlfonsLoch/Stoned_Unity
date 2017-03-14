@@ -78,6 +78,15 @@ public class ParticleSystemController : MonoBehaviour {
     public void setRange(float newRange)
     {
         ParticleSystem.ShapeModule pssm = teleportParticles.shape;
-        pssm.radius = newRange;
+        if (pssm.radius != newRange)
+        {
+            pssm.radius = newRange;
+            //Number of particles
+            //2017-03-14 I know it's deprecated but it doesn't give me any other option
+            teleportParticles.emissionRate = newRange * 100 / 3;
+            //Reset
+            teleportParticles.Stop();
+            teleportParticles.Play();
+        }
     }
 }

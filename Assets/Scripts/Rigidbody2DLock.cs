@@ -12,6 +12,7 @@ public class Rigidbody2DLock : SavableMonoBehaviour {
         Rigidbody2D rb2d = gameObject.GetComponent<Rigidbody2D>();
         rb2d.isKinematic = true;//lock rb2d
         rb2d.velocity = new Vector2(0, 0);
+        rb2d.angularVelocity = 0;
     }
 
 	public void addLock(GameObject lockHolder)

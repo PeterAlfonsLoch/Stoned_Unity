@@ -110,16 +110,14 @@ public class ShieldBubbleController : SavableMonoBehaviour
     ///</summary>
     void lockRB2Ds()
     {
-        Collider2D[] hitColliders = Physics2D.OverlapCircleAll(transform.position, range);
-        for (int i = 0; i < hitColliders.Length; i++)
+        RaycastHit2D[] rch2ds = new RaycastHit2D[100];
+        int length = GetComponent<EdgeCollider2D>().Cast(Vector2.up, rch2ds, 0, true);
+        for (int i = 0; i < length; i++)
         {
-            GameObject hc = hitColliders[i].gameObject;
-            if (!hc.Equals(gameObject))
+            GameObject hc = rch2ds[i].collider.gameObject;
+            if (hc.GetComponent<Rigidbody2D>() != null)
             {
-                if (hc.GetComponent<Rigidbody2D>() != null)
-                {
-                    lockRB2D(hc);
-                }
+                lockRB2D(hc);
             }
         }
     }

@@ -21,6 +21,8 @@ EditorBuildSettings:
     path: Assets/Scenes/ShieldBubbleIntro.unity
   - enabled: 1
     path: Assets/Scenes/WallJumpScene.unity
+  - enabled: 1
+    path: Assets/Scenes/MechFactory.unity
   - enabled: 0
     path: Assets/Scenes/ForceTeleportScene02.unity
   - enabled: 0

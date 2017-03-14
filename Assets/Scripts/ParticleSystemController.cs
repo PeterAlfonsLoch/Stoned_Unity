@@ -37,7 +37,7 @@ public class ParticleSystemController : MonoBehaviour {
             //Position
             teleportParticles.transform.position = pos;
             //Range
-            setRange(radius);
+            setRange(radius, false);
             //Color
             ParticleSystem.MainModule psmm = teleportParticles.main;
             psmm.startColor = effectColor;
@@ -65,7 +65,7 @@ public class ParticleSystemController : MonoBehaviour {
             //Range
             if (radius > 0)
             {
-                setRange(radius);
+                setRange(radius, true);
             }
         }
         else
@@ -75,18 +75,21 @@ public class ParticleSystemController : MonoBehaviour {
         }
 
     }
-    public void setRange(float newRange)
+    public void setRange(float newRange, bool andRate)
     {
         ParticleSystem.ShapeModule pssm = teleportParticles.shape;
         if (pssm.radius != newRange)
         {
             pssm.radius = newRange;
-            //Number of particles
-            //2017-03-14 I know it's deprecated but it doesn't give me any other option
-            teleportParticles.emissionRate = newRange * 100 / 3;
-            //Reset
-            teleportParticles.Stop();
-            teleportParticles.Play();
+            if (andRate)//whether or not to change the rate too
+            {
+                //Number of particles
+                //2017-03-14 I know it's deprecated but it doesn't give me any other option
+                teleportParticles.emissionRate = newRange * 100 / 3;
+                //Reset
+                teleportParticles.Stop();
+                teleportParticles.Play();
+            }
         }
     }
 }

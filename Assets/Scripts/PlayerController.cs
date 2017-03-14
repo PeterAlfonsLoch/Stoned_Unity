@@ -222,7 +222,7 @@ public class PlayerController : MonoBehaviour
                 const float difference = -1 * 1.00f / pointsToTry;//how much the previous jump was different by
                 const float variance = 0.4f;//max amount to adjust angle by
                 const int anglesToTry = 7;//default to trying 10 points along the line at first
-                const float anglesDiff = variance * 2 / (anglesToTry-1);
+                const float anglesDiff = variance * 2 / (anglesToTry - 1);
                 //Vary the angle
                 for (float a = -variance; a <= variance; a += anglesDiff)
                 {
@@ -232,7 +232,7 @@ public class PlayerController : MonoBehaviour
                     Vector3 angledNewPos = oldPos + dir * oldDist;//ANGLED
                     //Backtrack
                     float distance = Vector3.Distance(oldPos, angledNewPos);
-                    float percent = 1.00f - (difference*2);//to start it off slightly further away
+                    float percent = 1.00f - (difference * 2);//to start it off slightly further away
                     Vector3 norm = (angledNewPos - oldPos).normalized;
                     while (percent >= 0)
                     {
@@ -318,7 +318,7 @@ public class PlayerController : MonoBehaviour
         newTS.GetComponent<TeleportStarUpdater>().turnOn(true);
     }
 
-    
+
 
     void setRange(float newRange)
     {
@@ -506,7 +506,7 @@ public class PlayerController : MonoBehaviour
         Debug.DrawLine(transform.position, transform.position + new Vector3(0, halfWidth, 0), Color.blue, 10);
         float reducedHoldTime = holdTime - gm.getHoldThreshold();
         //Check Shield Bubble
-        if (sba.enabled && Vector3.Distance(gpos,transform.position) < halfWidth)
+        if (sba.enabled && Vector3.Distance(gpos, transform.position) < halfWidth)
         {
             if (fta.enabled) { fta.dropHoldGesture(); }
             sba.processHoldGesture(gpos, reducedHoldTime, finished);
@@ -532,6 +532,11 @@ public class PlayerController : MonoBehaviour
                 processTapGesture(gpos);
             }
         }
+    }
+    public void dropHoldGesture()
+    {
+        if (fta.enabled) { fta.dropHoldGesture(); }
+        if (sba.enabled) { sba.dropHoldGesture(); }
     }
 }
 

@@ -48,6 +48,7 @@ public class GestureProfile {
         if (ga != null && ga.acceptsHoldGesture())
         {
             ga.processHoldGesture(finished);
+            plrController.dropHoldGesture();
         }
         else {
             plrController.processHoldGesture(curMPWorld, holdTime, finished);

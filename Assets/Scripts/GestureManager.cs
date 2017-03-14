@@ -38,7 +38,7 @@ public class GestureManager : SavableMonoBehaviour
     private enum ClickState { Began, InProgress, Ended, None };
     private ClickState clickState = ClickState.None;
     //
-    public int tapCount = 0;//how many taps have ever been made, including tap+holds
+    public int tapCount = 0;//how many taps have ever been made, including tap+holds that were sent back as taps
     //Flags
     public bool cameraDragInProgress = false;
     private bool isDrag = false;

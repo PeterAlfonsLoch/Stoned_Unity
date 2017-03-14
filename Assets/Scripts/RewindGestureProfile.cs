@@ -12,5 +12,10 @@ public class RewindGestureProfile: GestureProfile
     }
     public override void processHoldGesture(Vector3 curMPWorld, float holdTime, bool finished)
     {
+        if (finished)
+        {
+            gm.processTapGesture(curMPWorld);
+            GameObject.FindObjectOfType<GestureManager>().adjustHoldThreshold(holdTime);
+        }
     }
 }

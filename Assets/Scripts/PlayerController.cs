@@ -249,14 +249,20 @@ public class PlayerController : MonoBehaviour
                             if (!isOccupied(testPos))
                             {
                                 possibleOptions.Add(testPos);
-                                break;
+                                if (percent <= 1)//make sure you at least try the standard position
+                                {
+                                    break;
+                                }
                             }
                         }
                         else
                         {
                             //found an open spot (tho it might not be optimal)
                             possibleOptions.Add(testPos);
-                            break;
+                            if (percent <= 1)//make sure you at least try the standard position
+                            {
+                                break;
+                            }
                         }
                     }
                 }

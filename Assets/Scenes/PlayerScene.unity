@@ -224,7 +224,7 @@ ParticleSystem:
   moveWithTransform: 0
   moveWithCustomTransform: {fileID: 0}
   scalingMode: 1
-  randomSeed: 1259837757
+  randomSeed: 1794630305
   InitialModule:
     serializedVersion: 3
     enabled: 1
@@ -789,10 +789,10 @@ ParticleSystem:
         serializedVersion: 2
         m_Curve:
         - serializedVersion: 2
-          time: 0.0047359695
-          value: 0.98687994
-          inSlope: -0.16466461
-          outSlope: -0.16466461
+          time: 0.014634145
+          value: 1
+          inSlope: 0.10919711
+          outSlope: 0.10919711
           tangentMode: 0
         - serializedVersion: 2
           time: 1

@@ -37,8 +37,7 @@ public class ParticleSystemController : MonoBehaviour {
             //Position
             teleportParticles.transform.position = pos;
             //Range
-            ParticleSystem.ShapeModule pssm = teleportParticles.shape;
-            pssm.radius = radius;
+            setRange(radius);
             //Color
             ParticleSystem.MainModule psmm = teleportParticles.main;
             psmm.startColor = effectColor;
@@ -52,5 +51,33 @@ public class ParticleSystemController : MonoBehaviour {
             teleportParticles.Pause();
             teleportParticles.Clear();
         }
+    }
+    /// <summary>
+    /// For activating a radial system that emits outward (for the teleport range indicator)
+    /// </summary>
+    /// <param name="activate"></param>
+    /// <param name="radius">The radius to set to, 0 to do no change</param>
+    public void activateTeleportParticleSystem(bool activate, float radius)
+    {
+        if (activate)
+        {
+            teleportParticles.Play();
+            //Range
+            if (radius > 0)
+            {
+                setRange(radius);
+            }
+        }
+        else
+        {
+            teleportParticles.Pause();
+            teleportParticles.Clear();
+        }
+
+    }
+    public void setRange(float newRange)
+    {
+        ParticleSystem.ShapeModule pssm = teleportParticles.shape;
+        pssm.radius = newRange;
     }
 }

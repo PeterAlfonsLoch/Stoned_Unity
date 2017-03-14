@@ -15,9 +15,11 @@ public class PlayerController : MonoBehaviour
     public bool wallJump = true;//whether or not wall jump is enabled
 
     public GameObject teleportStreak;
-    public GameObject teleportStar;
     public bool useStreak = false;
+    public GameObject teleportStar;
     public bool useStar = true;
+    public GameObject teleportRangeParticalObject;
+    private ParticleSystemController teleportRangeParticalController;
 
     public int airPorts = 0;
     private bool grounded = true;//set in isGrounded()
@@ -51,6 +53,7 @@ public class PlayerController : MonoBehaviour
         halfWidth = GetComponent<SpriteRenderer>().bounds.extents.magnitude;
         fta = GetComponent<ForceTeleportAbility>();
         sba = GetComponent<ShieldBubbleAbility>();
+        teleportRangeParticalController = teleportRangeParticalObject.GetComponent<ParticleSystemController>();
     }
 
     void FixedUpdate()
@@ -140,6 +143,7 @@ public class PlayerController : MonoBehaviour
             {
                 AudioSource.PlayClipAtPoint(teleportSound, oldPos);
             }
+            teleportRangeParticalController.activateTeleportParticleSystem(true, 0);
             //Momentum Dampening
             if (rb2d.velocity.magnitude > 0.001f)//if Merky is moving
             {
@@ -324,7 +328,13 @@ public class PlayerController : MonoBehaviour
     {
         range = newRange;
         TeleportRangeIndicatorUpdater tri = GetComponentInChildren<TeleportRangeIndicatorUpdater>();
-        tri.updateRange();
+        if (tri != null)
+        {
+            tri.updateRange();
+        }
+        ParticleSystem ps = teleportRangeParticalObject.GetComponent<ParticleSystem>();
+        float distanceCoverable = ps.main.startLifetime.constant * ps.main.startSpeed.constant;
+        teleportRangeParticalController.setRange(newRange - distanceCoverable);
     }
 
     public void setGravityVector(Vector2 gravity)

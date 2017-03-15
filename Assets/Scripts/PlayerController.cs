@@ -20,6 +20,7 @@ public class PlayerController : MonoBehaviour
     public bool useStar = true;
     public GameObject teleportRangeParticalObject;
     private ParticleSystemController teleportRangeParticalController;
+    public GameObject wallJumpAbilityIndicator;
 
     public int airPorts = 0;
     private bool grounded = true;//set in isGrounded()

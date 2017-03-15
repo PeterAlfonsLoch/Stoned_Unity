@@ -8,10 +8,16 @@ public class PlayerAbility : MonoBehaviour {
     protected ParticleSystemController particleController;
     public Color effectColor;//the color used for the particle system upon activation
 
+    public GameObject abilityIndicatorParticleEffects;
+
     // Use this for initialization
     protected void Start () {
         player = gameObject;
         particleController = teleportParticleEffects.GetComponent<ParticleSystemController>();
+        if (abilityIndicatorParticleEffects != null)
+        {
+            abilityIndicatorParticleEffects.GetComponent<ParticleSystem>().Play();
+        }
     }
 
     public bool effectsGroundCheck()

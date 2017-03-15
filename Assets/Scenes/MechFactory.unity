@@ -1657,9 +1657,9 @@ BoxCollider2D:
   m_Material: {fileID: 0}
   m_IsTrigger: 1
   m_UsedByEffector: 0
-  m_Offset: {x: -2.4621887, y: 0.6518402}
+  m_Offset: {x: 2.6762004, y: 0.65281653}
   serializedVersion: 2
-  m_Size: {x: 46.483482, y: 6.938984}
+  m_Size: {x: 36.207844, y: 6.9389834}
 --- !u!1001 &576265000
 Prefab:
   m_ObjectHideFlags: 0
@@ -2246,6 +2246,10 @@ Prefab:
     - target: {fileID: 104296, guid: 2964a113d33795e4fa2f7f2b88fa9f80, type: 2}
       propertyPath: m_Name
       value: HA Entrance
+      objectReference: {fileID: 0}
+    - target: {fileID: 104296, guid: 2964a113d33795e4fa2f7f2b88fa9f80, type: 2}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 2964a113d33795e4fa2f7f2b88fa9f80, type: 2}

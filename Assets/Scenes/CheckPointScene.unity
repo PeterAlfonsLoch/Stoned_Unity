@@ -322,6 +322,11 @@ Prefab:
       propertyPath: m_Name
       value: FTS03_checkpoint_root Milestone
       objectReference: {fileID: 0}
+    - target: {fileID: 11490148, guid: e47a092a7240e3a478b86e0966ddda46, type: 2}
+      propertyPath: ghostSprite
+      value: 
+      objectReference: {fileID: 21300000, guid: a8fcd08c98125db4b87e49b11bd3ba58,
+        type: 3}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: e47a092a7240e3a478b86e0966ddda46, type: 2}
   m_IsPrefabParent: 0

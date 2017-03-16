@@ -20,6 +20,7 @@ public class PlayerController : MonoBehaviour
     public bool useStar = true;
     public GameObject teleportRangeParticalObject;
     private ParticleSystemController teleportRangeParticalController;
+    public GameObject wallJumpAbilityIndicator;
 
     public int airPorts = 0;
     private bool grounded = true;//set in isGrounded()
@@ -338,9 +339,14 @@ public class PlayerController : MonoBehaviour
         {
             tri.updateRange();
         }
-        ParticleSystem ps = teleportRangeParticalObject.GetComponent<ParticleSystem>();
-        float distanceCoverable = ps.main.startLifetime.constant * ps.main.startSpeed.constant;
-        teleportRangeParticalController.setRange(newRange - distanceCoverable, true);
+        ParticleSystemController[] pscs = GetComponentsInChildren<ParticleSystemController>();
+        foreach (ParticleSystemController psc in pscs)
+        {
+            if (psc.dependsOnTeleportRange)
+            {
+                psc.setOuterRange(newRange);
+            }
+        }
     }
 
     public void setGravityVector(Vector2 gravity)
@@ -500,9 +506,10 @@ public class PlayerController : MonoBehaviour
 
     public void processTapGesture(Vector3 gpos)
     {
+        Vector3 prevPos = transform.position;
         Vector3 newPos = findTeleportablePosition(gpos);
         teleport(newPos);
-        mainCamCtr.checkForAutoMovement(gpos, transform.position);
+        mainCamCtr.checkForAutoMovement(gpos, prevPos);
     }
     public void processTapGesture(GameObject checkPoint)
     {

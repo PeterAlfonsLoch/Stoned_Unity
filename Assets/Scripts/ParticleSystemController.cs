@@ -6,6 +6,7 @@ public class ParticleSystemController : MonoBehaviour {
     //2017-03-09 used to control an object with a ParticleSystem thats used for circular ranges
 
     private ParticleSystem teleportParticles;
+    public bool dependsOnTeleportRange = false;//true if it changes size when the teleport range changes
 
     // Use this for initialization
     void Start () {
@@ -91,5 +92,15 @@ public class ParticleSystemController : MonoBehaviour {
                 teleportParticles.Play();
             }
         }
+    }
+    /// <summary>
+    /// Sets the range so that the particles die when they reach the given newRange
+    /// </summary>
+    /// <param name="newRange">The range at which the particles will die</param>
+    public void setOuterRange(float newRange)
+    {
+        ParticleSystem ps = GetComponent<ParticleSystem>();
+        float distanceCoverable = teleportParticles.main.startLifetime.constant * teleportParticles.main.startSpeed.constant;
+        setRange(newRange - distanceCoverable, true);
     }
 }

@@ -224,7 +224,7 @@ ParticleSystem:
   moveWithTransform: 0
   moveWithCustomTransform: {fileID: 0}
   scalingMode: 1
-  randomSeed: -826956931
+  randomSeed: 565127875
   InitialModule:
     serializedVersion: 3
     enabled: 1
@@ -2855,6 +2855,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8feb6dcd40622fa4ba4aa7e5e57bcf3a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  dependsOnTeleportRange: 1
 --- !u!1 &217562832
 GameObject:
   m_ObjectHideFlags: 0
@@ -2978,7 +2979,7 @@ ParticleSystem:
   moveWithTransform: 0
   moveWithCustomTransform: {fileID: 0}
   scalingMode: 1
-  randomSeed: -1903586919
+  randomSeed: -443881645
   InitialModule:
     serializedVersion: 3
     enabled: 1
@@ -5572,6 +5573,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8feb6dcd40622fa4ba4aa7e5e57bcf3a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  dependsOnTeleportRange: 0
 --- !u!1 &253958361
 GameObject:
   m_ObjectHideFlags: 0
@@ -5687,7 +5689,7 @@ ParticleSystem:
   moveWithTransform: 0
   moveWithCustomTransform: {fileID: 0}
   scalingMode: 1
-  randomSeed: 1750356548
+  randomSeed: -1932367270
   InitialModule:
     serializedVersion: 3
     enabled: 1
@@ -8318,6 +8320,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8feb6dcd40622fa4ba4aa7e5e57bcf3a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  dependsOnTeleportRange: 0
 --- !u!4 &506271488
 Transform:
   m_ObjectHideFlags: 0
@@ -8340,6 +8343,7 @@ GameObject:
   m_Component:
   - component: {fileID: 856596823}
   - component: {fileID: 856596825}
+  - component: {fileID: 856596826}
   - component: {fileID: 856596824}
   m_Layer: 0
   m_Name: AbilityIndicatorShieldBubble
@@ -8416,7 +8420,7 @@ ParticleSystem:
   moveWithTransform: 0
   moveWithCustomTransform: {fileID: 0}
   scalingMode: 1
-  randomSeed: 310912485
+  randomSeed: 474251973
   InitialModule:
     serializedVersion: 3
     enabled: 1
@@ -11036,6 +11040,18 @@ ParticleSystemRenderer:
   m_Mesh1: {fileID: 0}
   m_Mesh2: {fileID: 0}
   m_Mesh3: {fileID: 0}
+--- !u!114 &856596826
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 856596822}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8feb6dcd40622fa4ba4aa7e5e57bcf3a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  dependsOnTeleportRange: 1
 --- !u!1001 &1113871235
 Prefab:
   m_ObjectHideFlags: 0
@@ -11100,6 +11116,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1121559819}
   - component: {fileID: 1121559821}
+  - component: {fileID: 1121559822}
   - component: {fileID: 1121559820}
   m_Layer: 0
   m_Name: AbilityIndicatorWallJump
@@ -11176,7 +11193,7 @@ ParticleSystem:
   moveWithTransform: 0
   moveWithCustomTransform: {fileID: 0}
   scalingMode: 1
-  randomSeed: -1504182455
+  randomSeed: -714786819
   InitialModule:
     serializedVersion: 3
     enabled: 1
@@ -13796,6 +13813,18 @@ ParticleSystemRenderer:
   m_Mesh1: {fileID: 0}
   m_Mesh2: {fileID: 0}
   m_Mesh3: {fileID: 0}
+--- !u!114 &1121559822
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1121559818}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8feb6dcd40622fa4ba4aa7e5e57bcf3a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  dependsOnTeleportRange: 1
 --- !u!1 &1414825757
 GameObject:
   m_ObjectHideFlags: 0
@@ -14136,6 +14165,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1950273297}
   - component: {fileID: 1950273299}
+  - component: {fileID: 1950273300}
   - component: {fileID: 1950273298}
   m_Layer: 0
   m_Name: AbilityIndicatorForceWave
@@ -14212,7 +14242,7 @@ ParticleSystem:
   moveWithTransform: 0
   moveWithCustomTransform: {fileID: 0}
   scalingMode: 1
-  randomSeed: 1942429861
+  randomSeed: -1411883714
   InitialModule:
     serializedVersion: 3
     enabled: 1
@@ -16832,6 +16862,18 @@ ParticleSystemRenderer:
   m_Mesh1: {fileID: 0}
   m_Mesh2: {fileID: 0}
   m_Mesh3: {fileID: 0}
+--- !u!114 &1950273300
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1950273296}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8feb6dcd40622fa4ba4aa7e5e57bcf3a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  dependsOnTeleportRange: 1
 --- !u!1001 &2073786045
 Prefab:
   m_ObjectHideFlags: 0

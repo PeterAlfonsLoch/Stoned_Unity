@@ -339,9 +339,14 @@ public class PlayerController : MonoBehaviour
         {
             tri.updateRange();
         }
-        ParticleSystem ps = teleportRangeParticalObject.GetComponent<ParticleSystem>();
-        float distanceCoverable = ps.main.startLifetime.constant * ps.main.startSpeed.constant;
-        teleportRangeParticalController.setRange(newRange - distanceCoverable, true);
+        ParticleSystemController[] pscs = GetComponentsInChildren<ParticleSystemController>();
+        foreach (ParticleSystemController psc in pscs)
+        {
+            if (psc.dependsOnTeleportRange)
+            {
+                psc.setOuterRange(newRange);
+            }
+        }
     }
 
     public void setGravityVector(Vector2 gravity)

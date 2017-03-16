@@ -69,6 +69,19 @@ public class GameManager : MonoBehaviour
             gameObjects.Add(go);
         }
     }
+    /// <summary>
+    /// Destroys the given GameObject and updates lists
+    /// </summary>
+    /// <param name="go"></param>
+    public static void destroyObject(GameObject go)
+    {
+        removeObject(go);
+        Destroy(go);
+    }
+    /// <summary>
+    /// Removes the given GameObject from the gameObjects list
+    /// </summary>
+    /// <param name="go"></param>
     public static void removeObject(GameObject go)
     {
         instance.gameObjects.Remove(go);
@@ -220,8 +233,7 @@ public class GameManager : MonoBehaviour
         {
             if (!gameStates[gamestateId].hasGameObject(go))
             {
-                removeObject(go);//remove it from game objects list
-                Destroy(go);
+                destroyObject(go);//remove it from game objects list
             }
         }
         //

@@ -98,8 +98,7 @@ public class ShieldBubbleController : SavableMonoBehaviour
 
     void dissipate()
     {
-        GameManager.removeObject(this.gameObject);
-        Destroy(gameObject);
+        GameManager.destroyObject(gameObject);
     }
     void OnDestroy()
     {

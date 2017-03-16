@@ -48,7 +48,7 @@ public class Fader : MonoBehaviour {
                     sr.color = new Color(prevColor.r, prevColor.g, prevColor.b, Mathf.SmoothStep(startfade, endfade, t));
                     if (sr.color.a == endfade)
                     {
-                        Destroy(gameObject);
+                        GameManager.destroyObject(gameObject);
                     }
                 }
                 if (o is Ferr2DT_PathTerrain)
@@ -59,7 +59,7 @@ public class Fader : MonoBehaviour {
                     sr.vertexColor = new Color(prevColor.r, prevColor.g, prevColor.b, Mathf.SmoothStep(startfade, endfade, t));
                     if (sr.vertexColor.a == endfade)
                     {
-                        Destroy(gameObject);
+                        GameManager.destroyObject(gameObject);
                     }
                 }
             }

@@ -121,36 +121,59 @@ public class CameraController : MonoBehaviour
         wasDelayed = false;
     }
     /// <summary>
-    /// If the player position is near the tap position, discard movement delay
+    /// If Merky is between the tap pos and the camera pos, discard movement delay
     /// </summary>
     /// <param name="tapPos">The world-sapce coordinate where the player tapped</param>
     /// <param name="playerPos">The world-space coordiante where the player is after teleporting</param>
     public void checkForAutoMovement(Vector3 tapPos, Vector3 playerPos)
     {
-        //this times half the screen size is the maximum distance 
-        //between tapPos and playerPos that will discard movementdelay early
-        float DISCARD_DELAY_SENSITIVITY = 0.25f;
-        //Get the average of screen width and height in world distance
-        float distance = Mathf.Abs(cam.ScreenToWorldPoint(new Vector2(0, (prevScreenWidth + prevScreenHeight) / 2)).y - cam.ScreenToWorldPoint(new Vector2(0, 0)).y);
-        float threshold = DISCARD_DELAY_SENSITIVITY * distance;
-        if (Vector3.Distance(tapPos, playerPos) <= threshold)
+        //If the player is near the edge of the screen upon teleporting, recenter the screen
+        float DISCARD_DELAY_DISTANCE_SENSITIVITY = 0.9f;
+        float DISCARD_DELAY_ANGLE_SENSITIVITY = 140;//in degrees
+        //Get the min of screen width and height in world distance
+        float distance = Mathf.Abs(cam.ScreenToWorldPoint(new Vector2(0, Mathf.Min(prevScreenWidth,prevScreenHeight))).y - cam.ScreenToWorldPoint(new Vector2(0, 0)).y);
+        float threshold = DISCARD_DELAY_DISTANCE_SENSITIVITY * distance/2;
+        if (Vector2.Distance((Vector2)transform.position, playerPos) >= threshold)
         {
+            Vector2 plyV = (playerPos - transform.position);
+            Vector2 tapVd = (tapPos - transform.position);
+            float angled = Vector2.Angle(tapVd.normalized, plyV.normalized);
+            if (angled < DISCARD_DELAY_ANGLE_SENSITIVITY)
+            {//unless the camera is mostly between Merky and the tap pos
+                recenter();
+                discardMovementDelay();
+                return;//dont need to test the other case
+            }
+        }
+        //Test the angle tap-player-cam
+        Vector2 tapV = (tapPos - playerPos);
+        Vector2 camV = (transform.position - playerPos);
+        float angle = Vector2.Angle(tapV.normalized, camV.normalized);
+        if (angle >= DISCARD_DELAY_ANGLE_SENSITIVITY)
+        {
+            recenter();
             discardMovementDelay();
         }
     }
 
-    //Sets the camera's offset so it stays at this position relative to the player
+    /// <summary>
+    /// Sets the camera's offset so it stays at this position relative to the player
+    /// </summary>
     public void pinPoint()
     {
         offset = transform.position - player.transform.position;
     }
 
-    //Recenters on Merky
+    /// <summary>
+    /// Recenters on Merky
+    /// </summary>
     public void recenter()
     {
         offset = new Vector3(0, 0, offset.z);
     }
-    //Moves the camera directly to Merky's position + offset
+    /// <summary>
+    /// Moves the camera directly to Merky's position + offset
+    /// </summary>
     public void refocus()
     {
         transform.position = player.transform.position + offset;

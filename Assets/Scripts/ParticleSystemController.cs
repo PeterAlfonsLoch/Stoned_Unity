@@ -88,8 +88,11 @@ public class ParticleSystemController : MonoBehaviour {
                 //2017-03-14 I know it's deprecated but it doesn't give me any other option
                 teleportParticles.emissionRate = newRange * 100 / 3;
                 //Reset
-                teleportParticles.Stop();
-                teleportParticles.Play();
+                if (teleportParticles.isPlaying)
+                {
+                    teleportParticles.Stop();
+                    teleportParticles.Play();
+                }
             }
         }
     }

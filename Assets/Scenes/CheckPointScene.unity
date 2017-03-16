@@ -971,24 +971,6 @@ Prefab:
       propertyPath: m_Name
       value: TS01b_checkpoint_root Transition
       objectReference: {fileID: 0}
-    - target: {fileID: 6817528, guid: e47a092a7240e3a478b86e0966ddda46, type: 2}
-      propertyPath: m_Enabled
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 11490148, guid: e47a092a7240e3a478b86e0966ddda46, type: 2}
-      propertyPath: activated
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 21228928, guid: e47a092a7240e3a478b86e0966ddda46, type: 2}
-      propertyPath: m_Sprite
-      value: 
-      objectReference: {fileID: 21300000, guid: b4eee545acc7da64bad80831b2d11bfa,
-        type: 3}
-    - target: {fileID: 11490148, guid: e47a092a7240e3a478b86e0966ddda46, type: 2}
-      propertyPath: ghostSprite
-      value: 
-      objectReference: {fileID: 21300000, guid: 2c72468f0dc0a8c44bfcbc1d4d0c1f74,
-        type: 3}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: e47a092a7240e3a478b86e0966ddda46, type: 2}
   m_IsPrefabParent: 0

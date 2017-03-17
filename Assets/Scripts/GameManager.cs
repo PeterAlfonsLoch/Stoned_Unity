@@ -57,6 +57,7 @@ public class GameManager : MonoBehaviour
         refreshGameObjects();
         SceneManager.sceneLoaded += sceneLoaded;
         SceneManager.sceneUnloaded += sceneUnloaded;
+        FindObjectOfType<Canvas>().gameObject.AddComponent<Fader>();
     }
     public static void addObject(GameObject go)
     {

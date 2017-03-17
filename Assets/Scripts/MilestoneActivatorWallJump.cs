@@ -7,8 +7,6 @@ public class MilestoneActivatorWallJump : MilestoneActivator
 
     public override void activateEffect()
     {
-        PlayerController playerController = GameManager.getPlayerObject().GetComponent<PlayerController>();
-        playerController.wallJump = true;
-        playerController.wallJumpAbilityIndicator.GetComponent<ParticleSystem>().Play();
+        GameManager.getPlayerObject().GetComponent<WallClimbAbility>().enabled = true;
     }
 }

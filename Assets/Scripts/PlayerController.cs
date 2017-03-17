@@ -12,8 +12,7 @@ public class PlayerController : MonoBehaviour
     public float teleportTime = 0f;//the earliest time that Merky can teleport
     public float gravityImmuneTime = 0f;//Merky is immune to gravity until this time
     public const float gravityImmuneTimeAmount = 0.2f;//amount of time Merky is immune to gravity after landing (in seconds)
-    public bool wallJump = true;//whether or not wall jump is enabled
-
+    
     public GameObject teleportStreak;
     public bool useStreak = false;
     public GameObject teleportStar;
@@ -24,6 +23,7 @@ public class PlayerController : MonoBehaviour
 
     public int airPorts = 0;
     private bool grounded = true;//set in isGrounded()
+    private bool groundedWall = false;//true if grounded exclusively to a wall; set in isGrounded()
     private Rigidbody2D rb2d;
     private PolygonCollider2D pc2d;
     private Vector2 savedVelocity;
@@ -42,6 +42,7 @@ public class PlayerController : MonoBehaviour
     private GestureManager gm;
 
     private ForceTeleportAbility fta;
+    private WallClimbAbility wca;
     private ShieldBubbleAbility sba;
 
     // Use this for initialization
@@ -53,6 +54,7 @@ public class PlayerController : MonoBehaviour
         gm = GameObject.FindGameObjectWithTag("GestureManager").GetComponent<GestureManager>();
         halfWidth = GetComponent<SpriteRenderer>().bounds.extents.magnitude;
         fta = GetComponent<ForceTeleportAbility>();
+        wca = GetComponent<WallClimbAbility>();
         sba = GetComponent<ShieldBubbleAbility>();
         teleportRangeParticalController = teleportRangeParticalObject.GetComponent<ParticleSystemController>();
     }
@@ -311,6 +313,12 @@ public class PlayerController : MonoBehaviour
         {
             showTeleportStar(oldp, newp);
         }
+        //Check for wall jump
+        if (wca.enabled && groundedWall)
+        {
+            //Play jump effect in addition to teleport star
+            wca.playWallClimbEffects(oldp);
+        }
     }
     void showStreak(Vector3 oldp, Vector3 newp)
     {
@@ -378,13 +386,18 @@ public class PlayerController : MonoBehaviour
 
     bool isGrounded()
     {
+        groundedWall = false;
         bool isgrounded = isGrounded(gravityVector);
-        if (!isgrounded && wallJump)//if nothing found yet and wall jump is enabled
+        if (!isgrounded && wca.enabled)//if nothing found yet and wall jump is enabled
         {
             isgrounded = isGrounded(Utility.PerpendicularRight(-gravityVector));//right side
             if (!isgrounded)
             {
                 isgrounded = isGrounded(Utility.PerpendicularLeft(-gravityVector));//left side
+            }
+            if (isgrounded)
+            {
+                groundedWall = true;//grounded exclusively to a wal
             }
         }
         grounded = isgrounded;

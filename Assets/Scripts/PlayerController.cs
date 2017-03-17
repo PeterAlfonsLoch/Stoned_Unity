@@ -144,7 +144,14 @@ public class PlayerController : MonoBehaviour
             showTeleportEffect(oldPos, newPos);
             if (playSound)
             {
-                AudioSource.PlayClipAtPoint(teleportSound, oldPos);
+                if (groundedWall && wca.enabled)
+                {
+                    AudioSource.PlayClipAtPoint(wca.wallClimbSound, oldPos);
+                }
+                else
+                {
+                    AudioSource.PlayClipAtPoint(teleportSound, oldPos);
+                }
             }
             teleportRangeParticalController.activateTeleportParticleSystem(true, 0);
             //Momentum Dampening

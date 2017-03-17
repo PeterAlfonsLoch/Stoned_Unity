@@ -14313,7 +14313,7 @@ ParticleSystem:
   moveWithTransform: 0
   moveWithCustomTransform: {fileID: 0}
   scalingMode: 1
-  randomSeed: -2102280956
+  randomSeed: -1144852516
   InitialModule:
     serializedVersion: 3
     enabled: 1
@@ -17156,7 +17156,7 @@ MonoBehaviour:
   teleportParticleEffects: {fileID: 1675184543}
   effectColor: {r: 0.32941177, g: 0.70980394, b: 0.28627452, a: 0.05882353}
   abilityIndicatorParticleEffects: {fileID: 1121559818}
-  wallClimbSound: {fileID: 8300000, guid: 0fbbbdd9ab03a32448f404022b5749f4, type: 3}
+  wallClimbSound: {fileID: 8300000, guid: 35c3f2e1a9eea79448a3c66a0a5393ef, type: 3}
 --- !u!1 &1950273296
 GameObject:
   m_ObjectHideFlags: 0

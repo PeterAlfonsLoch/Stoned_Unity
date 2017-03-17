@@ -12,22 +12,24 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/CheckPointScene.unity
   - enabled: 1
-    path: Assets/Scenes/TutScene01b.unity
+    path: Assets/Scenes/TutScene01c.unity
   - enabled: 1
     path: Assets/Scenes/ForceTeleportScene03.unity
-  - enabled: 1
-    path: Assets/Scenes/GravityZoneTest.unity
-  - enabled: 1
-    path: Assets/Scenes/ShieldBubbleIntro.unity
   - enabled: 1
     path: Assets/Scenes/WallJumpScene.unity
   - enabled: 1
     path: Assets/Scenes/MechFactory.unity
-  - enabled: 0
-    path: Assets/Scenes/ForceTeleportScene02.unity
-  - enabled: 0
-    path: Assets/Scenes/TutScene01.unity
+  - enabled: 1
+    path: Assets/Scenes/ShieldBubbleIntro.unity
+  - enabled: 1
+    path: Assets/Scenes/GravityZoneTest.unity
   - enabled: 0
     path: Assets/Scenes/startScene.unity
   - enabled: 0
+    path: Assets/Scenes/TutScene01.unity
+  - enabled: 0
+    path: Assets/Scenes/TutScene01b.unity
+  - enabled: 0
     path: Assets/Scenes/ForceTeleportScene01.unity
+  - enabled: 0
+    path: Assets/Scenes/ForceTeleportScene02.unity

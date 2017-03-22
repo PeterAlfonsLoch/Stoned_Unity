@@ -580,12 +580,10 @@ public class PlayerController : MonoBehaviour
             //Rotate player 90 degrees
             rotate();
         }
-        else {
-            Vector3 prevPos = transform.position;
-            Vector3 newPos = findTeleportablePosition(gpos);
-            teleport(newPos);
-            mainCamCtr.checkForAutoMovement(gpos, prevPos);
-        }
+        Vector3 prevPos = transform.position;
+        Vector3 newPos = findTeleportablePosition(gpos);
+        teleport(newPos);
+        mainCamCtr.checkForAutoMovement(gpos, prevPos);
     }
     public void processTapGesture(GameObject checkPoint)
     {

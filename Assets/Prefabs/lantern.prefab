@@ -9,6 +9,8 @@ GameObject:
   m_Component:
   - component: {fileID: 468102}
   - component: {fileID: 21213562}
+  - component: {fileID: 58894557988786028}
+  - component: {fileID: 114789097613457408}
   m_Layer: 0
   m_Name: lantern
   m_TagString: Untagged
@@ -137,6 +139,31 @@ Transform:
   m_Father: {fileID: 468102}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 45}
+--- !u!58 &58894557988786028
+CircleCollider2D:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 162716}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_Offset: {x: 0, y: 0}
+  serializedVersion: 2
+  m_Radius: 1.2004395
+--- !u!114 &114789097613457408
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 162716}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bdd0709294e5a434bb78987e84af7078, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!198 &198077463802153806
 ParticleSystem:
   m_ObjectHideFlags: 1
@@ -148,7 +175,7 @@ ParticleSystem:
   simulationSpeed: 1
   looping: 1
   prewarm: 0
-  playOnAwake: 1
+  playOnAwake: 0
   autoRandomSeed: 1
   startDelay:
     scalar: 0
@@ -192,7 +219,7 @@ ParticleSystem:
   moveWithTransform: 0
   moveWithCustomTransform: {fileID: 0}
   scalingMode: 1
-  randomSeed: 1814638281
+  randomSeed: -671597703
   InitialModule:
     serializedVersion: 3
     enabled: 1
@@ -2785,7 +2812,7 @@ ParticleSystem:
   simulationSpeed: 1
   looping: 1
   prewarm: 0
-  playOnAwake: 1
+  playOnAwake: 0
   autoRandomSeed: 1
   startDelay:
     scalar: 0
@@ -3394,8 +3421,8 @@ ParticleSystem:
         serializedVersion: 2
         m_Curve:
         - serializedVersion: 2
-          time: 0
-          value: 0.8918918
+          time: 0.009756098
+          value: 0.8108107
           inSlope: -0.0000005199554
           outSlope: -0.0000005199554
           tangentMode: 0
@@ -3406,8 +3433,8 @@ ParticleSystem:
           outSlope: -0.010728836
           tangentMode: 0
         - serializedVersion: 2
-          time: 0.9902439
-          value: 0.94594586
+          time: 0.99512196
+          value: 0.8513513
           inSlope: -0.03847595
           outSlope: -0.03847595
           tangentMode: 0

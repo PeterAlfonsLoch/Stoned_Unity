@@ -34,7 +34,7 @@ public class PlayerController : MonoBehaviour
     private float halfWidth = 0;//half of Merky's sprite width
 
     private bool inCheckPoint = false;//whether or not the player is inside a checkpoint
-
+    private float[] rotations = new float[] { 285, 155, 90, 0 };
 
     public AudioClip teleportSound;
 
@@ -115,6 +115,45 @@ public class PlayerController : MonoBehaviour
     bool isMoving()
     {
         return rb2d.velocity.magnitude >= 0.1f;
+    }
+
+    /// <summary>
+    /// Rotates Merky to the next default rotation clockwise
+    /// </summary>
+    void rotate()
+    {
+        int closestRotationIndex = 0;
+        //Figure out current rotation
+        float currentRotation = transform.localRotation.eulerAngles.z;
+        while (currentRotation < 0)
+        {
+            currentRotation += 360;
+        }
+        while (currentRotation > 360)
+        {
+            currentRotation -= 360;
+        }
+        //Figure out which default rotation is closest
+        float closest = 360;
+        for (int i = 0; i < rotations.Length; i++)
+        {
+            float rotation = rotations[i];
+            float diff = Mathf.Abs(rotation - currentRotation);
+            diff = Mathf.Min(diff, Mathf.Abs(rotation - (currentRotation - 360)));
+            if (diff < closest)
+            {
+                closest = diff;
+                closestRotationIndex = i;
+            }
+        }
+        int newRotationIndex = closestRotationIndex + 1;
+        if (newRotationIndex >= rotations.Length)
+        {
+            newRotationIndex = 0;
+        }
+        //Set rotation
+        Quaternion angle = Quaternion.AngleAxis(rotations[newRotationIndex], Vector3.forward);
+        transform.localRotation = angle;
     }
 
     private bool teleport(Vector3 targetPos)//targetPos is in world coordinations (NOT UI coordinates)
@@ -524,12 +563,29 @@ public class PlayerController : MonoBehaviour
         return inCheckPoint;
     }
 
+    /// <summary>
+    /// Returns true if the given Vector3 is on Merky's sprite
+    /// </summary>
+    /// <param name=""></param>
+    /// <returns></returns>
+    public bool gestureOnPlayer(Vector3 pos)
+    {
+        return Vector3.Distance(pos, transform.position) < halfWidth;
+    }
+
     public void processTapGesture(Vector3 gpos)
     {
-        Vector3 prevPos = transform.position;
-        Vector3 newPos = findTeleportablePosition(gpos);
-        teleport(newPos);
-        mainCamCtr.checkForAutoMovement(gpos, prevPos);
+        if (gestureOnPlayer(gpos))
+        {
+            //Rotate player 90 degrees
+            rotate();
+        }
+        else {
+            Vector3 prevPos = transform.position;
+            Vector3 newPos = findTeleportablePosition(gpos);
+            teleport(newPos);
+            mainCamCtr.checkForAutoMovement(gpos, prevPos);
+        }
     }
     public void processTapGesture(GameObject checkPoint)
     {
@@ -549,7 +605,7 @@ public class PlayerController : MonoBehaviour
         Debug.DrawLine(transform.position, transform.position + new Vector3(0, halfWidth, 0), Color.blue, 10);
         float reducedHoldTime = holdTime - gm.getHoldThreshold();
         //Check Shield Bubble
-        if (sba.enabled && Vector3.Distance(gpos, transform.position) < halfWidth)
+        if (sba.enabled && gestureOnPlayer(gpos))
         {
             if (fta.enabled) { fta.dropHoldGesture(); }
             sba.processHoldGesture(gpos, reducedHoldTime, finished);

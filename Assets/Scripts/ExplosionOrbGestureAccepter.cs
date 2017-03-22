@@ -11,8 +11,8 @@ public class ExplosionOrbGestureAccepter : GestureAccepter {
         eoc = GetComponent<ExplosionOrbController>();
     }
     
-    public override bool acceptsTapGesture() { return ! eoc.explodesUponContact && eoc.explodesAtAll;}
-    public override bool acceptsHoldGesture() { return ! eoc.chargesAutomatically && eoc.explodesAtAll; }
+    public override bool acceptsTapGesture() { return ! eoc.explodesUponContact && eoc.explodesAtAll && GameManager.isInTeleportRange(gameObject); }
+    public override bool acceptsHoldGesture() { return ! eoc.chargesAutomatically && eoc.explodesAtAll && GameManager.isInTeleportRange(gameObject); }
 
     public override void processTapGesture()
     {

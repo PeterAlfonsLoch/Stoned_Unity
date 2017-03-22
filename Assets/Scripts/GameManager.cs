@@ -336,6 +336,17 @@ public class GameManager : MonoBehaviour
         return playerObject;
     }
 
+    /// <summary>
+    /// Returns true if the given GameObject is touching Merky's teleport range
+    /// </summary>
+    /// <param name="other"></param>
+    /// <returns></returns>
+    public static bool isInTeleportRange(GameObject other)
+    {
+        float range = playerObject.GetComponent<PlayerController>().range;
+        return (other.transform.position - playerObject.transform.position).sqrMagnitude <= range * range;
+    }
+
     public void showPlayerGhosts()
     {
         foreach (GameState gs in gameStates)

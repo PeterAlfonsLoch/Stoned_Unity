@@ -1330,7 +1330,7 @@ Transform:
   - {fileID: 90082236}
   - {fileID: 1429170016}
   m_Father: {fileID: 0}
-  m_RootOrder: 9
+  m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: -120.393005}
 --- !u!1001 &426337253
 Prefab:
@@ -1598,68 +1598,8 @@ Transform:
   - {fileID: 761542500}
   - {fileID: 1059536390}
   m_Father: {fileID: 0}
-  m_RootOrder: 8
+  m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: -120.393005}
---- !u!1 &522853516
-GameObject:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  serializedVersion: 5
-  m_Component:
-  - component: {fileID: 522853518}
-  - component: {fileID: 522853519}
-  - component: {fileID: 522853517}
-  m_Layer: 0
-  m_Name: Shield Bubble Ability Granter
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &522853517
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 522853516}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 45022f75ecda600409d4dd63d09daca9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  incrementAmount: 1
-  particle: {fileID: 127114, guid: 84842629c9b04df48a7cd79dca5c22e9, type: 2}
-  starAmount: 25
-  starSpawnDuration: 25
-  used: 0
---- !u!4 &522853518
-Transform:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 522853516}
-  m_LocalRotation: {x: -0, y: -0, z: 0.8677352, w: -0.4970269}
-  m_LocalPosition: {x: 436.1, y: -149.7, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 3
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: -120.393005}
---- !u!61 &522853519
-BoxCollider2D:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 522853516}
-  m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_UsedByEffector: 0
-  m_Offset: {x: 2.6762004, y: 0.65281653}
-  serializedVersion: 2
-  m_Size: {x: 36.207844, y: 6.9389834}
 --- !u!1001 &576265000
 Prefab:
   m_ObjectHideFlags: 0
@@ -3924,7 +3864,7 @@ Transform:
   - {fileID: 275663933}
   - {fileID: 814171530}
   m_Father: {fileID: 0}
-  m_RootOrder: 7
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: -120.393005}
 --- !u!1 &1189299124
 GameObject:
@@ -3954,7 +3894,7 @@ Transform:
   - {fileID: 2137443925}
   - {fileID: 2099523590}
   m_Father: {fileID: 0}
-  m_RootOrder: 5
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: -120.393005}
 --- !u!43 &1212531561
 Mesh:
@@ -5257,7 +5197,7 @@ Transform:
   - {fileID: 1564543629}
   - {fileID: 1216987513}
   m_Father: {fileID: 0}
-  m_RootOrder: 4
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: -120.393005}
 --- !u!1001 &1510353380
 Prefab:
@@ -6327,7 +6267,7 @@ Transform:
   - {fileID: 958175840}
   - {fileID: 2038274390}
   m_Father: {fileID: 0}
-  m_RootOrder: 6
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: -120.393005}
 --- !u!1 &2021615267
 GameObject:

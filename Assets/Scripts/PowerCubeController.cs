@@ -39,11 +39,13 @@ public class PowerCubeController : MonoBehaviour {
         }
     }
 
-    //
-    // Given the max amount of energy available,
-    // it returns the amount of energy it takes
-    // @param deltaTime so it can convert from per second to per frame
-    //
+    /// <summary>
+    /// Given the max amount of energy available,
+    /// it returns the amount of energy it takes
+    /// </summary>
+    /// <param name="maxAvailable"></param>
+    /// <param name="deltaTime">so it can convert from per second to per frame</param>
+    /// <returns></returns>
     public float takeEnergyFromSource(float maxAvailable, float deltaTime)
     {
 
@@ -51,11 +53,13 @@ public class PowerCubeController : MonoBehaviour {
         currentEnergyLevel += amountTaken;
         return amountTaken;
     }
-    //
-    // Given the amount of energy requested (per second),
-    // it returns how much it can give
-    // @param deltaTime so it can convert from per second to per frame
-    //
+    /// <summary>
+    /// Given the amount of energy requested (per second),
+    /// it returns how much it can give
+    /// </summary>
+    /// <param name="amountRequested"></param>
+    /// <param name="deltaTime">so it can convert from per second to per frame</param>
+    /// <returns></returns>
     public float giveEnergyToObject(float amountRequested, float deltaTime)
     {
         float amountGiven = Mathf.Min(amountRequested*deltaTime, currentEnergyLevel);

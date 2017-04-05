@@ -19710,6 +19710,7 @@ MonoBehaviour:
     type: 2}
   maxRange: 2.5
   maxHoldTime: 1
+  spawnDemos: 0
   shieldBubbleSound: {fileID: 8300000, guid: 7cc20f2c19ae91c4586dbb566fa52622, type: 3}
   shieldBubbleFailSound: {fileID: 8300000, guid: ba9e8c88cd7c3cb4f9ec13caf152d128,
     type: 3}

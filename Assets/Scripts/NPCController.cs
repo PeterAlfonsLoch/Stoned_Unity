@@ -43,6 +43,13 @@ public class NPCController : MonoBehaviour
                 source.Stop();
             }
         }
+        if (source.isPlaying)
+        {
+            GameManager.speakNPC(gameObject, true);
+        }
+        else {
+            GameManager.speakNPC(gameObject, false);
+        }
     }
 
     /// <summary>

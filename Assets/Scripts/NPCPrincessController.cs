@@ -13,11 +13,26 @@ public class NPCPrincessController : MonoBehaviour
     float soonestNextHold = 0;
 
     private ForceTeleportAbility fta;
+    private ShieldBubbleAbility sba;
+    private PlayerAbility ability;
+
+    private float maxHoldTime;
 
     // Use this for initialization
     void Start()
     {
         fta = GetComponent<ForceTeleportAbility>();
+        if (fta)
+        {
+            maxHoldTime = fta.maxHoldTime;
+            ability = fta;
+        }
+        sba = GetComponent<ShieldBubbleAbility>();
+        if (sba)
+        {
+            maxHoldTime = sba.maxHoldTime;
+            ability = sba;
+        }
     }
 
     // Update is called once per frame
@@ -30,20 +45,20 @@ public class NPCPrincessController : MonoBehaviour
                 startHoldTime = Time.time;
             }
             float timeDiff = Time.time - startHoldTime;
-            if (timeDiff < fta.maxHoldTime)
+            if (timeDiff < maxHoldTime)
             {
-                fta.processHoldGesture(transform.position + offsetVector, timeDiff, false);
+                ability.processHoldGesture(transform.position + offsetVector, timeDiff, false);
             }
             else
             {
                 if (soonestNextHold == 0)
                 {
                     soonestNextHold = Time.time + holdCooldown;
-                    fta.processHoldGesture(transform.position + offsetVector, timeDiff, true);
+                    ability.processHoldGesture(transform.position + offsetVector, timeDiff, true);
                 }
                 else
                 {
-                    fta.dropHoldGesture();
+                    ability.dropHoldGesture();
                     if (soonestNextHold < Time.time)
                     {
                         soonestNextHold = 0;
@@ -66,7 +81,7 @@ public class NPCPrincessController : MonoBehaviour
         if (coll.gameObject.tag == "Player")
         {
             hasTriggered = false;
-            fta.dropHoldGesture();
+            ability.dropHoldGesture();
         }
     }
 }

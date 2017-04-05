@@ -211,6 +211,16 @@ Prefab:
       propertyPath: m_Name
       value: moonicorn
       objectReference: {fileID: 0}
+    - target: {fileID: 114265895427675804, guid: 2ad61e15f4bda9547ad320b12063fb6f,
+        type: 2}
+      propertyPath: greeting
+      value: 
+      objectReference: {fileID: 8300000, guid: 7223d2552aca54c4891910f36d684cd5, type: 3}
+    - target: {fileID: 82447050062699248, guid: 2ad61e15f4bda9547ad320b12063fb6f,
+        type: 2}
+      propertyPath: m_audioClip
+      value: 
+      objectReference: {fileID: 8300000, guid: 7223d2552aca54c4891910f36d684cd5, type: 3}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 2ad61e15f4bda9547ad320b12063fb6f, type: 2}
   m_IsPrefabParent: 0

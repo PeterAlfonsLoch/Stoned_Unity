@@ -1,42 +1,33 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class FloatCubeController : MonoBehaviour {
+public class FloatCubeController : MonoBehaviour
+{
 
     public GameObject switchObj;
-    public float maxHeight;
-    public float propulsionHeight;//how far off the ground the float cube can go
-    public float lift = 50;
     public GameObject psgoTrail;
     public GameObject psgoSparks;
+    public float propulsionHeight;//how far off the ground the float cube can go
+    public float liftForce = 0;//how much force can be applied each frame
+    public float expectedGravity = 9.81f;//the expected gravity scale for this float cube
+    public float forceMultiplier = 2;//how much to multiply things by for default lift force
+    public float forceMultiplierSteady = 0.5f;//how much to multiply when trying to remain steady
 
     private Rigidbody2D rb;
-    public float liftForce;//the amount of force to use for lift
-    public float levelLiftForce;//the amount of force needed to keep the float cube level
-    public float velocityThreshold = 3;//the max allowed velocity while floating
+    private BoxCollider2D bc2d;
     public float variance;//the amount of variance in either direction the propulsionHeight is allowed to be
-    private Vector3 upVector;
-    //private Vector3 stableVector;
-    private bool increasingLastTime = false;
-    private float initAngDrag;
+    private bool proppingLastTime = false;//whether or not it was propping last time
     private Vector3 upDirection;//used to determine the up direction of the float cube
     private Quaternion upAngle;//used to determine which direction the float cube should rotate towards
-    public float gravityScale = -1;//used to make its own artificial gravity
     //Particles
     private ParticleSystem psTrail;
     private ParticleSystem psSparks;
 
     // Use this for initialization
-    void Start () {
+    void Start()
+    {
         rb = GetComponent<Rigidbody2D>();
-        initAngDrag = rb.angularDrag;
-        upVector = new Vector2(0, lift);
-        liftForce = 0;
-        levelLiftForce = 0;
-        if (propulsionHeight <= 0)
-        {
-            propulsionHeight = maxHeight - transform.position.y + GetComponent<SpriteRenderer>().bounds.extents.y -(variance/2);//to facilitate setting the propulsionHeight
-        }
+        bc2d = GetComponent<BoxCollider2D>();
         psTrail = psgoTrail.GetComponent<ParticleSystem>();
         if (psTrail != null)
         {
@@ -49,20 +40,17 @@ public class FloatCubeController : MonoBehaviour {
             psSparks.Pause();
             psSparks.Clear();
         }
-        upDirection = transform.up;
+        if (liftForce == 0)
+        {
+            liftForce = rb.mass * expectedGravity;
+        }
+        upDirection = transform.up.normalized;
         upAngle = Quaternion.Euler(transform.eulerAngles);
-        //Debug.Log("diff: " + maxHeight + "-" + transform.position.y + "= " + (maxHeight - transform.position.y));
-        //stableVector = new Vector2(0, 90);
     }
 
     // Update is called once per frame
     void Update()
     {
-        //if (propulsionHeight <= 0)
-        //{
-        //    propulsionHeight = maxHeight - transform.position.y;//to facilitate setting the propulsionHeight
-        //    Debug.Log("diff "+gameObject.name+": " + maxHeight + "-" + transform.position.y + "= " + (maxHeight - transform.position.y));
-        //}
         if (switchObj.GetComponent<WeightSwitchActivator>().pressed)
         {
             if (psTrail != null)
@@ -73,21 +61,30 @@ public class FloatCubeController : MonoBehaviour {
             if (psSparks != null)
             {
                 psSparks.Play();
+            }            
+        }
+        else {
+            if (psTrail != null)
+            {
+                psTrail.Pause();
+                psTrail.Clear();
             }
+            if (psSparks != null)
+            {
+                psSparks.Pause();
+                psSparks.Clear();
+            }
+        }
+    }
+
+    void FixedUpdate()
+    {
+        if (switchObj.GetComponent<WeightSwitchActivator>().pressed)
+        {
             if (propulsionHeight > 0)
-            {//use new system
-                rb.angularDrag = initAngDrag;
+            {
                 rb.freezeRotation = true;
                 transform.rotation = Quaternion.RotateTowards(transform.rotation, upAngle, 5);
-                //float velX = rb.velocity.x;
-                //if (velX > 0)
-                //{
-                //    rb.velocity += new Vector2(-1, 0);
-                //}
-                //else if (velX < 0)
-                //{
-                //    rb.velocity += new Vector2(1, 0);
-                //}
                 bool propping1 = false;
                 bool propping2 = false;
 
@@ -112,200 +109,57 @@ public class FloatCubeController : MonoBehaviour {
                         propping2 = true;
                     }
                 }
-                if (propping1 && propping2)
+                //
+                float currentFloatHeight = propulsionHeight;//how far above the ground it currently is
+                RaycastHit2D[] rh2ds = new RaycastHit2D[10];
+                bc2d.Cast(-upDirection, rh2ds, propulsionHeight, true);
+                foreach (RaycastHit2D rch2dl in rh2ds)
                 {
-                    if (gravityScale > -0.5f)
+                    if (rch2dl && rch2dl.collider != null && !rch2dl.collider.isTrigger)
                     {
-                        gravityScale = -0.5f;
-                    }
-                    if (rb.velocity.y <= 0)
-                    {
-                        gravityScale--;
-                        if (rb.velocity.magnitude > velocityThreshold)
+                        GameObject ground = rch2dl.collider.gameObject;
+                        if (ground != null && !ground.Equals(transform.gameObject))
                         {
-                            //rb.velocity = new Vector2(rb.velocity.x, velocityThreshold);
-                            rb.AddForce(-upDirection * (rb.velocity.magnitude - velocityThreshold));
-                            gravityScale++;
+                            currentFloatHeight = rch2dl.distance;
+                            break;
                         }
                     }
-                    //if (rb.velocity.y == 0)
-                    //{
-                    //    liftForce++;
-                    //}
-                    //else if (rb.velocity.y <= 0)
-                    //{
-                    //    liftForce += -rb.velocity.y;
-                    //}
-                    //else if (rb.velocity.y > velocityThreshold)
-                    //{
-                    //    liftForce -= (rb.velocity.y - velocityThreshold);
-                    //}
-                    //else
-                    //{
-                    //}
+                }
+                //
+                if (propping1 && propping2)
+                {
+                    proppingLastTime = true;
+                    float force = liftForce * forceMultiplier;
+                    rb.AddForce(upDirection * force);
                 }
                 else if (!propping1 && propping2)
                 {
-                    gravityScale = -1;
-                    //lockAxes(rb, false, true);
-                    //rb.velocity = new Vector2(rb.velocity.x, 0);
-                    rb.AddForce(-rb.velocity);
-                    //rb.isKinematic = true;
-                    //liftForce -= rb.velocity.y;
-                }
-                else
-                {
-                    gravityScale = 0;
-
-                    Debug.DrawLine(start, transform.position, Color.red);
-                    //if (rb.velocity.y > 0)
-                    //{
-                    //rb.velocity = new Vector2(rb.velocity.x, 0);
-                    //}
-                    //lockAxes(rb, false, false);
-                    //rb.velocity = Vector2.zero;
-                    //liftForce = 0;
-                }
-                //if (liftForce < 0)
-                //{
-                //    liftForce = 0;
-                //}
-                //else if (liftForce > 0)
-                //{
-                //    upVector = new Vector2(0, liftForce);
-                //    rb.AddForce(upVector);
-                //}
-            }
-            else if (false){//use old system (will be removed in the future)
-                rb.angularDrag = initAngDrag;
-                transform.rotation = Quaternion.RotateTowards(transform.rotation, Quaternion.identity, 1);
-                if (transform.position.y < maxHeight)// && rb.velocity.magnitude < 100)
-                {
-                    rb.AddForce(upVector);
-                    if (gravityScale > 0)
-                    {
-                        gravityScale -= 0.1f;
-                    }
-                    if (gravityScale < 0)
-                    {
-                        gravityScale = 0;
-                    }
-                    //Vector3.MoveTowards(transform.position, new Vector3(0, 20), Time.deltaTime * 5);
-                    increasingLastTime = true;
-                }
-                else
-                {
-                    if (increasingLastTime)
+                    if (proppingLastTime)
                     {
                         rb.velocity = Vector2.zero;
-                        increasingLastTime = false;
+                        proppingLastTime = false;
                     }
-                    if (transform.position.y > maxHeight)
-                    {
-                        gravityScale += 0.1f;
-                    }
-                    //rb.gravityScale = 0.5;
-                    //rb.isKinematic = true;
-                    //Vector3.RotateTowards(transform.rotation, Quaternion.identity,10,0.0f);
-                    //rb.AddForce(stableVector);
-
-                }
-            }
-        }
-        else {
-            if (psTrail != null)
-            {
-                psTrail.Pause();
-                psTrail.Clear();
-            }
-            if (psSparks != null)
-            {
-                psSparks.Pause();
-                psSparks.Clear();
-            }
-            rb.angularDrag = 0.05f;
-            gravityScale = 0;
-            rb.freezeRotation = false;
-            lockAxes(rb, false, false);
-            //rb.isKinematic = false;
-        }
-    }
-
-    void FixedUpdate()
-    {
-        if (switchObj.GetComponent<WeightSwitchActivator>().pressed)
-        {
-            if (gravityScale != 0)
-            {
-                Vector3 forceVector = -gravityScale * 9.81f * upDirection;
-                Debug.DrawLine(transform.position, transform.position + forceVector, Color.green);
-                rb.AddForce(forceVector);
-            }
-        }
-    }
-
-    Vector3 getGroundVector(float propulsionHeight)//returns a vector with magnitude propulsionHeight and angle this.upDirection
-    {
-        return transform.position - upDirection.normalized * propulsionHeight;
-    }
-
-    /**
-    *Sets either the x or y axis lock to the freeze value
-    */
-    void lockAxes(Rigidbody2D rb2d, bool x, bool freeze)
-    {
-        if (x)
-        {
-            if (freeze)
-            {
-                if (rb2d.constraints == RigidbodyConstraints2D.FreezePositionY)
-                {
-                    rb2d.constraints = RigidbodyConstraints2D.FreezeAll;
+                    rb.AddForce(upDirection * liftForce * forceMultiplierSteady);
                 }
                 else
                 {
-                    rb2d.constraints = RigidbodyConstraints2D.FreezePositionX;
-                }
-            }
-            else
-            {
-                if (rb2d.constraints == RigidbodyConstraints2D.FreezeAll)
-                {
-                    rb2d.constraints = RigidbodyConstraints2D.FreezePositionY;
-                }
-                else
-                {
-                    rb2d.constraints = RigidbodyConstraints2D.None;
+                    Debug.DrawLine(start, transform.position, Color.red);
                 }
             }
         }
         else
         {
-            if (freeze)
-            {
-                if (rb2d.constraints == RigidbodyConstraints2D.FreezePositionX)
-                {
-                    rb2d.constraints = RigidbodyConstraints2D.FreezeAll;
-                }
-                else
-                {
-                    rb2d.constraints = RigidbodyConstraints2D.FreezePositionY;
-                }
-            }
-            else
-            {
-                if (rb2d.constraints == RigidbodyConstraints2D.FreezeAll)
-                {
-                    rb2d.constraints = RigidbodyConstraints2D.FreezePositionX;
-                }
-                else
-                {
-                    rb2d.constraints = RigidbodyConstraints2D.None;
-                }
-            }
+            rb.freezeRotation = false;
         }
-        if (freeze) { rb2d.constraints = RigidbodyConstraints2D.FreezeAll; }
-        else { rb2d.constraints = RigidbodyConstraints2D.None; }
     }
 
+    /// <summary>
+    /// Returns a vector with magnitude propulsionHeight and angle this.upDirection
+    /// </summary>
+    /// <param name="propulsionHeight"></param>
+    /// <returns></returns>
+    Vector3 getGroundVector(float propulsionHeight)
+    {
+        return transform.position - upDirection.normalized * propulsionHeight;
+    }
 }

@@ -14,6 +14,8 @@ public class GameManager : MonoBehaviour
     public int chosenId = 0;
     public int amount = 0;
     public GameObject playerGhost;//this is to show Merky in the past (prefab)
+    public GameObject npcTalkEffect;//the particle system for the visual part of NPC talking
+    private static GameObject lastTalkingNPC;//the last NPC to talk
     private int rewindId = 0;//the id to eventually load back to
     private List<GameState> gameStates = new List<GameState>();
     private List<SceneLoader> sceneLoaders = new List<SceneLoader>();
@@ -88,7 +90,7 @@ public class GameManager : MonoBehaviour
         instance.gameObjects.Remove(go);
     }
 
-     // Update is called once per frame
+    // Update is called once per frame
     void Update()
     {
         if (save == true)
@@ -150,7 +152,8 @@ public class GameManager : MonoBehaviour
             gameObjects.Add(rb.gameObject);
             GameObject go = rb.gameObject;
             Collider2D coll = go.GetComponent<PolygonCollider2D>();
-            if (coll != null){
+            if (coll != null)
+            {
                 gravityColliderList.Add(coll);
             }
             else {
@@ -178,7 +181,7 @@ public class GameManager : MonoBehaviour
                 gameObjects.Add(smb.gameObject);
             }
         }
-        foreach(MemoryMonoBehaviour mmb in FindObjectsOfType<MemoryMonoBehaviour>())
+        foreach (MemoryMonoBehaviour mmb in FindObjectsOfType<MemoryMonoBehaviour>())
         {
             //load state if found, save state if not foud
             bool foundMO = false;
@@ -240,7 +243,7 @@ public class GameManager : MonoBehaviour
         //
         chosenId = gamestateId;
         gameStates[gamestateId].load();
-        for (int i = gameStates.Count - 1; i > gamestateId ; i--)
+        for (int i = gameStates.Count - 1; i > gamestateId; i--)
         {
             Destroy(gameStates[i].representation);
             gameStates.RemoveAt(i);
@@ -284,7 +287,7 @@ public class GameManager : MonoBehaviour
     }
     void LoadMemories()
     {
-        foreach(MemoryObject mo in memories)
+        foreach (MemoryObject mo in memories)
         {
             mo.loadState();
         }
@@ -298,8 +301,8 @@ public class GameManager : MonoBehaviour
             fileName += "-" + now.Ticks;
         }
         fileName += ".txt";
-        ES2.Save(memories, fileName+"?tag=memories");
-        ES2.Save(gameStates, fileName+"?tag=states");
+        ES2.Save(memories, fileName + "?tag=memories");
+        ES2.Save(gameStates, fileName + "?tag=states");
     }
     public void loadFromFile()
     {
@@ -396,6 +399,31 @@ public class GameManager : MonoBehaviour
         }
         //leave this zoom level even if no past merky was chosen
         camCtr.adjustScalePoint(-1);
+    }
+
+    /// <summary>
+    /// Activates the visual effects for the given npc talking
+    /// </summary>
+    /// <param name="npc"></param>
+    /// <param name="talking">Whether to activate or deactivate the visual effects</param>
+    public static void speakNPC(GameObject npc, bool talking)
+    {
+        if (talking)
+        {
+            instance.npcTalkEffect.transform.position = npc.transform.position;
+            if (!instance.npcTalkEffect.GetComponent<ParticleSystem>().isPlaying)
+            {
+                instance.npcTalkEffect.GetComponent<ParticleSystem>().Play();
+            }
+            lastTalkingNPC = npc;
+        }
+        else
+        {
+            if (npc == lastTalkingNPC)
+            {
+                instance.npcTalkEffect.GetComponent<ParticleSystem>().Stop();
+            }
+        }
     }
 }
 

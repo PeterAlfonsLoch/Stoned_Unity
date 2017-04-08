@@ -25,7 +25,7 @@ public class ForceTeleportAbility : PlayerAbility
         return true;
     }
 
-    public new void processHoldGesture(Vector3 pos, float holdTime, bool finished)
+    public override void processHoldGesture(Vector2 pos, float holdTime, bool finished)
     {
         float range = maxRange * holdTime*GestureManager.holdTimeScaleRecip / maxHoldTime;
         if (range > maxRange)
@@ -82,7 +82,7 @@ public class ForceTeleportAbility : PlayerAbility
         }
     }
 
-    public void dropHoldGesture()
+    public override void dropHoldGesture()
     {
         if (frii != null)
         {

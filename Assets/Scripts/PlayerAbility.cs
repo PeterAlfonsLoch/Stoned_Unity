@@ -42,9 +42,11 @@ public class PlayerAbility : MonoBehaviour {
         return true;
     }
 
-    public void processHoldGesture(Vector3 pos, float holdTime, bool finished)
+    public virtual void processHoldGesture(Vector2 pos, float holdTime, bool finished)
     {
 
     }
+
+    public virtual void dropHoldGesture() { }
 
 }

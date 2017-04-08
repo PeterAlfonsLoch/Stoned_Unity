@@ -9,6 +9,7 @@ public class ShieldBubbleAbility : PlayerAbility
     public GameObject shieldBubblePrefab;//prefab used to spawn shield bubbles
     public float maxRange = 2.5f;
     public float maxHoldTime = 1;//how long until the max range is reached
+    public bool spawnDemos = false;//if true, spawns shields that don't do anything and that fade slowly
 
     public AudioClip shieldBubbleSound;
     public AudioClip shieldBubbleFailSound;//played when a shield cannot be made because it overlaps another shield
@@ -23,7 +24,7 @@ public class ShieldBubbleAbility : PlayerAbility
         return true;
     }
 
-    public void processHoldGesture(Vector2 pos, float holdTime, bool finished)
+    public override void processHoldGesture(Vector2 pos, float holdTime, bool finished)
     {
         float range = maxRange * holdTime * GestureManager.holdTimeScaleRecip / maxHoldTime;
         if (range > maxRange)
@@ -36,7 +37,10 @@ public class ShieldBubbleAbility : PlayerAbility
             if (canSpawnShieldBubble(pos, range))
             {
                 GameObject newSB = spawnShieldBubble(pos, range, 100 * range / maxRange);
-                GameManager.addObject(newSB);
+                if (!spawnDemos)
+                {
+                    GameManager.addObject(newSB);
+                }
                 AudioSource.PlayClipAtPoint(shieldBubbleSound, pos);
             }
             else
@@ -61,7 +65,7 @@ public class ShieldBubbleAbility : PlayerAbility
         }
     }
 
-    public void dropHoldGesture()
+    public override void dropHoldGesture()
     {
         if (srii != null)
         {
@@ -73,6 +77,10 @@ public class ShieldBubbleAbility : PlayerAbility
 
     public bool canSpawnShieldBubble(Vector2 pos, float range)
     {
+        if (spawnDemos)
+        {
+            return true;
+        }
         //Check to make sure it won't overlap another shield bubble
         Collider2D[] hitColliders = Physics2D.OverlapCircleAll(pos, range);
         for (int i = 0; i < hitColliders.Length; i++)
@@ -93,6 +101,11 @@ public class ShieldBubbleAbility : PlayerAbility
         newSB.transform.position = pos;
         newSB.GetComponent<ShieldBubbleController>().init(range, energy);
         newSB.name += System.DateTime.Now.Ticks;
+        if (spawnDemos)
+        {
+            newSB.GetComponent<EdgeCollider2D>().enabled = false;
+            newSB.AddComponent<Fader>();
+        }
         return newSB;
     }
 }

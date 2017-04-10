@@ -145,9 +145,10 @@ MonoBehaviour:
   propulsionHeight: 3.5
   liftForce: 0
   expectedGravity: 9.81
-  forceMultiplier: 3
+  forceMultiplierSelf: 3
+  forceMultiplierHeavy: 2
   forceMultiplierSteady: 1
-  variance: 1
+  variance: 0.5
 --- !u!198 &19867374
 ParticleSystem:
   m_ObjectHideFlags: 1

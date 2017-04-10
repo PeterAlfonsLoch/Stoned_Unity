@@ -1886,7 +1886,7 @@ ParticleSystem:
   moveWithTransform: 0
   moveWithCustomTransform: {fileID: 0}
   scalingMode: 1
-  randomSeed: -558634920
+  randomSeed: -90642516
   InitialModule:
     serializedVersion: 3
     enabled: 1
@@ -4471,7 +4471,7 @@ ParticleSystemRenderer:
   m_ReflectionProbeUsage: 0
   m_Materials:
   - {fileID: 10301, guid: 0000000000000000f000000000000000, type: 0}
-  - {fileID: 2100000, guid: c9f15a785e07c504982ef87c060cf280, type: 2}
+  - {fileID: 10301, guid: 0000000000000000f000000000000000, type: 0}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -6869,6 +6869,11 @@ Prefab:
       propertyPath: m_RootOrder
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 199517293871536138, guid: e0c03933dd357154289c4d08e6f8cdbd,
+        type: 2}
+      propertyPath: m_Materials.Array.data[1]
+      value: 
+      objectReference: {fileID: 10301, guid: 0000000000000000f000000000000000, type: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: e0c03933dd357154289c4d08e6f8cdbd, type: 2}
   m_IsPrefabParent: 0
@@ -12393,6 +12398,11 @@ Prefab:
       propertyPath: m_Name
       value: shieldorb (5)
       objectReference: {fileID: 0}
+    - target: {fileID: 199517293871536138, guid: e0c03933dd357154289c4d08e6f8cdbd,
+        type: 2}
+      propertyPath: m_Materials.Array.data[1]
+      value: 
+      objectReference: {fileID: 10301, guid: 0000000000000000f000000000000000, type: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: e0c03933dd357154289c4d08e6f8cdbd, type: 2}
   m_IsPrefabParent: 0
@@ -12644,6 +12654,11 @@ Prefab:
       propertyPath: m_Name
       value: shieldorb (4)
       objectReference: {fileID: 0}
+    - target: {fileID: 199517293871536138, guid: e0c03933dd357154289c4d08e6f8cdbd,
+        type: 2}
+      propertyPath: m_Materials.Array.data[1]
+      value: 
+      objectReference: {fileID: 10301, guid: 0000000000000000f000000000000000, type: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: e0c03933dd357154289c4d08e6f8cdbd, type: 2}
   m_IsPrefabParent: 0

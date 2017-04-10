@@ -47,6 +47,42 @@ public static class Utility  {
         body.AddForce(dir.normalized * expForce * calc);
     }
     /// <summary>
+    /// Adds explosion force to the given Rigidbody2D based in part on its own mass
+    /// </summary>
+    /// <param name="body"></param>
+    /// <param name="expForce"></param>
+    /// <param name="expPosition"></param>
+    /// <param name="expRadius"></param>
+    public static void AddWeightedExplosionForce(Rigidbody2D body, float expForce, Vector3 expPosition, float expRadius)
+    {
+        Vector2 dir = (body.transform.position - expPosition).normalized;        
+        float distanceToEdge = expRadius - distanceToObject(expPosition,body.gameObject);
+        if (distanceToEdge < 0)
+        {
+            distanceToEdge = 0;
+        }
+        float calc = (distanceToEdge / expRadius);
+        if (calc <= 0)
+        {
+            calc = 0;
+        }
+        float force = body.mass * distanceToEdge * calc * expForce / Time.fixedDeltaTime;
+        body.AddForce(dir * force);
+    }
+    public static float distanceToObject(Vector2 position, GameObject obj)
+    {
+        Vector2 dir = ((Vector2)obj.transform.position - position).normalized;
+        RaycastHit2D[] rch2ds = Physics2D.RaycastAll(position, dir);
+        foreach (RaycastHit2D rch2d in rch2ds)
+        {
+            if (rch2d.collider.gameObject == obj)
+            {
+                return rch2d.distance;
+            }
+        }
+        throw new UnityException("Object's raycast not found! This should not be possible!");
+    }
+    /// <summary>
     /// Returns the GestureAccepter of the GameObject at the given pos, if it exists
     /// </summary>
     /// <param name="pos"></param>

@@ -7,8 +7,7 @@ public class ForceTeleportAbility : PlayerAbility
     private TeleportRangeIndicatorUpdater friu;//"force range indicator updater"
     private GameObject frii;//"force range indicator instance"
     public GameObject explosionEffect;
-
-    public float maxForceAmount = 5000;
+    
     public float forceAmount = 10;//how much force to apply = forceAmount * 2^(holdTime*10)
     public float maxRange = 3;
     public float maxHoldTime = 1;//how long until the max range is reached
@@ -34,30 +33,26 @@ public class ForceTeleportAbility : PlayerAbility
         }
         if (finished)
         {
-            pos = (Vector2)pos;//2016-03-29: for some reason, pos.z is -10 when it comes in
-            float force = forceAmount * Mathf.Pow(2, (holdTime * 10 * GestureManager.holdTimeScaleRecip));
-            if (force > maxForceAmount)
-            {
-                force = maxForceAmount;
-            }
             Collider2D[] hitColliders = Physics2D.OverlapCircleAll(pos, range);
             for (int i = 0; i < hitColliders.Length; i++)
             {
                 Rigidbody2D orb2d = hitColliders[i].gameObject.GetComponent<Rigidbody2D>();
                 if (orb2d != null)
                 {
-                    Utility.AddExplosionForce(orb2d, force, pos, range);
+                    Utility.AddWeightedExplosionForce(orb2d, forceAmount, pos, range);
                 }
                 else
                 {
                     CrackedGroundChecker cgc = hitColliders[i].gameObject.GetComponent<CrackedGroundChecker>();
                     if (cgc != null)
                     {
+                        float force = forceAmount * (range - Utility.distanceToObject(pos, hitColliders[i].gameObject)) / Time.fixedDeltaTime;
                         cgc.checkForce(force);
                     }
                     ShieldBubbleController sbc = hitColliders[i].gameObject.GetComponent<ShieldBubbleController>();
                     if (sbc != null)
                     {
+                        float force = forceAmount * (range - Utility.distanceToObject(pos, hitColliders[i].gameObject)) / Time.fixedDeltaTime;
                         sbc.checkForce(force);
                     }
                 }

@@ -13,11 +13,10 @@ public class FloatCubeController : MonoBehaviour
     public float forceMultiplierSelf = 1.1f;//when float cube is empty, how much to multiply the default lift force 
     public float forceMultiplierHeavy = 2.0f;//how much to multiply everything when float cube has something on it weighing it down
     public float forceMultiplierSteady = 1.0f;//how much to multiply when trying to remain steady
+    public float variance;//the amount of variance in either direction the propulsionHeight is allowed to be
 
     private Rigidbody2D rb;
     private BoxCollider2D bc2d;
-    public float variance;//the amount of variance in either direction the propulsionHeight is allowed to be
-    private bool proppingLastTime = false;//whether or not it was propping last time
     private Vector3 upDirection;//used to determine the up direction of the float cube
     private Quaternion upAngle;//used to determine which direction the float cube should rotate towards
     //Particles

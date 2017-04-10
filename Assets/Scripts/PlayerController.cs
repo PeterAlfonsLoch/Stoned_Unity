@@ -24,6 +24,7 @@ public class PlayerController : MonoBehaviour
     public int airPorts = 0;
     private bool grounded = true;//set in isGrounded()
     private bool groundedWall = false;//true if grounded exclusively to a wall; set in isGrounded()
+    private bool shouldGrantGIT = false;//whether or not to grant gravity immunity, true after teleport
     private Rigidbody2D rb2d;
     private PolygonCollider2D pc2d;
     private Vector2 savedVelocity;
@@ -63,10 +64,10 @@ public class PlayerController : MonoBehaviour
     {
         Vector3 pos = transform.position;
         Vector2 pos2 = new Vector2(pos.x, pos.y);
-        bool wasInAir = !grounded;
         checkGroundedState(false);
-        if (wasInAir && grounded)//just landed on something
+        if (shouldGrantGIT && grounded)//first grounded frame after teleport
         {
+            shouldGrantGIT = false;
             grantGravityImmunity();
         }
         if (gravityImmuneTime > Time.time)
@@ -221,17 +222,9 @@ public class PlayerController : MonoBehaviour
             grounded = false;
             velocityNeedsReloaded = false;//discards previous velocity if was in gravity immunity bubble
             gravityImmuneTime = 0f;
+            shouldGrantGIT = true;
             mainCamCtr.delayMovement(0.3f);
             checkGroundedState(true);//have to call it again because state has changed
-            if (grounded)
-            {
-                //If Merky is grounded but still moving, grant gravity immunity
-                //This is mostly for making wall jump easier
-                if (isMoving())
-                {
-                    grantGravityImmunity();
-                }
-            }
             return true;
         }
         return false;

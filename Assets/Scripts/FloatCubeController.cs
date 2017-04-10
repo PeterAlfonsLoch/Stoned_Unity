@@ -131,6 +131,7 @@ public class FloatCubeController : MonoBehaviour
                     }
                     else if (upVelocity > 0)
                     {
+                        heavyMultiplier = 0;
                     }
                     rb.AddForce(upDirection * liftForce * forceMultiplierSteady * heavyMultiplier);
                 }

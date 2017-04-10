@@ -10,8 +10,9 @@ public class FloatCubeController : MonoBehaviour
     public float propulsionHeight;//how far off the ground the float cube can go
     public float liftForce = 0;//how much force can be applied each frame
     public float expectedGravity = 9.81f;//the expected gravity scale for this float cube
-    public float forceMultiplier = 2;//how much to multiply things by for default lift force
-    public float forceMultiplierSteady = 0.5f;//how much to multiply when trying to remain steady
+    public float forceMultiplierSelf = 1.1f;//when float cube is empty, how much to multiply the default lift force 
+    public float forceMultiplierHeavy = 2.0f;//how much to multiply everything when float cube has something on it weighing it down
+    public float forceMultiplierSteady = 1.0f;//how much to multiply when trying to remain steady
 
     private Rigidbody2D rb;
     private BoxCollider2D bc2d;
@@ -109,37 +110,29 @@ public class FloatCubeController : MonoBehaviour
                         propping2 = true;
                     }
                 }
-                //
-                float currentFloatHeight = propulsionHeight;//how far above the ground it currently is
-                RaycastHit2D[] rh2ds = new RaycastHit2D[10];
-                bc2d.Cast(-upDirection, rh2ds, propulsionHeight, true);
-                foreach (RaycastHit2D rch2dl in rh2ds)
-                {
-                    if (rch2dl && rch2dl.collider != null && !rch2dl.collider.isTrigger)
-                    {
-                        GameObject ground = rch2dl.collider.gameObject;
-                        if (ground != null && !ground.Equals(transform.gameObject))
-                        {
-                            currentFloatHeight = rch2dl.distance;
-                            break;
-                        }
-                    }
-                }
-                //
                 if (propping1 && propping2)
                 {
-                    proppingLastTime = true;
-                    float force = liftForce * forceMultiplier;
+                    float heavyMultiplier = 1;
+                    float upVelocity = Vector3.Dot(rb.velocity, upDirection.normalized);
+                    if (upVelocity <= 0)
+                    {
+                        heavyMultiplier = forceMultiplierHeavy;
+                    }
+                    float force = liftForce * forceMultiplierSelf * heavyMultiplier;
                     rb.AddForce(upDirection * force);
                 }
                 else if (!propping1 && propping2)
                 {
-                    if (proppingLastTime)
+                    float heavyMultiplier = 1;
+                    float upVelocity = Vector3.Dot(rb.velocity, upDirection.normalized);
+                    if (upVelocity < 0)
                     {
-                        rb.velocity = Vector2.zero;
-                        proppingLastTime = false;
+                        heavyMultiplier = forceMultiplierHeavy;
                     }
-                    rb.AddForce(upDirection * liftForce * forceMultiplierSteady);
+                    else if (upVelocity > 0)
+                    {
+                    }
+                    rb.AddForce(upDirection * liftForce * forceMultiplierSteady * heavyMultiplier);
                 }
                 else
                 {

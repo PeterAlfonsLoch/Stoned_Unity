@@ -26,6 +26,7 @@ public class CrackedGroundChecker : SavableMonoBehaviour
     public override void acceptSavableObject(SavableObject savObj)
     {
         cracked = (bool)savObj.data["cracked"];
+        setCracked(cracked);
     }
 
     public void setCracked(bool nowCracked)

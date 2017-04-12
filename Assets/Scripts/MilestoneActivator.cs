@@ -28,15 +28,20 @@ public abstract class MilestoneActivator : MemoryMonoBehaviour {
     {
         if (!used && coll.gameObject.Equals(GameManager.getPlayerObject()))
         {
-            if (transform.parent != null)
-            {
-                sparkle();
-            }
-            used = true;
-            activateEffect();
-            GameManager.saveMemory(this);
-            Destroy(this);//makes sure it can only be used once
+            activate(true);
         }
+    }
+
+    public void activate(bool showFX)
+    {
+        if (showFX && transform.parent != null)
+        {
+            sparkle();
+        }
+        used = true;
+        activateEffect();
+        GameManager.saveMemory(this);
+        Destroy(this);//makes sure it can only be used once
     }
 
     public abstract void activateEffect();
@@ -63,7 +68,7 @@ public abstract class MilestoneActivator : MemoryMonoBehaviour {
         if (memObj.found)
         {
             used = true;
-            activateEffect();
+            activate(false);
         }
     }
 }

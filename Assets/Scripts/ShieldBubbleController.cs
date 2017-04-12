@@ -161,10 +161,6 @@ public class ShieldBubbleControllerSavable : SavableObject
         saveState(sbc);
     }
 
-    public override bool isSpawnedObject()
-    {
-        return true;
-    }
     public override GameObject spawnObject()
     {
         return GameManager.getPlayerObject().GetComponent<ShieldBubbleAbility>().spawnShieldBubble(Vector2.zero, this.range, this.energy);//position will be set later in the load process

@@ -111,7 +111,7 @@ public class ObjectState
                     //if is spawned object, make it
                     foreach (SavableObject so in soList)
                     {
-                        if (so.isSpawnedObject())
+                        if (so.isSpawnedObject)
                         {
                             go = so.spawnObject();
                             go.name = this.objectName;

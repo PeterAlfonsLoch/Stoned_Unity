@@ -1,0 +1,4 @@
+Adding a new subtype of MemoryObject:
+1. Make sure your MonoBehaviour that needs to save a memory is a subtype of MemoryMonoBehaviour
+2. Add getMemoryObject() method
+3. Add acceptMemoryObject() method

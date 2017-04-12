@@ -1,0 +1,5 @@
+Adding a new subtype of SavableObject:
+1. Make sure your MonoBehaviour that needs to save a memory is a subtype of SavableMonoBehaviour
+2. Add getSavableObject() method
+3. Add acceptSavableObject() method
+4. Go to SavableObject.getSavableMonobehaviourType() and add a case statement for the new type, copying the new SavableMonoBehaviour’s name verbatim from the source code

@@ -52,45 +52,10 @@ public class Rigidbody2DLock : SavableMonoBehaviour {
 
     public override SavableObject getSavableObject()
     {
-        return new Rigidbody2DLockSavable(this);
+        return new SavableObject("Rigidbody2DLock","lockHolders", lockHolders);
     }
-}
-
-//
-//Class that saves the important variables of this class
-//2017-02-07: copied from ShieldBubbleControllerSavable
-//
-public class Rigidbody2DLockSavable : SavableObject
-{
-    public List<GameObjectId> lockHolders = new List<GameObjectId>();
-
-    public Rigidbody2DLockSavable() { }//only called by the method that reads it from the file
-    public Rigidbody2DLockSavable(Rigidbody2DLock rb2dl)
+    public override void acceptSavableObject(SavableObject savObj)
     {
-        saveState(rb2dl);
-    }
-
-    public override System.Type getSavableMonobehaviourType()
-    {
-        return typeof(Rigidbody2DLock);
-    }
-    public override void addScript(GameObject go)
-    {
-        Rigidbody2DLock rb2dl = go.AddComponent<Rigidbody2DLock>();
-        rb2dl.lockRB2D();
-    }
-
-    public override void loadState(GameObject go)
-    {
-        Rigidbody2DLock rb2dl = go.GetComponent<Rigidbody2DLock>();
-        if (rb2dl != null)
-        {
-            rb2dl.lockHolders = this.lockHolders;
-        }
-    }
-    public override void saveState(SavableMonoBehaviour smb)
-    {
-        Rigidbody2DLock rb2dl = (Rigidbody2DLock)smb;
-        this.lockHolders = rb2dl.lockHolders;
+        lockHolders = (List<GameObjectId>)savObj.data["lockHolders"];
     }
 }

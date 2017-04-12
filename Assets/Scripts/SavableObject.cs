@@ -22,9 +22,9 @@ public class SavableObject
     /// Example: "cracked",true,"name","CrackedGround"
     /// </summary>
     /// <param name="pairs"></param>
-    public SavableObject(string scriptTypeIn, params System.Object[] pairs)
+    public SavableObject(SavableMonoBehaviour smb, params System.Object[] pairs)
     {
-        this.scriptType = scriptTypeIn;
+        this.scriptType = smb.GetType().Name;
         if (pairs.Length % 2 != 0)
         {
             throw new UnityException("Pairs has an odd amount of parameters! pairs.Length: "+pairs.Length);

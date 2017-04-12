@@ -21,7 +21,7 @@ public class PowerCubeController : SavableMonoBehaviour {
 
     public override SavableObject getSavableObject()
     {
-        return new SavableObject("PowerCubeController", "currentEnergyLevel", currentEnergyLevel);
+        return new SavableObject(this, "currentEnergyLevel", currentEnergyLevel);
     }
     public override void acceptSavableObject(SavableObject savObj)
     {

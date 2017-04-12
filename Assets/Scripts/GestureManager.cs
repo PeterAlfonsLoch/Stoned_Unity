@@ -70,7 +70,7 @@ public class GestureManager : SavableMonoBehaviour
     }
     public override SavableObject getSavableObject()
     {
-        return new SavableObject("GestureManager",
+        return new SavableObject(this,
             "holdThresholdScale", holdThresholdScale,
             "tapCount", tapCount
             );

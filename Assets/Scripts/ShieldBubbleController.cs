@@ -25,7 +25,7 @@ public class ShieldBubbleController : SavableMonoBehaviour
 
     public override SavableObject getSavableObject()
     {
-        return new SavableObject("ShieldBubbleController",
+        return new SavableObject(this,
             "range", range,
             "energy", energy
             );

@@ -22,7 +22,7 @@ public class PoweredWallController : SavableMonoBehaviour {
 
     public override SavableObject getSavableObject()
     {
-        return new SavableObject("PoweredWallController", "currentEnergy", currentEnergy);
+        return new SavableObject(this, "currentEnergy", currentEnergy);
     }
     public override void acceptSavableObject(SavableObject savObj)
     {

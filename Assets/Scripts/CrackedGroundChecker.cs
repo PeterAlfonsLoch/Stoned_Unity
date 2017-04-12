@@ -21,7 +21,7 @@ public class CrackedGroundChecker : SavableMonoBehaviour
 
     public override SavableObject getSavableObject()
     {
-        return new SavableObject("CrackedGroundChecker","cracked",cracked);
+        return new SavableObject(this,"cracked",cracked);
     }
     public override void acceptSavableObject(SavableObject savObj)
     {

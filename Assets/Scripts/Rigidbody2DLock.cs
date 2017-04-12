@@ -52,7 +52,7 @@ public class Rigidbody2DLock : SavableMonoBehaviour {
 
     public override SavableObject getSavableObject()
     {
-        return new SavableObject("Rigidbody2DLock","lockHolders", lockHolders);
+        return new SavableObject(this,"lockHolders", lockHolders);
     }
     public override void acceptSavableObject(SavableObject savObj)
     {

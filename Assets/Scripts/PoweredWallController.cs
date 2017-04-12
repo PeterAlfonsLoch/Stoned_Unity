@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PoweredWallController : MonoBehaviour {
+public class PoweredWallController : SavableMonoBehaviour {
     //2017-01-24: several things copied from FloatCubeController
 
     public GameObject powerObj;
@@ -19,10 +19,15 @@ public class PoweredWallController : MonoBehaviour {
         upDirection = transform.up;
         rb = GetComponent<Rigidbody2D>();
     }
-	
-	// Update is called once per frame
-	//void Update () {		
-	//}
+
+    public override SavableObject getSavableObject()
+    {
+        return new SavableObject("PoweredWallController", "currentEnergy", currentEnergy);
+    }
+    public override void acceptSavableObject(SavableObject savObj)
+    {
+        currentEnergy = (float)savObj.data["currentEnergy"];
+    }
 
     void FixedUpdate()
     {

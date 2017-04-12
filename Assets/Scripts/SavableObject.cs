@@ -77,6 +77,10 @@ public class SavableObject
                 return typeof(Rigidbody2DLock);
             case "ShieldBubbleController":
                 return typeof(ShieldBubbleController);
+            case "PoweredWallController":
+                return typeof(PoweredWallController);
+            case "PowerCubeController":
+                return typeof(PowerCubeController);
             default:
                 throw new KeyNotFoundException("The type name \"" + typeName + "\" was not found. It might not be a SavableMonoBehaviour or might not exist.");
         }

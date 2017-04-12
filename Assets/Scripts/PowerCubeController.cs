@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PowerCubeController : MonoBehaviour {
+public class PowerCubeController : SavableMonoBehaviour {
     //These cubes take energy from a source (such as a Shield Bubble) and convert it to energy to power other objects (such as doors)
 
     public GameObject lightEffect;//the object attached to it that it uses to show it is lit up
@@ -17,6 +17,15 @@ public class PowerCubeController : MonoBehaviour {
     {
         lightEffectRenderer = lightEffect.GetComponent<SpriteRenderer>();
         lightEffectColor = lightEffectRenderer.color;
+    }
+
+    public override SavableObject getSavableObject()
+    {
+        return new SavableObject("PowerCubeController", "currentEnergyLevel", currentEnergyLevel);
+    }
+    public override void acceptSavableObject(SavableObject savObj)
+    {
+        currentEnergyLevel = (float)savObj.data["currentEnergyLevel"];
     }
 
     // Update is called once per frame

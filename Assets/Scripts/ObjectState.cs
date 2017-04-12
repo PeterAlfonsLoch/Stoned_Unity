@@ -15,7 +15,6 @@ public class ObjectState
     public float angularVelocity;
     //Saveable Object
     public List<SavableObject> soList;
-    public static SavableObject dummySO = new SavableObject();//for objects that don't have them
     //Name
     public string objectName;
     public string sceneName;

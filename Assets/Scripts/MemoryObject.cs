@@ -4,8 +4,7 @@ using UnityEngine.SceneManagement;
 
 public class MemoryObject
 {
-
-    //this class is the parent class of all scripts that have memories to be saved
+    //this class stores variables of MonoBehaviours that have memories to be saved
 
     public bool found = false;//whether this memory has been obtained by Merky yet
     public string objectName;
@@ -13,27 +12,12 @@ public class MemoryObject
 
     public MemoryObject() { }
 
-    public MemoryObject(MemoryMonoBehaviour mmb)
+    public MemoryObject(MemoryMonoBehaviour mmb, bool foundYet)
     {
         objectName = mmb.gameObject.name;
         sceneName = mmb.gameObject.scene.name;
+        this.found = foundYet;
     }
-
-    public void loadState() {
-        GameObject go = findGameObject();
-        //if (go == null)
-        //{
-        //    SceneManager.LoadScene(sceneName);
-        //}
-        //go = findGameObject();
-        if (go != null)
-        {
-            loadState(go);
-        }
-    }
-    public virtual void loadState(GameObject go){}
-
-    public virtual void saveState(MemoryMonoBehaviour go) { }
 
     public bool isFor(MemoryMonoBehaviour mmb)
     {
@@ -42,6 +26,10 @@ public class MemoryObject
         return nameMatch && sceneMatch;
     }
 
+    /// <summary>
+    /// Finds the GameObject that this MemoryObject is for
+    /// </summary>
+    /// <returns></returns>
     public GameObject findGameObject()
     {
         Scene scene = SceneManager.GetSceneByName(sceneName);

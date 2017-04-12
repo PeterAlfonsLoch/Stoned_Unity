@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System;
 
 public class CheckPointChecker : MemoryMonoBehaviour
 {
@@ -196,39 +197,14 @@ public class CheckPointChecker : MemoryMonoBehaviour
 
     public override MemoryObject getMemoryObject()
     {
-        return new CheckPointCheckerMemory(this);
+        return new MemoryObject(this, activated);
     }
-}
-
-//
-//Class that saves the important variables of this class
-//2016-11-26: copied from SecretAreaTrigger::SecretAreaTriggerMemory
-//
-public class CheckPointCheckerMemory : MemoryObject
-{
-    public Sprite ghostSprite;
-
-    public CheckPointCheckerMemory() { }//only called by the method that reads it from the file
-    public CheckPointCheckerMemory(CheckPointChecker cpc) : base(cpc)
+    public override void acceptMemoryObject(MemoryObject memObj)
     {
-        saveState(cpc);
-    }
-
-    public override void loadState(GameObject go)
-    {
-        CheckPointChecker cpc = go.GetComponent<CheckPointChecker>();
-        if (cpc != null)
+        if (memObj.found)
         {
-            if (this.found)
-            {
-                cpc.activate();
-            }
+            activate();
         }
-    }
-    public override void saveState(MemoryMonoBehaviour mmb)
-    {
-        CheckPointChecker cpc = ((CheckPointChecker)mmb);
-        this.found = cpc.activated;
     }
 }
 

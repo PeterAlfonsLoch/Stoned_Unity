@@ -56,36 +56,14 @@ public abstract class MilestoneActivator : MemoryMonoBehaviour {
 
     public override MemoryObject getMemoryObject()
     {
-        return new MilestoneActivatorMemory(this);
+        return new MemoryObject(this, used);
     }
-}
-
-//
-//Class that saves the important variables of this class
-//
-public class MilestoneActivatorMemory : MemoryObject
-{
-    public MilestoneActivatorMemory() { }//only called by the method that reads it from the file
-    public MilestoneActivatorMemory(MilestoneActivator ha) : base(ha)
+    public override void acceptMemoryObject(MemoryObject memObj)
     {
-        saveState(ha);
-    }
-
-    public override void loadState(GameObject go)
-    {
-        MilestoneActivator ma = go.GetComponent<MilestoneActivator>();
-        if (ma != null)
+        if (memObj.found)
         {
-            if (this.found)
-            {
-                ma.used = true;
-                ma.activateEffect();
-            }
+            used = true;
+            activateEffect();
         }
-    }
-    public override void saveState(MemoryMonoBehaviour mmb)
-    {
-        MilestoneActivator ma = ((MilestoneActivator)mmb);
-        this.found = ma.used;
     }
 }

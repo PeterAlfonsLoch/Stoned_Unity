@@ -193,7 +193,7 @@ public class GameManager : MonoBehaviour
                 if (mo.isFor(mmb))
                 {
                     foundMO = true;
-                    mo.loadState(mmb.gameObject);
+                    mmb.acceptMemoryObject(mo);
                     break;
                 }
             }
@@ -219,7 +219,7 @@ public class GameManager : MonoBehaviour
             if (mo.isFor(mmb))
             {
                 foundMO = true;
-                mo.saveState(mmb);
+                mo.found = mmb.getMemoryObject().found;//2017-04-11: TODO: refactor this so it's more flexible
                 break;
             }
         }
@@ -292,7 +292,15 @@ public class GameManager : MonoBehaviour
     {
         foreach (MemoryObject mo in memories)
         {
-            mo.loadState();
+            GameObject go = mo.findGameObject();
+            if (go != null)
+            {
+                MemoryMonoBehaviour mmb = go.GetComponent<MemoryMonoBehaviour>();
+                if (mo.isFor(mmb))
+                {
+                    mmb.acceptMemoryObject(mo);
+                }
+            }
         }
     }
     public void saveToFile()

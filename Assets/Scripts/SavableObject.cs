@@ -11,8 +11,10 @@ public class SavableObject
     /// <summary>
     /// True if it's an object that spawned during runtime
     /// </summary>
-    public bool isSpawnedObject;
+    public bool isSpawnedObject;//whether this SO's game object was spawned during run time
+    public bool isSpawnedScript;//whether this SO's script was attached to its game object during run time
     public string scriptType;//the type of script that saved this SavableObject
+    public string prefabName="";//if isSpawnedObject, what the prefab name is. Prefab must be in the Resources folder
     
     public SavableObject() { }
 
@@ -33,16 +35,11 @@ public class SavableObject
         {
             data.Add((string)pairs[i], pairs[i + 1]);
         }
-    }
-
-    /// <summary>
-    /// Adds the given object to the dictionary under the given name
-    /// </summary>
-    /// <param name="name"></param>
-    /// <param name="obj"></param>
-    public void addData(string name, System.Object obj)
-    {
-        data.Add(name, obj);
+        if (smb.isSpawnedObject())
+        {
+            isSpawnedObject = true;
+            prefabName = smb.getPrefabName();
+        }
     }
 
     /// <summary>
@@ -53,7 +50,8 @@ public class SavableObject
     /// <returns></returns>
     public GameObject spawnObject()
     {
-        throw new System.MissingMethodException("This method is not supported in this subclass: " + GetType().Name);
+        GameObject prefab = (GameObject)GameObject.Instantiate(Resources.Load(prefabName));
+        return (GameObject)prefab;
     }
 
     public System.Type getSavableMonobehaviourType()

@@ -11,7 +11,9 @@ public class ES2UserType_SavableObject : ES2Type
 		// Add your writer.Write calls here.
 		writer.Write(data.data);
 		writer.Write(data.isSpawnedObject);
+		writer.Write(data.isSpawnedScript);
 		writer.Write(data.scriptType);
+		writer.Write(data.prefabName);
 
 	}
 	
@@ -28,7 +30,9 @@ public class ES2UserType_SavableObject : ES2Type
 		// Add your reader.Read calls here to read the data into the object.
 		data.data = reader.ReadDictionary<System.String,System.Object>();
 		data.isSpawnedObject = reader.Read<System.Boolean>();
+		data.isSpawnedScript = reader.Read<System.Boolean>();
 		data.scriptType = reader.Read<System.String>();
+		data.prefabName = reader.Read<System.String>();
 
 	}
 	

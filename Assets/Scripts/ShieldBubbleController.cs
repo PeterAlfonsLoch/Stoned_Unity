@@ -36,6 +36,14 @@ public class ShieldBubbleController : SavableMonoBehaviour
         energy = (float)savObj.data["energy"];
         init(range, energy);
     }
+    public override bool isSpawnedObject()
+    {
+        return true;
+    }
+    public override string getPrefabName()
+    {
+        return "ShieldBubble";
+    }
 
 // Update is called once per frame
 void Update()

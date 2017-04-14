@@ -1,0 +1,8 @@
+Adding a new SavableObject whose GameObject gets Spawned during Runtime:
+1. Make sure your MonoBehaviour that needs to save a memory is a subtype of SavableMonoBehaviour
+2. Add getSavableObject() method
+3. Add acceptSavableObject() method
+4. Go to SavableObject.getSavableMonobehaviourType() and add a case statement for the new type, copying the new SavableMonoBehaviour’s name verbatim from the source code
+5. Add isSpawnedObject() method and return true
+6. Add getPrefabName() method and return the name of the prefab for this script’s object
+7. Make sure the prefab is located in the Assets/Resources folder and NOT in the Assets/Prefabs folder

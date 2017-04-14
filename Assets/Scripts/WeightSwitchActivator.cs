@@ -31,7 +31,6 @@ public class WeightSwitchActivator : MonoBehaviour {
                 {
                     if (hc.GetComponent<Rigidbody2D>() != null)
                     {
-                        Debug.Log("Weight switched: " + hc);
                         pressed = true;
                         break;
                     }

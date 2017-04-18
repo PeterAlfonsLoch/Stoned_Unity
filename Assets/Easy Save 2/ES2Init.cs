@@ -68,8 +68,8 @@ public class ES2Init : MonoBehaviour
 		ES2TypeManager.types[typeof(GameState)] = new ES2UserType_GameState();
 		ES2TypeManager.types[typeof(MemoryObject)] = new ES2UserType_MemoryObject();
 		ES2TypeManager.types[typeof(ObjectState)] = new ES2UserType_ObjectState();
-		ES2TypeManager.types[typeof(SavableObject)] = new ES2UserType_SavableObject();
 		ES2TypeManager.types[typeof(UnityEngine.AudioClip)] = new ES2_AudioClip();
+		ES2TypeManager.types[typeof(SavableObject)] = new ES2UserType_SavableObject();
 
 		ES2.initialised = true;
 	}

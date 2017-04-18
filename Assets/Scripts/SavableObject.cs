@@ -40,6 +40,10 @@ public class SavableObject
             isSpawnedObject = true;
             prefabName = smb.getPrefabName();
         }
+        if (smb.isSpawnedScript())
+        {
+            isSpawnedScript = true;
+        }
     }
 
     /// <summary>

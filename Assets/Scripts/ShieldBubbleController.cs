@@ -98,7 +98,7 @@ void Update()
 
     public void checkForce(float force)
     {
-        adjustEnergy(-force);
+        adjustEnergy(-Mathf.Abs(force));
     }
     void adjustEnergy(float amount)
     {

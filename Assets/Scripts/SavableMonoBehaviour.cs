@@ -15,8 +15,17 @@ public abstract class SavableMonoBehaviour: MonoBehaviour {
     public abstract void acceptSavableObject(SavableObject savObj);
 
     //
-    //Spawned Objects
+    //Spawned Objects and Scripts
     //
+
+    /// <summary>
+    /// True if this script was spawned during runtime
+    /// </summary>
+    /// <returns></returns>
+    public virtual bool isSpawnedScript()
+    {
+        return false;
+    }
 
     /// <summary>
     /// True if this script's game object was spawned during runtime

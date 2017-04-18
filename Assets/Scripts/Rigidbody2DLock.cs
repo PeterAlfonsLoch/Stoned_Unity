@@ -33,9 +33,13 @@ public class Rigidbody2DLock : SavableMonoBehaviour {
         }
         if (lockHolders.Count == 0)
         {
-            gameObject.GetComponent<Rigidbody2D>().isKinematic = false;//unlock rb2d
-            Destroy(this);//take off lock altogether
+            removeLock();
         }
+    }
+    private void removeLock()
+    {
+        gameObject.GetComponent<Rigidbody2D>().isKinematic = false;//unlock rb2d
+        Destroy(this);//take off lock altogether
     }
 
     public bool holdsLock(GameObject lockHolder)
@@ -52,10 +56,34 @@ public class Rigidbody2DLock : SavableMonoBehaviour {
 
     public override SavableObject getSavableObject()
     {
-        return new SavableObject(this,"lockHolders", lockHolders);
+        SavableObject so = new SavableObject(this);
+        int counter = 0;
+        foreach (GameObjectId goId in lockHolders)
+        {
+            so.data.Add("gameObjectId" + counter, goId);
+            counter++;
+        }
+        so.data.Add("gameObjectCount", counter);
+        return so;
     }
     public override void acceptSavableObject(SavableObject savObj)
     {
-        lockHolders = (List<GameObjectId>)savObj.data["lockHolders"];
+        lockHolders = new List<GameObjectId>();
+        for (int i = 0; i < (int)savObj.data["gameObjectCount"]; i++)
+        {
+            lockHolders.Add((GameObjectId)savObj.data["gameObjectId" + i]);
+        }
+        if (lockHolders.Count > 0)
+        {
+            lockRB2D();
+        }
+        else
+        {
+            removeLock();
+        }
+    }
+    public override bool isSpawnedScript()
+    {
+        return true;
     }
 }

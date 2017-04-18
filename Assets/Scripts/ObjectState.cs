@@ -71,7 +71,14 @@ public class ObjectState
             SavableMonoBehaviour smb = (SavableMonoBehaviour)go.GetComponent(so.getSavableMonobehaviourType());
             if (smb == null)
             {
-                so.addScript(go);
+                if (so.isSpawnedScript)
+                {
+                    so.addScript(go);
+                }
+                else
+                {
+                    throw new UnityException("Object " + go + " is missing non-spawnable script " + so.scriptType);
+                }
             }
             smb.acceptSavableObject(so);
         }

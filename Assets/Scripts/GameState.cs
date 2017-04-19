@@ -82,7 +82,7 @@ public class GameState
         return false;
     }
     //Representation (check point ghost)
-    public void showRepresentation(GameObject ghostPrefab)
+    public void showRepresentation(GameObject ghostPrefab, int mostRecentId)
     {
         if (representation == null)
         {
@@ -94,6 +94,21 @@ public class GameState
         else
         {
             representation.SetActive(true);
+        }
+        //Set the Alpha Value
+        SpriteRenderer sr = representation.GetComponent<SpriteRenderer>();
+        Color c = sr.color;
+        if (mostRecentId - id < 10)
+        {
+            sr.color = new Color(c.r, c.g, c.b, 1.0f);
+        }
+        else if (mostRecentId - id < 20)
+        {
+            sr.color = new Color(c.r, c.g, c.b, 0.7f);
+        }
+        else
+        {
+            sr.color = new Color(c.r, c.g, c.b, 0.4f);
         }
     }
     public bool checkRepresentation(Vector3 touchPoint)

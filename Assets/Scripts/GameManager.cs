@@ -365,7 +365,7 @@ public class GameManager : MonoBehaviour
     {
         foreach (GameState gs in gameStates)
         {
-            gs.showRepresentation(playerGhost);
+            gs.showRepresentation(playerGhost, chosenId);
         }
     }
     public void hidePlayerGhosts()

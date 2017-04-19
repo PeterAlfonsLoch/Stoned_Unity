@@ -70,7 +70,15 @@ public class GestureManager : SavableMonoBehaviour
     }
     public override SavableObject getSavableObject()
     {
-        return new GestureManagerSavable(this);
+        return new SavableObject(this,
+            "holdThresholdScale", holdThresholdScale,
+            "tapCount", tapCount
+            );
+    }
+    public override void acceptSavableObject(SavableObject savObj)
+    {
+        holdThresholdScale = (float)savObj.data["holdThresholdScale"];
+        tapCount = (int)savObj.data["tapCount"];
     }
 
     // Update is called once per frame
@@ -405,37 +413,5 @@ public class GestureManager : SavableMonoBehaviour
     public float getHoldThreshold()
     {
         return holdThreshold * holdThresholdScale;
-    }
-}
-
-//
-//Class that saves the important variables of this class
-//2017-03-07: copied from CrackedGroundCheckerSavable
-//
-public class GestureManagerSavable : SavableObject
-{
-    public float holdThresholdScale;
-    public int tapCount;
-
-    public GestureManagerSavable() { }//only called by the method that reads it from the file
-    public GestureManagerSavable(GestureManager gm)
-    {
-        saveState(gm);
-    }
-
-    public override void loadState(GameObject go)
-    {
-        GestureManager gm = go.GetComponent<GestureManager>();
-        if (gm != null)
-        {
-            gm.holdThresholdScale = this.holdThresholdScale;
-            gm.tapCount = this.tapCount;
-        }
-    }
-    public override void saveState(SavableMonoBehaviour smb)
-    {
-        GestureManager gm = ((GestureManager)smb);
-        this.holdThresholdScale = gm.holdThresholdScale;
-        this.tapCount = gm.tapCount;
     }
 }

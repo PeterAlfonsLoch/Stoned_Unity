@@ -2,27 +2,38 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class LanternActivator : MonoBehaviour {
+public class LanternActivator : MemoryMonoBehaviour {
 
-	// Use this for initialization
-	void Start () {
-		
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		
-	}
+    public bool lit = false;
 
     void OnTriggerEnter2D(Collider2D coll)
     {
         if (coll.gameObject.tag == "Player")
         {
-            foreach (ParticleSystem ps in GetComponentsInChildren<ParticleSystem>())
-            {
-                ps.Play();
-            }
-            Destroy(this);//delete this script
+            lightTorch();
+        }
+    }
+
+    void lightTorch()
+    {
+        lit = true;
+        foreach (ParticleSystem ps in GetComponentsInChildren<ParticleSystem>())
+        {
+            ps.Play();
+        }
+        GameManager.saveMemory(this);
+        Destroy(this);//delete this script
+    }
+
+    public override MemoryObject getMemoryObject()
+    {
+        return new MemoryObject(this, lit);
+    }
+    public override void acceptMemoryObject(MemoryObject memObj)
+    {
+        if (memObj.found)
+        {
+            lightTorch();
         }
     }
 }

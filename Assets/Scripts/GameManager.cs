@@ -31,7 +31,7 @@ public class GameManager : MonoBehaviour
     private CameraController camCtr;
     private float actionTime = 0;//used to determine how often to rewind
     private const float rewindDelay = 0.05f;//how much to delay each rewind transition by
-    private string newlyLoadedScene = null;
+    private List<string> newlyLoadedScenes = new List<string>();
     private string unloadedScene = null;
 
     // Use this for initialization
@@ -115,11 +115,14 @@ public class GameManager : MonoBehaviour
         {
             sl.check();
         }
-        if (newlyLoadedScene != null)
+        if (newlyLoadedScenes.Count > 0)
         {
             refreshGameObjects();
-            LoadObjectsFromScene(SceneManager.GetSceneByName(newlyLoadedScene));
-            newlyLoadedScene = null;
+            foreach (string s in newlyLoadedScenes)
+            {
+                LoadObjectsFromScene(SceneManager.GetSceneByName(s));
+            }
+            newlyLoadedScenes.Clear();
         }
         if (unloadedScene != null)
         {
@@ -135,7 +138,7 @@ public class GameManager : MonoBehaviour
     void sceneLoaded(Scene s, LoadSceneMode m)
     {
         refreshGameObjects();
-        newlyLoadedScene = s.name;
+        newlyLoadedScenes.Add(s.name);
     }
     void sceneUnloaded(Scene s)
     {
@@ -190,7 +193,7 @@ public class GameManager : MonoBehaviour
                 if (mo.isFor(mmb))
                 {
                     foundMO = true;
-                    mo.loadState(mmb.gameObject);
+                    mmb.acceptMemoryObject(mo);
                     break;
                 }
             }
@@ -216,7 +219,7 @@ public class GameManager : MonoBehaviour
             if (mo.isFor(mmb))
             {
                 foundMO = true;
-                mo.saveState(mmb);
+                mo.found = mmb.getMemoryObject().found;//2017-04-11: TODO: refactor this so it's more flexible
                 break;
             }
         }
@@ -289,7 +292,15 @@ public class GameManager : MonoBehaviour
     {
         foreach (MemoryObject mo in memories)
         {
-            mo.loadState();
+            GameObject go = mo.findGameObject();
+            if (go != null)
+            {
+                MemoryMonoBehaviour mmb = go.GetComponent<MemoryMonoBehaviour>();
+                if (mo.isFor(mmb))
+                {
+                    mmb.acceptMemoryObject(mo);
+                }
+            }
         }
     }
     public void saveToFile()

@@ -25,11 +25,28 @@ public class ShieldBubbleController : SavableMonoBehaviour
 
     public override SavableObject getSavableObject()
     {
-        return new ShieldBubbleControllerSavable(this);
+        return new SavableObject(this,
+            "range", range,
+            "energy", energy
+            );
+    }
+    public override void acceptSavableObject(SavableObject savObj)
+    {
+        range = (float)savObj.data["range"];
+        energy = (float)savObj.data["energy"];
+        init(range, energy);
+    }
+    public override bool isSpawnedObject()
+    {
+        return true;
+    }
+    public override string getPrefabName()
+    {
+        return "ShieldBubble";
     }
 
-    // Update is called once per frame
-    void Update()
+// Update is called once per frame
+void Update()
     {
         //2017-01-24: copied from WeightSwitchActivator.FixedUpdate()
         Collider2D[] hitColliders = Physics2D.OverlapCircleAll(transform.position, range);
@@ -81,7 +98,7 @@ public class ShieldBubbleController : SavableMonoBehaviour
 
     public void checkForce(float force)
     {
-        adjustEnergy(-force);
+        adjustEnergy(-Mathf.Abs(force));
     }
     void adjustEnergy(float amount)
     {
@@ -143,45 +160,5 @@ public class ShieldBubbleController : SavableMonoBehaviour
                 rb2dlock.removeLock(this.gameObject);
             }
         }
-    }
-}
-
-//
-//Class that saves the important variables of this class
-//2017-01-18: copied from CrackedGroundCheckerSavable
-//
-public class ShieldBubbleControllerSavable : SavableObject
-{
-    public float range;
-    public float energy;
-
-    public ShieldBubbleControllerSavable() { }//only called by the method that reads it from the file
-    public ShieldBubbleControllerSavable(ShieldBubbleController sbc)
-    {
-        saveState(sbc);
-    }
-
-    public override bool isSpawnedObject()
-    {
-        return true;
-    }
-    public override GameObject spawnObject()
-    {
-        return GameManager.getPlayerObject().GetComponent<ShieldBubbleAbility>().spawnShieldBubble(Vector2.zero, this.range, this.energy);//position will be set later in the load process
-    }
-
-    public override void loadState(GameObject go)
-    {
-        ShieldBubbleController sbc = go.GetComponent<ShieldBubbleController>();
-        if (sbc != null)
-        {
-            sbc.init(this.range, this.energy);
-        }
-    }
-    public override void saveState(SavableMonoBehaviour smb)
-    {
-        ShieldBubbleController sbc = ((ShieldBubbleController)smb);
-        this.range = sbc.range;
-        this.energy = sbc.energy;
     }
 }

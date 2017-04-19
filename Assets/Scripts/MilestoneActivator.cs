@@ -28,15 +28,20 @@ public abstract class MilestoneActivator : MemoryMonoBehaviour {
     {
         if (!used && coll.gameObject.Equals(GameManager.getPlayerObject()))
         {
-            if (transform.parent != null)
-            {
-                sparkle();
-            }
-            used = true;
-            activateEffect();
-            GameManager.saveMemory(this);
-            Destroy(this);//makes sure it can only be used once
+            activate(true);
         }
+    }
+
+    public void activate(bool showFX)
+    {
+        if (showFX && transform.parent != null)
+        {
+            sparkle();
+        }
+        used = true;
+        activateEffect();
+        GameManager.saveMemory(this);
+        Destroy(this);//makes sure it can only be used once
     }
 
     public abstract void activateEffect();
@@ -56,36 +61,14 @@ public abstract class MilestoneActivator : MemoryMonoBehaviour {
 
     public override MemoryObject getMemoryObject()
     {
-        return new MilestoneActivatorMemory(this);
+        return new MemoryObject(this, used);
     }
-}
-
-//
-//Class that saves the important variables of this class
-//
-public class MilestoneActivatorMemory : MemoryObject
-{
-    public MilestoneActivatorMemory() { }//only called by the method that reads it from the file
-    public MilestoneActivatorMemory(MilestoneActivator ha) : base(ha)
+    public override void acceptMemoryObject(MemoryObject memObj)
     {
-        saveState(ha);
-    }
-
-    public override void loadState(GameObject go)
-    {
-        MilestoneActivator ma = go.GetComponent<MilestoneActivator>();
-        if (ma != null)
+        if (memObj.found)
         {
-            if (this.found)
-            {
-                ma.used = true;
-                ma.activateEffect();
-            }
+            used = true;
+            activate(false);
         }
-    }
-    public override void saveState(MemoryMonoBehaviour mmb)
-    {
-        MilestoneActivator ma = ((MilestoneActivator)mmb);
-        this.found = ma.used;
     }
 }

@@ -15,7 +15,6 @@ public class ObjectState
     public float angularVelocity;
     //Saveable Object
     public List<SavableObject> soList;
-    public static SavableObject dummySO = new SavableObject();//for objects that don't have them
     //Name
     public string objectName;
     public string sceneName;
@@ -69,11 +68,19 @@ public class ObjectState
         }
         foreach (SavableObject so in this.soList)
         {
-            if (go.GetComponent(so.getSavableMonobehaviourType()) == null)
+            SavableMonoBehaviour smb = (SavableMonoBehaviour)go.GetComponent(so.getSavableMonobehaviourType());
+            if (smb == null)
             {
-                so.addScript(go);
+                if (so.isSpawnedScript)
+                {
+                    so.addScript(go);
+                }
+                else
+                {
+                    throw new UnityException("Object " + go + " is missing non-spawnable script " + so.scriptType);
+                }
             }
-            so.loadState(go);
+            smb.acceptSavableObject(so);
         }
     }
 
@@ -111,7 +118,7 @@ public class ObjectState
                     //if is spawned object, make it
                     foreach (SavableObject so in soList)
                     {
-                        if (so.isSpawnedObject())
+                        if (so.isSpawnedObject)
                         {
                             go = so.spawnObject();
                             go.name = this.objectName;

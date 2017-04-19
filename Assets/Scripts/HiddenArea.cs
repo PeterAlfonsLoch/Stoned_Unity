@@ -25,35 +25,13 @@ public class HiddenArea : MemoryMonoBehaviour {
 
     public override MemoryObject getMemoryObject()
     {
-        return new HiddenAreaMemory(this);
+        return new MemoryObject(this, discovered);
     }
-}
-
-//
-//Class that saves the important variables of this class
-//
-public class HiddenAreaMemory : MemoryObject
-{
-    public HiddenAreaMemory() { }//only called by the method that reads it from the file
-    public HiddenAreaMemory(HiddenArea ha) : base(ha)
+    public override void acceptMemoryObject(MemoryObject memObj)
     {
-        saveState(ha);
-    }
-
-    public override void loadState(GameObject go)
-    {
-        HiddenArea ha = go.GetComponent<HiddenArea>();
-        if (ha != null)
+        if (memObj.found)
         {
-            if (this.found)
-            {
-                ha.previouslyDiscovered();
-            }
+            previouslyDiscovered();
         }
-    }
-    public override void saveState(MemoryMonoBehaviour mmb)
-    {
-        HiddenArea ha = ((HiddenArea)mmb);
-        this.found = ha.discovered;
     }
 }

@@ -98,17 +98,22 @@ public class GameState
         //Set the Alpha Value
         SpriteRenderer sr = representation.GetComponent<SpriteRenderer>();
         Color c = sr.color;
+        ParticleSystem ps = representation.GetComponentInChildren<ParticleSystem>();
+                
         if (mostRecentId - id < 10)
         {
             sr.color = new Color(c.r, c.g, c.b, 1.0f);
+            ps.Play();
         }
-        else if (mostRecentId - id < 20)
+        else if (mostRecentId - id < 100)
         {
-            sr.color = new Color(c.r, c.g, c.b, 0.7f);
+            sr.color = new Color(c.r, c.g, c.b, 0.9f);
+            ps.Stop();
         }
         else
         {
-            sr.color = new Color(c.r, c.g, c.b, 0.4f);
+            sr.color = new Color(c.r, c.g, c.b, 0.5f);
+            ps.Stop();
         }
     }
     public bool checkRepresentation(Vector3 touchPoint)

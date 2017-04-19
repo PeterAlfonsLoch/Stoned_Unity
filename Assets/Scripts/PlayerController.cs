@@ -125,15 +125,9 @@ public class PlayerController : MonoBehaviour
     {
         int closestRotationIndex = 0;
         //Figure out current rotation
-        float currentRotation = transform.localRotation.eulerAngles.z;
-        while (currentRotation < 0)
-        {
-            currentRotation += 360;
-        }
-        while (currentRotation > 360)
-        {
-            currentRotation -= 360;
-        }
+        float gravityRot = Utility.RotationZ(gravityVector, Vector3.down);
+        float currentRotation = transform.localEulerAngles.z - gravityRot;
+        currentRotation = Utility.loopValue(currentRotation, 0, 360);
         //Figure out which default rotation is closest
         float closest = 360;
         for (int i = 0; i < rotations.Length; i++)
@@ -153,8 +147,9 @@ public class PlayerController : MonoBehaviour
             newRotationIndex = 0;
         }
         //Set rotation
-        Quaternion angle = Quaternion.AngleAxis(rotations[newRotationIndex], Vector3.forward);
-        transform.localRotation = angle;
+        float angle = rotations[newRotationIndex] + gravityRot;
+        angle = Utility.loopValue(angle, 0, 360);
+        transform.localEulerAngles = new Vector3(0, 0, angle);
     }
 
     private bool teleport(Vector3 targetPos)//targetPos is in world coordinations (NOT UI coordinates)

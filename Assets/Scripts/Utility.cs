@@ -20,6 +20,22 @@ public static class Utility  {
 
         return new Vector3(tx, ty);
     }
+    /// <summary>
+    /// Returns the angle of the given vector
+    /// 2017-04-18: copied from an answer by Sigil: http://webcache.googleusercontent.com/search?q=cache:http://answers.unity3d.com/questions/162177/vector2angles-direction.html&num=1&strip=1&vwsrc=0
+    /// </summary>
+    /// <param name="v"></param>
+    /// <param name="angle"></param>
+    public static float RotationZ(Vector3 v1, Vector3 v2)
+    {
+        float angle = Vector2.Angle(v1, v2);
+        Vector3 cross = Vector3.Cross(v1, v2);
+        if (cross.z > 0)
+        {
+            angle = 360 - angle;
+        }
+        return angle;
+    }
 
     public static Vector3 PerpendicularRight(Vector3 v)
     {
@@ -81,6 +97,26 @@ public static class Utility  {
             }
         }
         throw new UnityException("Object's raycast not found! This should not be possible!");
+    }
+    /// <summary>
+    /// Loops the value around until it falls in the range of [min, max]
+    /// </summary>
+    /// <param name="value"></param>
+    /// <param name="min"></param>
+    /// <param name="max"></param>
+    /// <returns></returns>
+    public static float loopValue(float value, float min, float max)
+    {
+        float diff = max - min;
+        while (value < min)
+        {
+            value += diff;
+        }
+        while (value > max)
+        {
+            value -= diff;
+        }
+        return value;
     }
     /// <summary>
     /// Returns the GestureAccepter of the GameObject at the given pos, if it exists

@@ -87,11 +87,11 @@ public class CrackedGroundChecker : SavableMonoBehaviour
         AudioSource.PlayClipAtPoint(breakSound, transform.position);
         if (secretHider != null)
         {
-            secretHider.AddComponent<Fader>();
+            secretHider.GetComponent<HiddenArea>().nowDiscovered();
         }
         if (secretHider2 != null)
         {
-            secretHider2.AddComponent<Fader>();
+            secretHider2.GetComponent<HiddenArea>().nowDiscovered();
         }
         if (rubble != null)
         {

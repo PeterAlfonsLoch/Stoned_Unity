@@ -3,6 +3,9 @@ using System.Collections;
 
 public class ShieldBubbleAbility : PlayerAbility
 {//2017-01-17: copied from ForceTeleportAbility
+
+    public const bool ALLOW_SHIELD_STACKING = true;//whether or not shields are allowed to intersect each other
+
     public GameObject shieldRangeIndicator;//prefab
     private TeleportRangeIndicatorUpdater sriu;//"shield range indicator updater"
     private GameObject srii;//"shield range indicator instance"
@@ -77,6 +80,10 @@ public class ShieldBubbleAbility : PlayerAbility
 
     public bool canSpawnShieldBubble(Vector2 pos, float range)
     {
+        if (ALLOW_SHIELD_STACKING)
+        {
+            return true;
+        }
         if (spawnDemos)
         {
             return true;

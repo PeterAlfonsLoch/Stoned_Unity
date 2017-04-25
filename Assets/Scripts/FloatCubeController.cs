@@ -52,7 +52,10 @@ public class FloatCubeController : MonoBehaviour
                 break;
             }
         }
-        float newY = Utility.convertToRange(propulsionHeight, MIN_FLOAT_HEIGHT, MAX_FLOAT_HEIGHT, -0.5f, 0.5f);
+        float newY = Utility.convertToRange(
+            Mathf.Min(propulsionHeight, MAX_FLOAT_HEIGHT),
+            MIN_FLOAT_HEIGHT, MAX_FLOAT_HEIGHT,
+            -0.5f, 0.5f);
         phi.transform.localPosition = new Vector2(phi.transform.localPosition.x, newY);
         //
         if (liftForce == 0)

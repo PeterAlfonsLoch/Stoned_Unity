@@ -83,6 +83,8 @@ public class SavableObject
                 return typeof(PoweredWallController);
             case "PowerCubeController":
                 return typeof(PowerCubeController);
+            case "ExplosionOrbController":
+                return typeof(ExplosionOrbController);
             default:
                 throw new KeyNotFoundException("The type name \"" + typeName + "\" was not found. It might not be a SavableMonoBehaviour or might not exist.");
         }

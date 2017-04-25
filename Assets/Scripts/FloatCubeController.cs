@@ -3,6 +3,8 @@ using System.Collections;
 
 public class FloatCubeController : MonoBehaviour
 {
+    public const float MAX_FLOAT_HEIGHT = 15.0f;//the max propulsion height, only for visual communication, not an enforced cap
+    public const float MIN_FLOAT_HEIGHT = 2.0f;//the min propulsion height, only for visual communication, not an enforced cap
 
     public GameObject switchObj;
     public GameObject psgoTrail;
@@ -40,6 +42,19 @@ public class FloatCubeController : MonoBehaviour
             psSparks.Pause();
             psSparks.Clear();
         }
+        //Propulsion Height Indicator
+        GameObject phi = null;
+        foreach (Transform t in GetComponentsInChildren<Transform>())
+        {
+            if (t.gameObject.name.Contains("indicator"))
+            {
+                phi = t.gameObject;
+                break;
+            }
+        }
+        float newY = Utility.convertToRange(propulsionHeight, MIN_FLOAT_HEIGHT, MAX_FLOAT_HEIGHT, -0.5f, 0.5f);
+        phi.transform.localPosition = new Vector2(phi.transform.localPosition.x, newY);
+        //
         if (liftForce == 0)
         {
             liftForce = rb.mass * expectedGravity;

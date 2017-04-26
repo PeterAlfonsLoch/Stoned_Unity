@@ -65,6 +65,9 @@ public class Fader : MonoBehaviour {
                     {
                         GameManager.destroyObject(gameObject);
                     }
+                    Transform tf = sr.gameObject.transform;
+                    float variance = 0.075f;
+                    tf.position = tf.position + Utility.PerpendicularRight(tf.up).normalized * Random.Range(-variance, variance);
                 }
                 if (o is CanvasRenderer)
                 {

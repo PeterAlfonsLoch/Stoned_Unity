@@ -28,7 +28,7 @@ public class HardMaterial : SavableMonoBehaviour {
         setIntegrity(integrity);
     }
 
-	void CollisionEnter2D(Collision2D coll)
+	void OnCollisionEnter2D(Collision2D coll)
     {
         HardMaterial hm = coll.gameObject.GetComponent<HardMaterial>();
         if (hm != null)

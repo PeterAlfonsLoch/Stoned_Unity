@@ -19876,6 +19876,48 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   dependsOnTeleportRange: 0
+--- !u!1001 &1699382760
+Prefab:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 4906332536162614, guid: 144b0957faeecea48b8b6798272d93eb, type: 2}
+      propertyPath: m_LocalPosition.x
+      value: 1.922
+      objectReference: {fileID: 0}
+    - target: {fileID: 4906332536162614, guid: 144b0957faeecea48b8b6798272d93eb, type: 2}
+      propertyPath: m_LocalPosition.y
+      value: -0.11
+      objectReference: {fileID: 0}
+    - target: {fileID: 4906332536162614, guid: 144b0957faeecea48b8b6798272d93eb, type: 2}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4906332536162614, guid: 144b0957faeecea48b8b6798272d93eb, type: 2}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4906332536162614, guid: 144b0957faeecea48b8b6798272d93eb, type: 2}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4906332536162614, guid: 144b0957faeecea48b8b6798272d93eb, type: 2}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4906332536162614, guid: 144b0957faeecea48b8b6798272d93eb, type: 2}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4906332536162614, guid: 144b0957faeecea48b8b6798272d93eb, type: 2}
+      propertyPath: m_RootOrder
+      value: 10
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_ParentPrefab: {fileID: 100100000, guid: 144b0957faeecea48b8b6798272d93eb, type: 2}
+  m_IsPrefabParent: 0
 --- !u!1 &1792176465
 GameObject:
   m_ObjectHideFlags: 0
@@ -20135,6 +20177,8 @@ MonoBehaviour:
   hardness: 1
   maxIntegrity: 100
   integrity: 0
+  crackedPrefab: {fileID: 1164755296733718, guid: 144b0957faeecea48b8b6798272d93eb,
+    type: 2}
   crackStages:
   - {fileID: 1363863459}
   - {fileID: 902355115}

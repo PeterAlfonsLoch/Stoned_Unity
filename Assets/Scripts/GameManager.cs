@@ -145,7 +145,7 @@ public class GameManager : MonoBehaviour
         refreshGameObjects();
         unloadedScene = s.name;
     }
-
+    public static void refresh() { instance.refreshGameObjects(); }
     public void refreshGameObjects()
     {
         gameObjects = new List<GameObject>();

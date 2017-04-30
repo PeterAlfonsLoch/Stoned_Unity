@@ -28,19 +28,23 @@ public class HardMaterial : SavableMonoBehaviour {
         setIntegrity(integrity);
     }
 
-	void OnCollisionEnter2D(Collision2D coll)
+    void OnCollisionEnter2D(Collision2D coll)
     {
         HardMaterial hm = coll.gameObject.GetComponent<HardMaterial>();
         if (hm != null)
         {
-            integrity -= hm.hardness / hardness * coll.relativeVelocity.magnitude;
-            setIntegrity(integrity);
+            addIntegrity(-1 * hm.hardness / hardness * coll.relativeVelocity.magnitude);
         }
+    }
+
+    public void addIntegrity(float addend)
+    {
+        setIntegrity(integrity + addend);
     }
 
     private void setIntegrity(float newIntegrity)
     {
-        integrity = newIntegrity;
+        integrity = Mathf.Clamp(newIntegrity, 0, maxIntegrity);
         if (integrity > 0) {
             float baseAlpha = 1.0f - (integrity / maxIntegrity);
             for (int i = 0; i < crackSprites.Count; i++)

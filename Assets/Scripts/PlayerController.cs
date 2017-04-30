@@ -41,6 +41,7 @@ public class PlayerController : MonoBehaviour
 
     private CameraController mainCamCtr;//the camera controller for the main camera
     private GestureManager gm;
+    private HardMaterial hm;
 
     private ForceTeleportAbility fta;
     private WallClimbAbility wca;
@@ -54,6 +55,7 @@ public class PlayerController : MonoBehaviour
         mainCamCtr = Camera.main.GetComponent<CameraController>();
         gm = GameObject.FindGameObjectWithTag("GestureManager").GetComponent<GestureManager>();
         halfWidth = GetComponent<SpriteRenderer>().bounds.extents.magnitude;
+        hm = GetComponent<HardMaterial>();
         fta = GetComponent<ForceTeleportAbility>();
         wca = GetComponent<WallClimbAbility>();
         sba = GetComponent<ShieldBubbleAbility>();
@@ -189,6 +191,8 @@ public class PlayerController : MonoBehaviour
                 }
             }
             teleportRangeParticalController.activateTeleportParticleSystem(true, 0);
+            //Health Regen
+            hm.addIntegrity(Vector2.Distance(oldPos,newPos));
             //Momentum Dampening
             if (rb2d.velocity.magnitude > 0.001f)//if Merky is moving
             {

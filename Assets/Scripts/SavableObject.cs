@@ -87,6 +87,8 @@ public class SavableObject
                 return typeof(ExplosionOrbController);
             case "HardMaterial":
                 return typeof(HardMaterial);
+            case "CrackedPiece":
+                return typeof(CrackedPiece);
             default:
                 throw new KeyNotFoundException("The type name \"" + typeName + "\" was not found. It might not be a SavableMonoBehaviour or might not exist.");
         }

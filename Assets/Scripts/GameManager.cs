@@ -243,6 +243,11 @@ public class GameManager : MonoBehaviour
         {
             if (!gameStates[gamestateId].hasGameObject(go))
             {
+                if (go == null)
+                {
+                    destroyObject(go);
+                    continue;
+                }
                 foreach (SavableMonoBehaviour smb in go.GetComponents<SavableMonoBehaviour>())
                 {
                     if (smb.isSpawnedObject())

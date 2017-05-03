@@ -20,7 +20,10 @@ public class HardMaterial : SavableMonoBehaviour {
         {
             crackSprites.Add(crackStage.GetComponent<SpriteRenderer>());
         }
-        integrity = maxIntegrity;
+        if (integrity == 0)
+        {
+            integrity = maxIntegrity;
+        }
     }
 
     void Update()
@@ -67,6 +70,7 @@ public class HardMaterial : SavableMonoBehaviour {
             pieces.transform.position = transform.position;
             pieces.transform.rotation = transform.rotation;
             pieces.transform.localScale = transform.localScale;
+            pieces.name += System.DateTime.Now.Ticks;
             GameManager.refresh();
             gameObject.SetActive(false);
         }

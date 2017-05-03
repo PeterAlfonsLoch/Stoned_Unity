@@ -22,14 +22,14 @@ public class HardMaterial : SavableMonoBehaviour {
         }
         if (integrity == 0)
         {
-            integrity = maxIntegrity;
+            setIntegrity(maxIntegrity);
         }
     }
 
-    void Update()
-    {
-        setIntegrity(integrity);
-    }
+    //void Update()
+    //{
+    //    setIntegrity(integrity);
+    //}
 
     void OnCollisionEnter2D(Collision2D coll)
     {
@@ -47,6 +47,7 @@ public class HardMaterial : SavableMonoBehaviour {
 
     private void setIntegrity(float newIntegrity)
     {
+        float oldIntegrity = integrity;
         integrity = Mathf.Clamp(newIntegrity, 0, maxIntegrity);
         if (integrity > 0) {
             float baseAlpha = 1.0f - (integrity / maxIntegrity);
@@ -64,7 +65,7 @@ public class HardMaterial : SavableMonoBehaviour {
             }
             gameObject.SetActive(true);
         }
-        else
+        else if (oldIntegrity > 0)
         {
             GameObject pieces = Instantiate(crackedPrefab);
             pieces.transform.position = transform.position;

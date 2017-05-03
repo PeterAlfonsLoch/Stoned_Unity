@@ -25,7 +25,7 @@ public class CheckPointChecker : MemoryMonoBehaviour
         {
             initializeGhost();
         }
-        player = GameObject.FindGameObjectWithTag("Player");
+        player = GameManager.getPlayerObject();
         plyrController = player.GetComponent<PlayerController>();
         if (checkpointCamera == null) {
             checkpointCamera = GameObject.Find("CP BG Camera").GetComponent<Camera>();

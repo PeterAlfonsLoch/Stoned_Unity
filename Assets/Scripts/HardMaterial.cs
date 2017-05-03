@@ -73,6 +73,7 @@ public class HardMaterial : SavableMonoBehaviour {
             pieces.name += System.DateTime.Now.Ticks;
             GameManager.refresh();
             gameObject.SetActive(false);
+            GameManager.saveScab();
         }
     }
 

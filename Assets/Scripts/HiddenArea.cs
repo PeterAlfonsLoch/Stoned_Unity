@@ -20,7 +20,7 @@ public class HiddenArea : MemoryMonoBehaviour {
     //2016-11-26: called when this HiddenArea had been discovered in a previous session
 	public void previouslyDiscovered()
     {
-        GameManager.destroyObject(gameObject);
+        Destroy(gameObject);
     }
 
     public override MemoryObject getMemoryObject()

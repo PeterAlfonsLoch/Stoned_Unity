@@ -203,7 +203,10 @@ public class GameManager : MonoBehaviour
             }
         }
     }
-
+    /// <summary>
+    /// Scab to fix issue #202 where pieces don't rewind unless they have a save point after them
+    /// </summary>
+    public static void saveScab(){instance.Save();}
     public void Save()
     {
         gameStates.Add(new GameState(gameObjects));

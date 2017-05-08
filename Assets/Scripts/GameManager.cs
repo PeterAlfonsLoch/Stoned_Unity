@@ -29,6 +29,7 @@ public class GameManager : MonoBehaviour
     private static GameManager instance;
     private static GameObject playerObject;//the player object
     private CameraController camCtr;
+    private GestureManager gestureManager;
     private float actionTime = 0;//used to determine how often to rewind
     private const float rewindDelay = 0.05f;//how much to delay each rewind transition by
     private List<string> newlyLoadedScenes = new List<string>();
@@ -47,6 +48,7 @@ public class GameManager : MonoBehaviour
         cam.pinPoint();
         cam.recenter();
         cam.refocus();
+        gestureManager = FindObjectOfType<GestureManager>();
         chosenId = -1;
         if (!demoBuild && ES2.Exists("merky.txt"))
         {
@@ -422,15 +424,16 @@ public class GameManager : MonoBehaviour
                 Rewind(final.id);
             }
         }
-        if (!playerObject.GetComponent<PlayerController>().isIntact())
-        {
-            camCtr.setScalePoint(camCtr.getScalePointIndex());
-            Rewind(chosenId - 2);//go back to the latest safe past merky
-        }
         if (camCtr.getScalePointIndex() > CameraController.SCALEPOINT_DEFAULT)
         {
             //leave this zoom level even if no past merky was chosen
             camCtr.setScalePoint(CameraController.SCALEPOINT_DEFAULT);
+        }
+        if (final == null && !playerObject.GetComponent<PlayerController>().isIntact())
+        {
+            hidePlayerGhosts();
+            gestureManager.currentGP = gestureManager.gestureProfiles["Main"];
+            Rewind(chosenId - 2);//go back to the latest safe past merky
         }
     }
 

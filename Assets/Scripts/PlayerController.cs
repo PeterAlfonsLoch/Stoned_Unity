@@ -56,6 +56,7 @@ public class PlayerController : MonoBehaviour
         gm = GameObject.FindGameObjectWithTag("GestureManager").GetComponent<GestureManager>();
         halfWidth = GetComponent<SpriteRenderer>().bounds.extents.magnitude;
         hm = GetComponent<HardMaterial>();
+        hm.shattered += shattered;
         fta = GetComponent<ForceTeleportAbility>();
         wca = GetComponent<WallClimbAbility>();
         sba = GetComponent<ShieldBubbleAbility>();
@@ -543,6 +544,19 @@ public class PlayerController : MonoBehaviour
             //}
         }
         return pos + moveDir;//not adjusted because there's nothing to adjust for
+    }
+
+    /// <summary>
+    /// Delegate method called when hm's integrity reaches 0
+    /// </summary>
+    private void shattered()
+    {
+        GameManager.showPlayerGhosts();
+        gm.currentGP = gm.gestureProfiles["Rewind"];
+    }
+    public bool isIntact()
+    {
+        return hm.isIntact();
     }
 
     public void setIsInCheckPoint(bool iicp)

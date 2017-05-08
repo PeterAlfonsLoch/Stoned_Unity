@@ -14,6 +14,8 @@ public class HardMaterial : SavableMonoBehaviour {
     public List<GameObject> crackStages;
     private List<SpriteRenderer> crackSprites = new List<SpriteRenderer>();
 
+    public Shattered shattered;
+
     void Start()
     {
         foreach (GameObject crackStage in crackStages)
@@ -38,6 +40,11 @@ public class HardMaterial : SavableMonoBehaviour {
         {
             addIntegrity(-1 * hm.hardness / hardness * coll.relativeVelocity.magnitude);
         }
+    }
+
+    public bool isIntact()
+    {
+        return integrity > 0;
     }
 
     public void addIntegrity(float addend)
@@ -77,6 +84,11 @@ public class HardMaterial : SavableMonoBehaviour {
             GameManager.saveScab();
         }
     }
+
+    /// <summary>
+    /// Gets called when integrity reaches 0
+    /// </summary>
+    public delegate void Shattered();
 
     public override SavableObject getSavableObject()
     {

@@ -42,6 +42,7 @@ public class CameraController : MonoBehaviour
     }
     ArrayList scalePoints = new ArrayList();
     int scalePointIndex = 1;//the index of the current scalePoint in scalePoints
+    public static int SCALEPOINT_DEFAULT = 2;//the index of the default scalepoint
 
     // Use this for initialization
     void Start()
@@ -213,10 +214,11 @@ public class CameraController : MonoBehaviour
         }
 
         //GestureProfile switcher
-        if (this.scalePointIndex == scalePoints.Count - 1)
+        if (this.scalePointIndex == scalePoints.Count - 1
+            || !plyrController.isIntact())
         {
             gm.currentGP = gm.gestureProfiles["Rewind"];
-            gameManager.showPlayerGhosts();
+            GameManager.showPlayerGhosts();
         }
         else
         {

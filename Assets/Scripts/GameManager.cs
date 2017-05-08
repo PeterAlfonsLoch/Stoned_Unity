@@ -375,11 +375,11 @@ public class GameManager : MonoBehaviour
         return (other.transform.position - playerObject.transform.position).sqrMagnitude <= range * range;
     }
 
-    public void showPlayerGhosts()
+    public static void showPlayerGhosts()
     {
-        foreach (GameState gs in gameStates)
+        foreach (GameState gs in instance.gameStates)
         {
-            gs.showRepresentation(playerGhost, chosenId);
+            gs.showRepresentation(instance.playerGhost, instance.chosenId);
         }
     }
     public void hidePlayerGhosts()
@@ -422,8 +422,16 @@ public class GameManager : MonoBehaviour
                 Rewind(final.id);
             }
         }
-        //leave this zoom level even if no past merky was chosen
-        camCtr.adjustScalePoint(-1);
+        if (!playerObject.GetComponent<PlayerController>().isIntact())
+        {
+            camCtr.setScalePoint(camCtr.getScalePointIndex());
+            Rewind(chosenId - 2);//go back to the latest safe past merky
+        }
+        if (camCtr.getScalePointIndex() > CameraController.SCALEPOINT_DEFAULT)
+        {
+            //leave this zoom level even if no past merky was chosen
+            camCtr.setScalePoint(CameraController.SCALEPOINT_DEFAULT);
+        }
     }
 
     /// <summary>

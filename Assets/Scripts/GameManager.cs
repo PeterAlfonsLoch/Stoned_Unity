@@ -261,6 +261,11 @@ public class GameManager : MonoBehaviour
         }
         //
         chosenId = gamestateId;
+        if (chosenId == rewindId)
+        {
+            //After rewind is finished, refresh the game object list
+            refreshGameObjects();
+        }
         gameStates[gamestateId].load();
         for (int i = gameStates.Count - 1; i > gamestateId; i--)
         {

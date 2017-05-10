@@ -13,12 +13,14 @@ public class EnemySimple : MonoBehaviour {
 
     private Rigidbody2D rb2d;
     private HardMaterial hm;
+    private GameObject player;
 
 	// Use this for initialization
 	void Start () {
         rb2d = GetComponent<Rigidbody2D>();
         hm = GetComponent<HardMaterial>();
         direction = Utility.PerpendicularLeft(transform.up).normalized;
+        player = GameManager.getPlayerObject();
 	}
 	
 	// Update is called once per frame
@@ -50,7 +52,9 @@ public class EnemySimple : MonoBehaviour {
                 healing = false;
             }
         }
-        if (senseInFront() == null)
+        if (senseInFront() == null //there's a cliff up ahead
+            && !Utility.lineOfSight(gameObject, player) //nothing between it and the player
+            )
         {
             switchDirection();
             rb2d.AddForce(rb2d.mass * direction * speed * 4);
@@ -81,7 +85,7 @@ public class EnemySimple : MonoBehaviour {
     GameObject senseInFront()
     {
         Vector2 ahead = direction * 2;
-        Vector2 senseDir = ahead -(Vector2)transform.up.normalized;
+        Vector2 senseDir = ahead - (Vector2)transform.up.normalized;
         Debug.DrawLine((Vector2)transform.position + ahead, senseDir + (Vector2)transform.position, Color.blue);
         RaycastHit2D rch2d = Physics2D.Raycast((Vector2)transform.position + ahead, -transform.up, 1);
         if (rch2d)
@@ -90,6 +94,4 @@ public class EnemySimple : MonoBehaviour {
         }
         return null;
     }
-
-
 }

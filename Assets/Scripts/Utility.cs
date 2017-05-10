@@ -99,6 +99,26 @@ public static class Utility  {
         throw new UnityException("Object's raycast not found! This should not be possible!");
     }
     /// <summary>
+    /// Determines whether the center of the first object has a direct line of sight to the center of the second object
+    /// </summary>
+    /// <param name="first"></param>
+    /// <param name="second"></param>
+    /// <returns></returns>
+    public static bool lineOfSight(GameObject first, GameObject second)
+    {
+        Vector2 pos1 = first.transform.position;
+        Vector2 pos2 = second.transform.position;
+        RaycastHit2D[] rch2ds = Physics2D.RaycastAll(pos1, pos2 - pos1, Vector2.Distance(pos1, pos2));
+        foreach (RaycastHit2D rch2d in rch2ds)
+        {
+            if (rch2d.collider.gameObject != first && rch2d.collider.gameObject != second)
+            {
+                return false;
+            }
+        }
+        return true;
+    }
+    /// <summary>
     /// Loops the value around until it falls in the range of [min, max]
     /// </summary>
     /// <param name="value"></param>

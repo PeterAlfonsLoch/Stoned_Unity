@@ -70,7 +70,6 @@ GameObject:
   - component: {fileID: 114868023342658016}
   - component: {fileID: 50296816695870928}
   - component: {fileID: 60724201114969290}
-  - component: {fileID: 61856466608559176}
   - component: {fileID: 114685017932111058}
   m_Layer: 0
   m_Name: enemy_diamondshell
@@ -217,7 +216,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1173338696982238}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 145.54825, y: 23.304787, z: 0}
+  m_LocalPosition: {x: 139.8, y: 65.78, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4593515911003390}
@@ -299,29 +298,16 @@ PolygonCollider2D:
       - {x: 0.4865036, y: -0.12572879}
       - {x: 0.655159, y: -0.2609014}
       - {x: 0.49147797, y: -0.290802}
-      - {x: 0.34200287, y: -0.23691157}
-      - {x: 0.03642273, y: -0.27043524}
-      - {x: -0.109443665, y: -0.19828145}
-      - {x: -0.3860016, y: -0.2862159}
-      - {x: -0.6272125, y: -0.2284047}
+      - {x: 0.31381226, y: -0.34033966}
+      - {x: 0.22729492, y: -0.43833923}
+      - {x: 0.06291199, y: -0.49297333}
+      - {x: -0.37438965, y: -0.5003128}
+      - {x: -0.52456665, y: -0.4406891}
+      - {x: -0.60324097, y: -0.33390808}
       - {x: -0.9067459, y: -0.27071607}
       - {x: -0.9312439, y: -0.23602489}
       - {x: -0.8976517, y: -0.13482574}
       - {x: -0.698822, y: 0.03844461}
---- !u!61 &61856466608559176
-BoxCollider2D:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1173338696982238}
-  m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_UsedByEffector: 0
-  m_Offset: {x: -0.163414, y: -0.36651742}
-  serializedVersion: 2
-  m_Size: {x: 1.0000153, y: 0.28564143}
 --- !u!95 &95063609987200634
 Animator:
   serializedVersion: 3
@@ -491,7 +477,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: 57970c07b68cfe4478eac6f8bae9b2bb, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 0}
   m_FlipX: 0
   m_FlipY: 0
 --- !u!212 &212385418430104524
@@ -526,7 +512,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: 2a1c6413d2f873a41b5dddc55df9483b, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 0}
   m_FlipX: 0
   m_FlipY: 0
 --- !u!212 &212524931809390022
@@ -631,6 +617,6 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: 0d317b06515798b45b71ec04dc2c40ce, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 0}
   m_FlipX: 0
   m_FlipY: 0

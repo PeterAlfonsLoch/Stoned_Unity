@@ -20134,7 +20134,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   hardness: 1
   maxIntegrity: 100
-  integrity: 0
+  integrity: 100
   crackedPrefab: {fileID: 1164755296733718, guid: 144b0957faeecea48b8b6798272d93eb,
     type: 2}
   crackStages:

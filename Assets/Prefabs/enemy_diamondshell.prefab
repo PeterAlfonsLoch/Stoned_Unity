@@ -370,7 +370,8 @@ MonoBehaviour:
   hardness: 2
   maxIntegrity: 100
   integrity: 100
-  crackedPrefab: {fileID: 0}
+  crackedPrefab: {fileID: 1937723452043942, guid: da6f1c0d1943b314b9aa1740de51488d,
+    type: 2}
   crackStages:
   - {fileID: 1804464292354928}
   - {fileID: 1507965442913440}
@@ -387,6 +388,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 8
+  healsPerSecond: 5
 --- !u!212 &212058947062618736
 SpriteRenderer:
   m_ObjectHideFlags: 1

@@ -82,8 +82,16 @@ public class HardMaterial : SavableMonoBehaviour {
             GameManager.refresh();
             gameObject.SetActive(false);
             GameManager.saveScab();
-            shattered();//call delegate method
+            if (shattered != null)
+            {
+                shattered();//call delegate method
+            }
         }
+    }
+
+    public float getIntegrity()
+    {
+        return integrity;
     }
 
     /// <summary>

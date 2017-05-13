@@ -386,14 +386,20 @@ public class GameManager : MonoBehaviour
     {
         foreach (GameState gs in instance.gameStates)
         {
-            gs.showRepresentation(instance.playerGhost, instance.chosenId);
+            if (gs.id != instance.chosenId || playerObject.GetComponent<PlayerController>().isIntact())
+            {//don't include last game state if merky is shattered
+                gs.showRepresentation(instance.playerGhost, instance.chosenId);
+            }
         }
     }
     public void hidePlayerGhosts()
     {
         foreach (GameState gs in gameStates)
         {
-            gs.hideRepresentation();
+            if (gs.id != instance.chosenId || playerObject.GetComponent<PlayerController>().isIntact())
+            {//don't include last game state if merky is shattered
+                gs.hideRepresentation();
+            }
         }
     }
     public void processTapGesture(Vector3 curMPWorld)
@@ -403,12 +409,16 @@ public class GameManager : MonoBehaviour
         GameState prevFinal = null;
         foreach (GameState gs in gameStates)
         {
-            if (gs.checkRepresentation(curMPWorld))
-            {
-                if (final == null || gs.id > final.id)//assuming the later ones have higher id values
+
+            if (gs.id != chosenId || playerObject.GetComponent<PlayerController>().isIntact())
+            {//don't include last game state if merky is shattered
+                if (gs.checkRepresentation(curMPWorld))
                 {
-                    prevFinal = final;//keep the second-to-latest one
-                    final = gs;//keep the latest one
+                    if (final == null || gs.id > final.id)//assuming the later ones have higher id values
+                    {
+                        prevFinal = final;//keep the second-to-latest one
+                        final = gs;//keep the latest one
+                    }
                 }
             }
         }

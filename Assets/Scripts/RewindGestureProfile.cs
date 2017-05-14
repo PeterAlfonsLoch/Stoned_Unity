@@ -3,6 +3,14 @@ using System.Collections;
 
 public class RewindGestureProfile: GestureProfile
 {
+    public override void activate()
+    {
+        GameManager.showPlayerGhosts();
+    }
+    public override void deactivate()
+    {
+        gm.hidePlayerGhosts();
+    }
     public override void processTapGesture(GameObject go)
     {
     }
@@ -26,7 +34,6 @@ public class RewindGestureProfile: GestureProfile
             && plrController.isIntact())
         {
             gestureManager.switchGestureProfile("Main");
-            gm.hidePlayerGhosts();
         }
     }
 }

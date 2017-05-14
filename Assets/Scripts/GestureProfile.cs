@@ -21,6 +21,15 @@ public class GestureProfile {
         gm = GameObject.FindObjectOfType<GameManager>();
         gestureManager = GameObject.FindObjectOfType<GestureManager>();
     }
+    /// <summary>
+    /// Called when this profile is set to the current one
+    /// </summary>
+    public virtual void activate() { }
+    /// <summary>
+    /// Called when the GestureManager switches off this profile to a different one
+    /// </summary>
+    public virtual void deactivate() { }
+
     public virtual void processTapGesture(GameObject go)
     {
         plrController.processTapGesture(go);
@@ -67,7 +76,6 @@ public class GestureProfile {
         if (cmaController.getScalePointIndex() == CameraController.SCALEPOINT_TIMEREWIND)
         {
             gestureManager.switchGestureProfile("Rewind");
-            GameManager.showPlayerGhosts();
         }
     }
 }

@@ -420,6 +420,11 @@ public class GestureManager : SavableMonoBehaviour
     /// <param name="gpName">The name of the GestureProfile</param>
     public void switchGestureProfile(string gpName)
     {
+        //Deactivate current
+        currentGP.deactivate();
+        //Switch from current to new
         currentGP = gestureProfiles[gpName];
+        //Activate new
+        currentGP.activate();
     }
 }

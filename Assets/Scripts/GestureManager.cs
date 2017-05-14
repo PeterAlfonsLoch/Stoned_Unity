@@ -324,11 +324,11 @@ public class GestureManager : SavableMonoBehaviour
                 //
                 if (Input.GetAxis("Mouse ScrollWheel") < 0)
                 {
-                    cmaController.adjustScalePoint(1);
+                    currentGP.processPinchGesture(1);
                 }
                 else if (Input.GetAxis("Mouse ScrollWheel") > 0)
                 {
-                    cmaController.adjustScalePoint(-1);
+                    currentGP.processPinchGesture(-1);
                 }
                 //
                 //Pinch Touch Zoom
@@ -355,7 +355,7 @@ public class GestureManager : SavableMonoBehaviour
                     deltaMagnitudeQuo *= (int)Mathf.Sign(prevTouchDeltaMag - touchDeltaMag);
 
                     //Update the camera's scale point index
-                    cmaController.setScalePoint(origScalePoint + deltaMagnitudeQuo);
+                    currentGP.processPinchGesture(origScalePoint + deltaMagnitudeQuo - cmaController.getScalePointIndex());
                 }
             }
             else if (clickState == ClickState.Ended)

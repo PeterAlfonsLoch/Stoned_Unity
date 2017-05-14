@@ -18,4 +18,15 @@ public class RewindGestureProfile: GestureProfile
             GameObject.FindObjectOfType<GestureManager>().adjustHoldThreshold(holdTime);
         }
     }
+    public override void processPinchGesture(int adjustment)
+    {
+        cmaController.adjustScalePoint(adjustment);
+        //GestureProfile switcher
+        if (cmaController.getScalePointIndex() < CameraController.SCALEPOINT_TIMEREWIND
+            && plrController.isIntact())
+        {
+            gestureManager.currentGP = gestureManager.gestureProfiles["Main"];
+            gm.hidePlayerGhosts();
+        }
+    }
 }

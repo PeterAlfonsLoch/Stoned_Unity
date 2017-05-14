@@ -424,7 +424,6 @@ public class GameManager : MonoBehaviour
         }
         if (final != null)
         {
-            hidePlayerGhosts();
             if (final.id == chosenId)
             {
                 if (prevFinal != null)
@@ -439,16 +438,16 @@ public class GameManager : MonoBehaviour
                 Rewind(final.id);
             }
         }
+        else if (!playerObject.GetComponent<PlayerController>().isIntact())
+        {
+            Rewind(chosenId - 2);//go back to the latest safe past merky
+        }
+        hidePlayerGhosts();
+        gestureManager.currentGP = gestureManager.gestureProfiles["Main"];
         if (camCtr.getScalePointIndex() > CameraController.SCALEPOINT_DEFAULT)
         {
             //leave this zoom level even if no past merky was chosen
             camCtr.setScalePoint(CameraController.SCALEPOINT_DEFAULT);
-        }
-        if (final == null && !playerObject.GetComponent<PlayerController>().isIntact())
-        {
-            hidePlayerGhosts();
-            gestureManager.currentGP = gestureManager.gestureProfiles["Main"];
-            Rewind(chosenId - 2);//go back to the latest safe past merky
         }
     }
 

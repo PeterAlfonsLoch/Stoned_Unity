@@ -552,7 +552,7 @@ public class PlayerController : MonoBehaviour
     private void shattered()
     {
         GameManager.showPlayerGhosts();
-        gm.currentGP = gm.gestureProfiles["Rewind"];
+        gm.switchGestureProfile("Rewind");
     }
     public bool isIntact()
     {

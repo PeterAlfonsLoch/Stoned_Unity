@@ -17,8 +17,8 @@ public class GestureManager : SavableMonoBehaviour
     public float orthoZoomSpeed = 0.5f;
 
     //Gesture Profiles
-    public GestureProfile currentGP;//the current gesture profile
-    public Dictionary<string, GestureProfile> gestureProfiles = new Dictionary<string, GestureProfile>();//dict of valid gesture profiles
+    private GestureProfile currentGP;//the current gesture profile
+    private Dictionary<string, GestureProfile> gestureProfiles = new Dictionary<string, GestureProfile>();//dict of valid gesture profiles
 
     //Original Positions
     private Vector3 origMP;//"original mouse position": the mouse position at the last mouse down (or tap down) event
@@ -413,5 +413,13 @@ public class GestureManager : SavableMonoBehaviour
     public float getHoldThreshold()
     {
         return holdThreshold * holdThresholdScale;
+    }
+    /// <summary>
+    /// Switches the gesture profile to the profile with the given name
+    /// </summary>
+    /// <param name="gpName">The name of the GestureProfile</param>
+    public void switchGestureProfile(string gpName)
+    {
+        currentGP = gestureProfiles[gpName];
     }
 }

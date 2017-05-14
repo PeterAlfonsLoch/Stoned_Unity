@@ -443,7 +443,7 @@ public class GameManager : MonoBehaviour
             Rewind(chosenId - 2);//go back to the latest safe past merky
         }
         hidePlayerGhosts();
-        gestureManager.currentGP = gestureManager.gestureProfiles["Main"];
+        gestureManager.switchGestureProfile("Main");
         if (camCtr.getScalePointIndex() > CameraController.SCALEPOINT_DEFAULT)
         {
             //leave this zoom level even if no past merky was chosen

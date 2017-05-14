@@ -25,7 +25,7 @@ public class RewindGestureProfile: GestureProfile
         if (cmaController.getScalePointIndex() < CameraController.SCALEPOINT_TIMEREWIND
             && plrController.isIntact())
         {
-            gestureManager.currentGP = gestureManager.gestureProfiles["Main"];
+            gestureManager.switchGestureProfile("Main");
             gm.hidePlayerGhosts();
         }
     }

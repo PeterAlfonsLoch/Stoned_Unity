@@ -66,7 +66,7 @@ public class GestureProfile {
         //GestureProfile switcher
         if (cmaController.getScalePointIndex() == CameraController.SCALEPOINT_TIMEREWIND)
         {
-            gestureManager.currentGP = gestureManager.gestureProfiles["Rewind"];
+            gestureManager.switchGestureProfile("Rewind");
             GameManager.showPlayerGhosts();
         }
     }

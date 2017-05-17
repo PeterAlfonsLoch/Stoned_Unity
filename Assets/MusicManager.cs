@@ -11,6 +11,8 @@ public class MusicManager : MonoBehaviour {
     private AudioSource currentSong;//the current song that is playing
     private AudioSource prevSong;//the previous song that was playing
 
+    [Range(0.0f,1.0f)]
+    public float maxVolume = 0.7f;//the loudest it should be
     public float fadeTime = 2.0f;//how long it should take to fade in or out
     private float fadeSpeed = 0;//how fast it fades in or out (determined by fadeTime)
     private bool lockCurrentSong = false;//true to keep the song from being set
@@ -24,6 +26,7 @@ public class MusicManager : MonoBehaviour {
 	void Update () {
 		if (fadeSpeed != 0)
         {
+            bool finished = true;
             float shift = fadeSpeed * Time.deltaTime;
             currentSong.volume += shift;
             if (prevSong)
@@ -33,8 +36,20 @@ public class MusicManager : MonoBehaviour {
                 {
                     prevSong.Stop();
                 }
+                else
+                {
+                    finished = false;
+                }
             }
-            else if (currentSong.volume >= 1)
+            else if (currentSong.volume < maxVolume)
+            {
+                finished = false;
+            }
+            if (currentSong.volume > maxVolume)
+            {
+                currentSong.volume = maxVolume;
+            }
+            if (finished)
             {
                 fadeSpeed = 0;
             }

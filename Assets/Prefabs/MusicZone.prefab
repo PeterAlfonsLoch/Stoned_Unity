@@ -22,7 +22,7 @@ GameObject:
   - component: {fileID: 61746825506427466}
   - component: {fileID: 114102595860343554}
   - component: {fileID: 82086711282736910}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: MusicZone
   m_TagString: Untagged
   m_Icon: {fileID: 0}

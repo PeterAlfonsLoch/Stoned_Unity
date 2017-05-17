@@ -33,6 +33,7 @@ public class GameManager : MonoBehaviour
     private float actionTime = 0;//used to determine how often to rewind
     private const float rewindDelay = 0.05f;//how much to delay each rewind transition by
     private List<string> newlyLoadedScenes = new List<string>();
+    private int loadedSceneCount = 0;
     private string unloadedScene = null;
 
     // Use this for initialization
@@ -123,6 +124,7 @@ public class GameManager : MonoBehaviour
             foreach (string s in newlyLoadedScenes)
             {
                 LoadObjectsFromScene(SceneManager.GetSceneByName(s));
+                loadedSceneCount++;
             }
             newlyLoadedScenes.Clear();
         }
@@ -131,7 +133,7 @@ public class GameManager : MonoBehaviour
             refreshGameObjects();
             unloadedScene = null;
         }
-        if (gameStates.Count == 0)
+        if (gameStates.Count == 0 && loadedSceneCount > 0)
         {
             Save();
         }
@@ -146,6 +148,7 @@ public class GameManager : MonoBehaviour
     {
         refreshGameObjects();
         unloadedScene = s.name;
+        loadedSceneCount--;
     }
     public static void refresh() { instance.refreshGameObjects(); }
     public void refreshGameObjects()
@@ -409,7 +412,6 @@ public class GameManager : MonoBehaviour
         GameState prevFinal = null;
         foreach (GameState gs in gameStates)
         {
-
             if (gs.id != chosenId || playerObject.GetComponent<PlayerController>().isIntact())
             {//don't include last game state if merky is shattered
                 if (gs.checkRepresentation(curMPWorld))

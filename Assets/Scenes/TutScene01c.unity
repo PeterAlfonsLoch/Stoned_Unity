@@ -24767,12 +24767,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 1750110851749486, guid: 4048dbf658258ce418e036b46091b68c, type: 2}
       propertyPath: m_Name
-      value: ' Music Zone Cavern'
-      objectReference: {fileID: 0}
-    - target: {fileID: 82086711282736910, guid: 4048dbf658258ce418e036b46091b68c,
-        type: 2}
-      propertyPath: Priority
-      value: 256
+      value: Music Zone Cavern
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 4048dbf658258ce418e036b46091b68c, type: 2}

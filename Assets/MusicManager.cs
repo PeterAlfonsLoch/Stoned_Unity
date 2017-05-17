@@ -13,6 +13,7 @@ public class MusicManager : MonoBehaviour {
 
     public float fadeTime = 2.0f;//how long it should take to fade in or out
     private float fadeSpeed = 0;//how fast it fades in or out (determined by fadeTime)
+    private bool lockCurrentSong = false;//true to keep the song from being set
 
     // Use this for initialization
     void Start () {
@@ -31,7 +32,6 @@ public class MusicManager : MonoBehaviour {
                 if (prevSong.volume <= 0)
                 {
                     prevSong.Stop();
-                    fadeSpeed = 0;
                 }
             }
             else if (currentSong.volume >= 1)
@@ -43,13 +43,27 @@ public class MusicManager : MonoBehaviour {
 
     public void setCurrentSong(AudioSource newSong)
     {
-        if (newSong != currentSong)
+        if (newSong != currentSong && !lockCurrentSong)
         {
             prevSong = currentSong;
             currentSong = newSong;
             currentSong.volume = 0;
             currentSong.Play();
             fadeSpeed = 1.0f / fadeTime;
+        }
+    }
+
+    public void setEventSong(AudioSource newSong)
+    {
+        setCurrentSong(newSong);
+        lockCurrentSong = true;
+    }
+    public void endEventSong(AudioSource song)
+    {
+        if (song == currentSong)
+        {
+            lockCurrentSong = false;
+            setCurrentSong(prevSong);
         }
     }
 }

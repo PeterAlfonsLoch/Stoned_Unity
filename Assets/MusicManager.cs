@@ -58,13 +58,20 @@ public class MusicManager : MonoBehaviour {
 
     public void setCurrentSong(AudioSource newSong)
     {
-        if (newSong != currentSong && !lockCurrentSong)
+        if (newSong != currentSong)
         {
-            prevSong = currentSong;
-            currentSong = newSong;
-            currentSong.volume = 0;
-            currentSong.Play();
-            fadeSpeed = 1.0f / fadeTime;
+            if (!lockCurrentSong)
+            {
+                prevSong = currentSong;
+                currentSong = newSong;
+                currentSong.volume = 0;
+                currentSong.Play();
+                fadeSpeed = 1.0f / fadeTime;
+            }
+            else
+            {
+                prevSong = newSong;
+            }
         }
     }
 

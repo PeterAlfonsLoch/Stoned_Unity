@@ -5,6 +5,8 @@ using UnityEngine;
 
 public class HardMaterial : SavableMonoBehaviour {
 
+    public static float MINIMUM_CRACKSOUND_THRESHOLD = 1.0f;//the minimum percent of damage done to make a sound
+
     public float hardness = 1.0f;
     public float maxIntegrity = 100f;
     [Range(0,100)]
@@ -13,6 +15,7 @@ public class HardMaterial : SavableMonoBehaviour {
     public GameObject crackedPrefab;//the prefab for the object broken into pieces
     public List<GameObject> crackStages;
     private List<SpriteRenderer> crackSprites = new List<SpriteRenderer>();
+    public List<AudioClip> crackSounds;
 
     public Shattered shattered;
 
@@ -38,7 +41,22 @@ public class HardMaterial : SavableMonoBehaviour {
         HardMaterial hm = coll.gameObject.GetComponent<HardMaterial>();
         if (hm != null)
         {
-            addIntegrity(-1 * hm.hardness / hardness * coll.relativeVelocity.magnitude);
+            float hitHardness = hm.hardness / hardness * coll.relativeVelocity.magnitude;
+            addIntegrity(-1 * hitHardness);
+            float hitPercentage = hitHardness * 100 / maxIntegrity;
+            for (int i = crackSounds.Count - 1; i >= 0; i--)
+            {
+                float crackThreshold = 100 / (crackSprites.Count + 1 - i);
+                if (i == 0)
+                {
+                    crackThreshold = MINIMUM_CRACKSOUND_THRESHOLD;
+                }
+                if (hitPercentage > crackThreshold)
+                {
+                    AudioSource.PlayClipAtPoint(crackSounds[i], coll.contacts[0].point);
+                    break;
+                }
+            }
         }
     }
 

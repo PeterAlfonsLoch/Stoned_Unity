@@ -20241,6 +20241,10 @@ MonoBehaviour:
   - {fileID: 1363863459}
   - {fileID: 902355115}
   - {fileID: 408598912}
+  crackSounds:
+  - {fileID: 8300000, guid: 8616065873e7eb642ab0dfbe37df1067, type: 3}
+  - {fileID: 8300000, guid: 346a5e70b45559446b0ed9474af050f3, type: 3}
+  - {fileID: 8300000, guid: 00e3fe6beabc955488cea1630b600673, type: 3}
 --- !u!1 &1950273296
 GameObject:
   m_ObjectHideFlags: 0

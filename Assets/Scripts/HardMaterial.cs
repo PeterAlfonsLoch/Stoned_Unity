@@ -46,14 +46,14 @@ public class HardMaterial : SavableMonoBehaviour {
             float hitPercentage = hitHardness * 100 / maxIntegrity;
             for (int i = crackSounds.Count - 1; i >= 0; i--)
             {
-                float crackThreshold = 100 / (crackSprites.Count + 1 - i);
+                float crackThreshold = 100 / (crackSprites.Count + 1 - i) - 20;
                 if (i == 0)
                 {
                     crackThreshold = MINIMUM_CRACKSOUND_THRESHOLD;
                 }
                 if (hitPercentage > crackThreshold)
                 {
-                    AudioSource.PlayClipAtPoint(crackSounds[i], coll.contacts[0].point);
+                    AudioSource.PlayClipAtPoint(crackSounds[i], coll.contacts[0].point,hitPercentage/400+0.75f);
                     break;
                 }
             }

@@ -466,19 +466,22 @@ public class GameManager : MonoBehaviour
     {
         if (talking)
         {
-            instance.musicManager.setQuiet(true);
             instance.npcTalkEffect.transform.position = npc.transform.position;
             if (!instance.npcTalkEffect.GetComponent<ParticleSystem>().isPlaying)
             {
                 instance.npcTalkEffect.GetComponent<ParticleSystem>().Play();
             }
-            lastTalkingNPC = npc;
+            if (lastTalkingNPC != npc)
+            {
+                lastTalkingNPC = npc;
+                instance.musicManager.setQuiet(true);
+            }
         }
         else
         {
-            instance.musicManager.setQuiet(false);
             if (npc == lastTalkingNPC)
             {
+                instance.musicManager.setQuiet(false);
                 instance.npcTalkEffect.GetComponent<ParticleSystem>().Stop();
             }
         }

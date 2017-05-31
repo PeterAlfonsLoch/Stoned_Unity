@@ -216,7 +216,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1173338696982238}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 125.39, y: -4.53, z: 0}
+  m_LocalPosition: {x: 102.67, y: -2.78, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4593515911003390}
@@ -362,6 +362,10 @@ MonoBehaviour:
   - {fileID: 1804464292354928}
   - {fileID: 1507965442913440}
   - {fileID: 1059946764189184}
+  crackSounds:
+  - {fileID: 8300000, guid: 8616065873e7eb642ab0dfbe37df1067, type: 3}
+  - {fileID: 8300000, guid: 346a5e70b45559446b0ed9474af050f3, type: 3}
+  - {fileID: 8300000, guid: 00e3fe6beabc955488cea1630b600673, type: 3}
 --- !u!114 &114868023342658016
 MonoBehaviour:
   m_ObjectHideFlags: 1

@@ -15,6 +15,7 @@ public class GameManager : MonoBehaviour
     public int amount = 0;
     public GameObject playerGhost;//this is to show Merky in the past (prefab)
     public GameObject npcTalkEffect;//the particle system for the visual part of NPC talking
+    public AudioSource timeRewindMusic;//the music to play while time rewinds
     private static GameObject lastTalkingNPC;//the last NPC to talk
     private int rewindId = 0;//the id to eventually load back to
     private List<GameState> gameStates = new List<GameState>();
@@ -30,9 +31,11 @@ public class GameManager : MonoBehaviour
     private static GameObject playerObject;//the player object
     private CameraController camCtr;
     private GestureManager gestureManager;
+    private MusicManager musicManager;
     private float actionTime = 0;//used to determine how often to rewind
     private const float rewindDelay = 0.05f;//how much to delay each rewind transition by
     private List<string> newlyLoadedScenes = new List<string>();
+    private int loadedSceneCount = 0;
     private string unloadedScene = null;
 
     // Use this for initialization
@@ -49,6 +52,7 @@ public class GameManager : MonoBehaviour
         cam.recenter();
         cam.refocus();
         gestureManager = FindObjectOfType<GestureManager>();
+        musicManager = FindObjectOfType<MusicManager>();
         chosenId = -1;
         if (!demoBuild && ES2.Exists("merky.txt"))
         {
@@ -123,6 +127,7 @@ public class GameManager : MonoBehaviour
             foreach (string s in newlyLoadedScenes)
             {
                 LoadObjectsFromScene(SceneManager.GetSceneByName(s));
+                loadedSceneCount++;
             }
             newlyLoadedScenes.Clear();
         }
@@ -131,7 +136,7 @@ public class GameManager : MonoBehaviour
             refreshGameObjects();
             unloadedScene = null;
         }
-        if (gameStates.Count == 0)
+        if (gameStates.Count == 0 && loadedSceneCount > 0)
         {
             Save();
         }
@@ -146,6 +151,7 @@ public class GameManager : MonoBehaviour
     {
         refreshGameObjects();
         unloadedScene = s.name;
+        loadedSceneCount--;
     }
     public static void refresh() { instance.refreshGameObjects(); }
     public void refreshGameObjects()
@@ -265,6 +271,7 @@ public class GameManager : MonoBehaviour
         {
             //After rewind is finished, refresh the game object list
             refreshGameObjects();
+            musicManager.endEventSong(timeRewindMusic);
         }
         gameStates[gamestateId].load();
         for (int i = gameStates.Count - 1; i > gamestateId; i--)
@@ -307,6 +314,7 @@ public class GameManager : MonoBehaviour
     }
     void Rewind(int gamestateId)//rewinds one state at a time
     {
+        musicManager.setEventSong(timeRewindMusic);
         rewindId = gamestateId;
     }
     void LoadMemories()
@@ -409,7 +417,6 @@ public class GameManager : MonoBehaviour
         GameState prevFinal = null;
         foreach (GameState gs in gameStates)
         {
-
             if (gs.id != chosenId || playerObject.GetComponent<PlayerController>().isIntact())
             {//don't include last game state if merky is shattered
                 if (gs.checkRepresentation(curMPWorld))
@@ -464,12 +471,17 @@ public class GameManager : MonoBehaviour
             {
                 instance.npcTalkEffect.GetComponent<ParticleSystem>().Play();
             }
-            lastTalkingNPC = npc;
+            if (lastTalkingNPC != npc)
+            {
+                lastTalkingNPC = npc;
+                instance.musicManager.setQuiet(true);
+            }
         }
         else
         {
             if (npc == lastTalkingNPC)
             {
+                instance.musicManager.setQuiet(false);
                 instance.npcTalkEffect.GetComponent<ParticleSystem>().Stop();
             }
         }

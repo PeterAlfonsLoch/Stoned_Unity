@@ -17,6 +17,9 @@ public class MusicManager : MonoBehaviour {
     private float fadeSpeed = 0;//how fast it fades in or out (determined by fadeTime)
     private bool lockCurrentSong = false;//true to keep the song from being set
 
+    [Range(0, 1)]
+    public float quietVolumeScaling = 0.5f;//the scale for when it should be quieter
+    private float volumeScaling = 1.0f;//how much to scale the volume by (gets reduced when song should be quieter)
     // Use this for initialization
     void Start () {
 		
@@ -28,10 +31,10 @@ public class MusicManager : MonoBehaviour {
         {
             bool finished = true;
             float shift = fadeSpeed * Time.deltaTime;
-            currentSong.volume += shift;
+            currentSong.volume += shift * volumeScaling;
             if (prevSong)
             {
-                prevSong.volume -= shift;
+                prevSong.volume -= shift * volumeScaling;
                 if (prevSong.volume <= 0)
                 {
                     prevSong.Stop();
@@ -47,7 +50,7 @@ public class MusicManager : MonoBehaviour {
             }
             if (currentSong.volume > maxVolume)
             {
-                currentSong.volume = maxVolume;
+                currentSong.volume = maxVolume * volumeScaling;
             }
             if (finished)
             {
@@ -64,7 +67,7 @@ public class MusicManager : MonoBehaviour {
             {
                 prevSong = currentSong;
                 currentSong = newSong;
-                currentSong.volume = 0;
+                currentSong.volume = 0 * volumeScaling;
                 currentSong.Play();
                 fadeSpeed = 1.0f / fadeTime;
             }
@@ -86,6 +89,33 @@ public class MusicManager : MonoBehaviour {
         {
             lockCurrentSong = false;
             setCurrentSong(prevSong);
+        }
+    }
+    /// <summary>
+    /// Sets it quieter than usual if true, regular volume if false
+    /// </summary>
+    /// <param name="quiet"></param>
+    public void setQuiet(bool quiet)
+    {
+        if (quiet)
+        {
+            setVolumeScale(volumeScaling, quietVolumeScaling);
+        }
+        else
+        {
+            setVolumeScale(volumeScaling, 1.0f);
+        }
+    }
+    void setVolumeScale(float oldVolScale, float newVolScale)
+    {
+        volumeScaling = newVolScale;
+        if (currentSong)
+        {
+            currentSong.volume = currentSong.volume * newVolScale / oldVolScale;
+        }
+        if (prevSong)
+        {
+            prevSong.volume = prevSong.volume * newVolScale / oldVolScale;
         }
     }
 }

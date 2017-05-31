@@ -466,6 +466,7 @@ public class GameManager : MonoBehaviour
     {
         if (talking)
         {
+            instance.musicManager.setQuiet(true);
             instance.npcTalkEffect.transform.position = npc.transform.position;
             if (!instance.npcTalkEffect.GetComponent<ParticleSystem>().isPlaying)
             {
@@ -475,6 +476,7 @@ public class GameManager : MonoBehaviour
         }
         else
         {
+            instance.musicManager.setQuiet(false);
             if (npc == lastTalkingNPC)
             {
                 instance.npcTalkEffect.GetComponent<ParticleSystem>().Stop();

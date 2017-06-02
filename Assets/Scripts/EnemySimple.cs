@@ -9,11 +9,15 @@ public class EnemySimple : MonoBehaviour
     public float healsPerSecond = 5.0f;
 
     private Vector2 direction = Vector2.left;
+    private bool goingRight = true;//whether the bug is going right relative to its orientation
     private float maxSpeedReached = 0;//highest speed reached since starting in this direction
     private bool healing = false;
+    private static RaycastHit2D[] rch2ds = new RaycastHit2D[10];//for processing collider casts
 
     private Rigidbody2D rb2d;
     private HardMaterial hm;
+    private BoxCollider2D groundCollider;//collider used to see if the enemy is touching the ground
+    private GravityAccepter gravity;
     private GameObject player;
 
     // Use this for initialization
@@ -21,6 +25,8 @@ public class EnemySimple : MonoBehaviour
     {
         rb2d = GetComponent<Rigidbody2D>();
         hm = GetComponent<HardMaterial>();
+        groundCollider = GetComponent<BoxCollider2D>();
+        gravity = GetComponent<GravityAccepter>();
         direction = Utility.PerpendicularLeft(transform.up).normalized;
         player = GameManager.getPlayerObject();
     }
@@ -28,23 +34,34 @@ public class EnemySimple : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        float tempSpeed = speed;
-        if (rb2d.velocity.magnitude < speed / 4)
+        if (isGrounded())
         {
-            tempSpeed *= speed * 2;
-        }
-        if (hm.getIntegrity() < hm.maxIntegrity / 4 || healing)
-        {
-            healing = true;
-            tempSpeed = 0;
-        }
-        if (tempSpeed > 0)
-        {
-            rb2d.AddForce(rb2d.mass * direction * tempSpeed);
-        }
-        if (rb2d.velocity.magnitude > maxSpeedReached)
-        {
-            maxSpeedReached = rb2d.velocity.magnitude;
+            float tempSpeed = speed;
+            if (rb2d.velocity.magnitude < speed / 4)
+            {
+                tempSpeed *= speed * 2;
+            }
+            if (hm.getIntegrity() < hm.maxIntegrity / 4 || healing)
+            {
+                healing = true;
+                tempSpeed = 0;
+            }
+            if (tempSpeed > 0)
+            {
+                rb2d.AddForce(rb2d.mass * direction * tempSpeed);
+            }
+            if (rb2d.velocity.magnitude > maxSpeedReached)
+            {
+                maxSpeedReached = rb2d.velocity.magnitude;
+            }
+            //Cliff detection
+            if (senseInFront() == null //there's a cliff up ahead
+                && !Utility.lineOfSight(gameObject, player) //nothing between it and the player
+                )
+            {
+                switchDirection();
+                rb2d.AddForce(rb2d.mass * direction * rb2d.velocity.magnitude * 4);
+            }
         }
         if (rb2d.velocity.magnitude < 0.1f)
         {
@@ -54,13 +71,6 @@ public class EnemySimple : MonoBehaviour
             {
                 healing = false;
             }
-        }
-        if (senseInFront() == null //there's a cliff up ahead
-            && !Utility.lineOfSight(gameObject, player) //nothing between it and the player
-            )
-        {
-            switchDirection();
-            rb2d.AddForce(rb2d.mass * direction * speed * 4);
         }
     }
 
@@ -82,7 +92,15 @@ public class EnemySimple : MonoBehaviour
     void switchDirection()
     {
         maxSpeedReached = 0;
-        direction *= -1;
+        goingRight = !goingRight;
+        if (goingRight)
+        {
+            direction = Utility.PerpendicularRight(transform.up).normalized;
+        }
+        else
+        {
+            direction = Utility.PerpendicularLeft(transform.up).normalized;
+        }
     }
 
     GameObject senseInFront()
@@ -96,5 +114,25 @@ public class EnemySimple : MonoBehaviour
             return rch2d.collider.gameObject;
         }
         return null;
+    }
+
+    /// <summary>
+    /// Returns true IFF the bottom is touching the ground
+    /// </summary>
+    /// <returns></returns>
+    bool isGrounded()
+    {
+        int amount = groundCollider.Cast(-transform.up, rch2ds,0,true);
+        for (int i = 0; i < amount; i++)
+        {
+            RaycastHit2D rch2d = rch2ds[i];
+            if (rch2d
+                && !rch2d.collider.isTrigger
+                && rch2d.collider.gameObject != gameObject)
+            {
+                return true;
+            }
+        }
+        return false;
     }
 }

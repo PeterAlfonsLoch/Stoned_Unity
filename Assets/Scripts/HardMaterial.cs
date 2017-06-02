@@ -29,6 +29,10 @@ public class HardMaterial : SavableMonoBehaviour {
         {
             setIntegrity(maxIntegrity);
         }
+        else
+        {//show cracks from the start
+            setIntegrity(integrity);
+        }
     }
 
     //void Update()

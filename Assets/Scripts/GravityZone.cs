@@ -31,9 +31,13 @@ public class GravityZone : MonoBehaviour
                     Vector3 vector = gravityVector * rb2d.mass;
                     rb2d.AddForce(vector);
                     //Tell the player where gravity is
-                    if (mainGravityZone && c2d.gameObject.tag == "Player")
+                    if (mainGravityZone)
                     {
-                        GameManager.getPlayerObject().GetComponent<PlayerController>().setGravityVector(this.gravityVector);
+                        GravityAccepter ga = c2d.gameObject.GetComponent<GravityAccepter>();
+                        if (ga != null)
+                        {
+                            ga.Gravity = this.gravityVector;
+                        }
                     }
                 }
             }

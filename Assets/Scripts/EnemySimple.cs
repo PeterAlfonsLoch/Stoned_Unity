@@ -70,7 +70,7 @@ public class EnemySimple : MonoBehaviour {
     }
     void OnTriggerEnter2D(Collider2D coll)
     {
-        if (coll.gameObject.GetComponent<Rigidbody2D>() == null)
+        if (!coll.isTrigger && coll.gameObject.GetComponent<Rigidbody2D>() == null)
         {
             switchDirection();
         }

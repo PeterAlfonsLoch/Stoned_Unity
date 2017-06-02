@@ -8,7 +8,8 @@ public class GravityZone : MonoBehaviour
     private PolygonCollider2D coll;
     public float gravityScale = 9.81f;
     public bool mainGravityZone = true;//true to change camera angle, false to not
-    private Vector3 gravityVector;
+    private Vector2 gravityVector;
+    private List<Rigidbody2D> tenants = new List<Rigidbody2D>();//the list of colliders in this zone
 
     // Use this for initialization
     void Start()
@@ -17,24 +18,47 @@ public class GravityZone : MonoBehaviour
         gravityVector = -transform.up.normalized * gravityScale;
     }
 
+    void OnTriggerEnter2D(Collider2D coll)
+    {
+        if (!coll.isTrigger)
+        {
+            Rigidbody2D rb2d = coll.gameObject.GetComponent<Rigidbody2D>();
+            if (rb2d != null)
+            {
+                tenants.Add(rb2d);
+            }
+        }
+    }
+    void OnTriggerExit2D(Collider2D coll)
+    {
+        if (!coll.isTrigger)
+        {
+            Rigidbody2D rb2d = coll.gameObject.GetComponent<Rigidbody2D>();
+            if (rb2d != null)
+            {
+                tenants.Remove(coll.gameObject.GetComponent<Rigidbody2D>());
+            }
+        }
+    }
     void FixedUpdate()
     {
-        List<Collider2D> c2ds = new List<Collider2D>();
-        c2ds = GameManager.gravityColliderList;
-        foreach (Collider2D c2d in c2ds)
+        bool cleanNeeded = false;
+        foreach (Rigidbody2D rb2d in tenants)
         {
-            if (c2d!=null && (!ReferenceEquals(c2d, null)) && coll.OverlapPoint(c2d.bounds.center))
+            if (rb2d == null || ReferenceEquals(rb2d, null))
             {
-                if (!ReferenceEquals(c2d.gameObject, null))
+                cleanNeeded = true;
+                continue;
+            }
+            Vector3 vector = gravityVector * rb2d.mass;
+            rb2d.AddForce(vector);
+            //Inform the gravity accepters
+            if (mainGravityZone)
+            {
+                GravityAccepter ga = rb2d.gameObject.GetComponent<GravityAccepter>();
+                if (ga != null)
                 {
-                    Rigidbody2D rb2d = c2d.gameObject.GetComponent<Rigidbody2D>();
-                    Vector3 vector = gravityVector * rb2d.mass;
-                    rb2d.AddForce(vector);
-                    //Tell the player where gravity is
-                    if (mainGravityZone && c2d.gameObject.tag == "Player")
-                    {
-                        GameManager.getPlayerObject().GetComponent<PlayerController>().setGravityVector(this.gravityVector);
-                    }
+                    ga.Gravity = this.gravityVector;
                 }
             }
         }
@@ -42,9 +66,19 @@ public class GravityZone : MonoBehaviour
         if (mainGravityZone && Camera.main.transform.rotation != transform.rotation)
         {
             //Check to see if Merky is in this GravityZone
-            if (coll.OverlapPoint(GameManager.getPlayerObject().GetComponent<PolygonCollider2D>().bounds.center))
+            if (GameManager.getPlayerObject().GetComponent<GravityAccepter>().Gravity == gravityVector)
             {
                 Camera.main.GetComponent<CameraController>().setRotation(transform.rotation);
+            }
+        }
+        if (cleanNeeded)
+        {
+            for (int i = tenants.Count - 1; i >= 0; i--)
+            {
+                if (tenants[i] == null || ReferenceEquals(tenants[i], null))
+                {
+                    tenants.RemoveAt(i);
+                }
             }
         }
     }

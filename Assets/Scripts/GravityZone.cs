@@ -42,9 +42,14 @@ public class GravityZone : MonoBehaviour
     }
     void FixedUpdate()
     {
+        bool cleanNeeded = false;
         foreach (Rigidbody2D rb2d in tenants)
         {
+            if (rb2d == null || ReferenceEquals(rb2d, null))
             {
+                cleanNeeded = true;
+                continue;
+            }
             Vector3 vector = gravityVector * rb2d.mass;
             rb2d.AddForce(vector);
             //Inform the gravity accepters
@@ -64,6 +69,16 @@ public class GravityZone : MonoBehaviour
             if (GameManager.getPlayerObject().GetComponent<GravityAccepter>().Gravity == gravityVector)
             {
                 Camera.main.GetComponent<CameraController>().setRotation(transform.rotation);
+            }
+        }
+        if (cleanNeeded)
+        {
+            for (int i = tenants.Count - 1; i >= 0; i--)
+            {
+                if (tenants[i] == null || ReferenceEquals(tenants[i], null))
+                {
+                    tenants.RemoveAt(i);
+                }
             }
         }
     }

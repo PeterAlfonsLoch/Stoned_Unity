@@ -3154,7 +3154,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 111254, guid: 8eb4ed9bb79bb4247b0cbfea87b4ca60, type: 2}
       propertyPath: m_Name
-      value: boulder (55)
+      value: S6 - boulder (55)
       objectReference: {fileID: 0}
     - target: {fileID: 499288, guid: 8eb4ed9bb79bb4247b0cbfea87b4ca60, type: 2}
       propertyPath: m_LocalScale.x
@@ -4653,7 +4653,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 111254, guid: 8eb4ed9bb79bb4247b0cbfea87b4ca60, type: 2}
       propertyPath: m_Name
-      value: boulder (47)
+      value: S6 - boulder (47)
       objectReference: {fileID: 0}
     - target: {fileID: 499288, guid: 8eb4ed9bb79bb4247b0cbfea87b4ca60, type: 2}
       propertyPath: m_LocalScale.x
@@ -4790,7 +4790,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 111254, guid: 8eb4ed9bb79bb4247b0cbfea87b4ca60, type: 2}
       propertyPath: m_Name
-      value: boulder (62)
+      value: S6 - boulder (62)
       objectReference: {fileID: 0}
     - target: {fileID: 499288, guid: 8eb4ed9bb79bb4247b0cbfea87b4ca60, type: 2}
       propertyPath: m_LocalScale.x
@@ -5457,7 +5457,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 111254, guid: 8eb4ed9bb79bb4247b0cbfea87b4ca60, type: 2}
       propertyPath: m_Name
-      value: boulder (51)
+      value: S6 - boulder (51)
       objectReference: {fileID: 0}
     - target: {fileID: 499288, guid: 8eb4ed9bb79bb4247b0cbfea87b4ca60, type: 2}
       propertyPath: m_LocalScale.x
@@ -7348,7 +7348,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 111254, guid: 8eb4ed9bb79bb4247b0cbfea87b4ca60, type: 2}
       propertyPath: m_Name
-      value: boulder (54)
+      value: H2 - boulder (54)
       objectReference: {fileID: 0}
     - target: {fileID: 499288, guid: 8eb4ed9bb79bb4247b0cbfea87b4ca60, type: 2}
       propertyPath: m_LocalScale.x
@@ -7760,6 +7760,10 @@ Prefab:
     - target: {fileID: 1356683684757672, guid: cda3f93391b21d64ca3c01fcd6a78574, type: 2}
       propertyPath: m_Name
       value: HideableArea House2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1292661922402866, guid: cda3f93391b21d64ca3c01fcd6a78574, type: 2}
+      propertyPath: m_Name
+      value: wall_house_unicorn_door_obstacle
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: cda3f93391b21d64ca3c01fcd6a78574, type: 2}
@@ -8273,6 +8277,10 @@ Prefab:
     - target: {fileID: 1356683684757672, guid: cda3f93391b21d64ca3c01fcd6a78574, type: 2}
       propertyPath: m_Name
       value: HideableArea1 House
+      objectReference: {fileID: 0}
+    - target: {fileID: 1292661922402866, guid: cda3f93391b21d64ca3c01fcd6a78574, type: 2}
+      propertyPath: m_Name
+      value: wall_house_unicorn_door_exit
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: cda3f93391b21d64ca3c01fcd6a78574, type: 2}
@@ -9471,7 +9479,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 111254, guid: 8eb4ed9bb79bb4247b0cbfea87b4ca60, type: 2}
       propertyPath: m_Name
-      value: boulder (50)
+      value: S6 - boulder (50)
       objectReference: {fileID: 0}
     - target: {fileID: 499288, guid: 8eb4ed9bb79bb4247b0cbfea87b4ca60, type: 2}
       propertyPath: m_LocalScale.x
@@ -10523,7 +10531,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 111254, guid: 8eb4ed9bb79bb4247b0cbfea87b4ca60, type: 2}
       propertyPath: m_Name
-      value: boulder (44)
+      value: S6 - boulder (44)
       objectReference: {fileID: 0}
     - target: {fileID: 499288, guid: 8eb4ed9bb79bb4247b0cbfea87b4ca60, type: 2}
       propertyPath: m_LocalScale.x
@@ -11420,7 +11428,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 111254, guid: 8eb4ed9bb79bb4247b0cbfea87b4ca60, type: 2}
       propertyPath: m_Name
-      value: boulder (66)
+      value: S6 - boulder (66)
       objectReference: {fileID: 0}
     - target: {fileID: 499288, guid: 8eb4ed9bb79bb4247b0cbfea87b4ca60, type: 2}
       propertyPath: m_LocalScale.x
@@ -12420,7 +12428,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 111254, guid: 8eb4ed9bb79bb4247b0cbfea87b4ca60, type: 2}
       propertyPath: m_Name
-      value: boulder (60)
+      value: S6 - boulder (60)
       objectReference: {fileID: 0}
     - target: {fileID: 499288, guid: 8eb4ed9bb79bb4247b0cbfea87b4ca60, type: 2}
       propertyPath: m_LocalScale.x
@@ -12926,7 +12934,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 111254, guid: 8eb4ed9bb79bb4247b0cbfea87b4ca60, type: 2}
       propertyPath: m_Name
-      value: boulder (45)
+      value: S6 - boulder (45)
       objectReference: {fileID: 0}
     - target: {fileID: 499288, guid: 8eb4ed9bb79bb4247b0cbfea87b4ca60, type: 2}
       propertyPath: m_LocalScale.x
@@ -15384,6 +15392,10 @@ Prefab:
       propertyPath: m_Name
       value: HideableArea HOuse3
       objectReference: {fileID: 0}
+    - target: {fileID: 1292661922402866, guid: cda3f93391b21d64ca3c01fcd6a78574, type: 2}
+      propertyPath: m_Name
+      value: wall_house_unicorn_door_secret
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: cda3f93391b21d64ca3c01fcd6a78574, type: 2}
   m_IsPrefabParent: 0
@@ -15811,7 +15823,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 111254, guid: 8eb4ed9bb79bb4247b0cbfea87b4ca60, type: 2}
       propertyPath: m_Name
-      value: boulder (61)
+      value: S6 - boulder (61)
       objectReference: {fileID: 0}
     - target: {fileID: 499288, guid: 8eb4ed9bb79bb4247b0cbfea87b4ca60, type: 2}
       propertyPath: m_LocalScale.x
@@ -15882,7 +15894,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 111254, guid: 8eb4ed9bb79bb4247b0cbfea87b4ca60, type: 2}
       propertyPath: m_Name
-      value: boulder (58)
+      value: S6 - boulder (58)
       objectReference: {fileID: 0}
     - target: {fileID: 499288, guid: 8eb4ed9bb79bb4247b0cbfea87b4ca60, type: 2}
       propertyPath: m_LocalScale.x
@@ -17590,7 +17602,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 111254, guid: 8eb4ed9bb79bb4247b0cbfea87b4ca60, type: 2}
       propertyPath: m_Name
-      value: boulder (59)
+      value: S6 - boulder (59)
       objectReference: {fileID: 0}
     - target: {fileID: 499288, guid: 8eb4ed9bb79bb4247b0cbfea87b4ca60, type: 2}
       propertyPath: m_LocalScale.x
@@ -18127,7 +18139,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 111254, guid: 8eb4ed9bb79bb4247b0cbfea87b4ca60, type: 2}
       propertyPath: m_Name
-      value: boulder (54)
+      value: H4 - boulder (54)
       objectReference: {fileID: 0}
     - target: {fileID: 499288, guid: 8eb4ed9bb79bb4247b0cbfea87b4ca60, type: 2}
       propertyPath: m_LocalScale.x
@@ -18254,7 +18266,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 111254, guid: 8eb4ed9bb79bb4247b0cbfea87b4ca60, type: 2}
       propertyPath: m_Name
-      value: boulder (63)
+      value: S6 - boulder (63)
       objectReference: {fileID: 0}
     - target: {fileID: 499288, guid: 8eb4ed9bb79bb4247b0cbfea87b4ca60, type: 2}
       propertyPath: m_LocalScale.x
@@ -22155,7 +22167,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 111254, guid: 8eb4ed9bb79bb4247b0cbfea87b4ca60, type: 2}
       propertyPath: m_Name
-      value: boulder (46)
+      value: S6 - boulder (46)
       objectReference: {fileID: 0}
     - target: {fileID: 499288, guid: 8eb4ed9bb79bb4247b0cbfea87b4ca60, type: 2}
       propertyPath: m_LocalScale.x
@@ -22290,7 +22302,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 111254, guid: 8eb4ed9bb79bb4247b0cbfea87b4ca60, type: 2}
       propertyPath: m_Name
-      value: boulder (42)
+      value: S6 - boulder (42)
       objectReference: {fileID: 0}
     - target: {fileID: 499288, guid: 8eb4ed9bb79bb4247b0cbfea87b4ca60, type: 2}
       propertyPath: m_LocalScale.x
@@ -23088,7 +23100,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 111254, guid: 8eb4ed9bb79bb4247b0cbfea87b4ca60, type: 2}
       propertyPath: m_Name
-      value: boulder (49)
+      value: S6 - boulder (49)
       objectReference: {fileID: 0}
     - target: {fileID: 499288, guid: 8eb4ed9bb79bb4247b0cbfea87b4ca60, type: 2}
       propertyPath: m_LocalScale.x
@@ -23562,7 +23574,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 111254, guid: 8eb4ed9bb79bb4247b0cbfea87b4ca60, type: 2}
       propertyPath: m_Name
-      value: boulder (48)
+      value: S6 - boulder (48)
       objectReference: {fileID: 0}
     - target: {fileID: 499288, guid: 8eb4ed9bb79bb4247b0cbfea87b4ca60, type: 2}
       propertyPath: m_LocalScale.x
@@ -25081,7 +25093,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 111254, guid: 8eb4ed9bb79bb4247b0cbfea87b4ca60, type: 2}
       propertyPath: m_Name
-      value: boulder (54)
+      value: S6 - boulder (54)
       objectReference: {fileID: 0}
     - target: {fileID: 499288, guid: 8eb4ed9bb79bb4247b0cbfea87b4ca60, type: 2}
       propertyPath: m_LocalScale.x
@@ -25602,7 +25614,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 111254, guid: 8eb4ed9bb79bb4247b0cbfea87b4ca60, type: 2}
       propertyPath: m_Name
-      value: boulder (43)
+      value: S6 - boulder (43)
       objectReference: {fileID: 0}
     - target: {fileID: 499288, guid: 8eb4ed9bb79bb4247b0cbfea87b4ca60, type: 2}
       propertyPath: m_LocalScale.x
@@ -25808,7 +25820,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 111254, guid: 8eb4ed9bb79bb4247b0cbfea87b4ca60, type: 2}
       propertyPath: m_Name
-      value: boulder (57)
+      value: S6 - boulder (57)
       objectReference: {fileID: 0}
     - target: {fileID: 499288, guid: 8eb4ed9bb79bb4247b0cbfea87b4ca60, type: 2}
       propertyPath: m_LocalScale.x
@@ -26849,7 +26861,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 111254, guid: 8eb4ed9bb79bb4247b0cbfea87b4ca60, type: 2}
       propertyPath: m_Name
-      value: boulder (52)
+      value: S6 - boulder (52)
       objectReference: {fileID: 0}
     - target: {fileID: 499288, guid: 8eb4ed9bb79bb4247b0cbfea87b4ca60, type: 2}
       propertyPath: m_LocalScale.x
@@ -27668,6 +27680,10 @@ Prefab:
       propertyPath: m_Name
       value: HideableArea House 4
       objectReference: {fileID: 0}
+    - target: {fileID: 1292661922402866, guid: cda3f93391b21d64ca3c01fcd6a78574, type: 2}
+      propertyPath: m_Name
+      value: wall_house_unicorn_door_lab
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: cda3f93391b21d64ca3c01fcd6a78574, type: 2}
   m_IsPrefabParent: 0
@@ -28401,7 +28417,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 111254, guid: 8eb4ed9bb79bb4247b0cbfea87b4ca60, type: 2}
       propertyPath: m_Name
-      value: boulder (65)
+      value: S6 - boulder (65)
       objectReference: {fileID: 0}
     - target: {fileID: 499288, guid: 8eb4ed9bb79bb4247b0cbfea87b4ca60, type: 2}
       propertyPath: m_LocalScale.x
@@ -28755,7 +28771,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 111254, guid: 8eb4ed9bb79bb4247b0cbfea87b4ca60, type: 2}
       propertyPath: m_Name
-      value: boulder (53)
+      value: S6 - boulder (53)
       objectReference: {fileID: 0}
     - target: {fileID: 499288, guid: 8eb4ed9bb79bb4247b0cbfea87b4ca60, type: 2}
       propertyPath: m_LocalScale.x
@@ -30026,7 +30042,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 111254, guid: 8eb4ed9bb79bb4247b0cbfea87b4ca60, type: 2}
       propertyPath: m_Name
-      value: boulder (56)
+      value: S6 - boulder (56)
       objectReference: {fileID: 0}
     - target: {fileID: 499288, guid: 8eb4ed9bb79bb4247b0cbfea87b4ca60, type: 2}
       propertyPath: m_LocalScale.x
@@ -30283,7 +30299,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 111254, guid: 8eb4ed9bb79bb4247b0cbfea87b4ca60, type: 2}
       propertyPath: m_Name
-      value: boulder (64)
+      value: S6 - boulder (64)
       objectReference: {fileID: 0}
     - target: {fileID: 499288, guid: 8eb4ed9bb79bb4247b0cbfea87b4ca60, type: 2}
       propertyPath: m_LocalScale.x

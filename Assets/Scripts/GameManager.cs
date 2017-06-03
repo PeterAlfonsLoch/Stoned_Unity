@@ -93,6 +93,13 @@ public class GameManager : MonoBehaviour
     public static void removeObject(GameObject go)
     {
         instance.gameObjects.Remove(go);
+        if (go && go.transform.childCount > 0)
+        {
+            foreach(Transform t in go.transform)
+            {
+                instance.gameObjects.Remove(t.gameObject);
+            }
+        }
     }
 
     // Update is called once per frame

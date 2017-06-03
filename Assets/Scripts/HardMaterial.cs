@@ -103,7 +103,12 @@ public class HardMaterial : SavableMonoBehaviour {
                 pieces.transform.position = transform.position;
                 pieces.transform.rotation = transform.rotation;
                 pieces.transform.localScale = transform.localScale;
-                pieces.name += System.DateTime.Now.Ticks;
+                string tag = ""+System.DateTime.Now.Ticks;
+                pieces.name += tag;
+                foreach(Transform t in pieces.transform)
+                {
+                    t.gameObject.name += tag;
+                }
                 GameManager.refresh();
                 alreadyBroken = true;
             }

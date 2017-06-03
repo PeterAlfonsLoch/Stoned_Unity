@@ -12,6 +12,7 @@ public class HardMaterial : SavableMonoBehaviour {
     [Range(0,100)]
     [SerializeField]
     private float integrity;//how intact it is. Material breaks apart when it reaches 0
+    private bool alreadyBroken = false;//used to determine if pieces should spawn or not
     public GameObject crackedPrefab;//the prefab for the object broken into pieces
     public List<GameObject> crackStages;
     private List<SpriteRenderer> crackSprites = new List<SpriteRenderer>();
@@ -96,14 +97,17 @@ public class HardMaterial : SavableMonoBehaviour {
         }
         else if (oldIntegrity > 0)
         {
-            GameObject pieces = Instantiate(crackedPrefab);
-            pieces.transform.position = transform.position;
-            pieces.transform.rotation = transform.rotation;
-            pieces.transform.localScale = transform.localScale;
-            pieces.name += System.DateTime.Now.Ticks;
-            GameManager.refresh();
+            if (!alreadyBroken)
+            {
+                GameObject pieces = Instantiate(crackedPrefab);
+                pieces.transform.position = transform.position;
+                pieces.transform.rotation = transform.rotation;
+                pieces.transform.localScale = transform.localScale;
+                pieces.name += System.DateTime.Now.Ticks;
+                GameManager.refresh();
+                alreadyBroken = true;
+            }
             gameObject.SetActive(false);
-            GameManager.saveScab();
             if (shattered != null)
             {
                 shattered();//call delegate method
@@ -123,11 +127,12 @@ public class HardMaterial : SavableMonoBehaviour {
 
     public override SavableObject getSavableObject()
     {
-        return new SavableObject(this, "integrity", integrity);
+        return new SavableObject(this, "integrity", integrity, "alreadyBroken", alreadyBroken);
     }
     public override void acceptSavableObject(SavableObject savObj)
     {
         integrity = (float)savObj.data["integrity"];
+        alreadyBroken = (bool)savObj.data["alreadyBroken"];
         setIntegrity(integrity);
     }
 }

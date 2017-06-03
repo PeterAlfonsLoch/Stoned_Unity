@@ -21,7 +21,6 @@ public class GameManager : MonoBehaviour
     private List<GameState> gameStates = new List<GameState>();
     private List<SceneLoader> sceneLoaders = new List<SceneLoader>();
     private List<GameObject> gameObjects = new List<GameObject>();
-    public static List<Collider2D> gravityColliderList = new List<Collider2D>();
     //Memories
     private List<MemoryObject> memories = new List<MemoryObject>();
     //Checkpoints
@@ -157,32 +156,9 @@ public class GameManager : MonoBehaviour
     public void refreshGameObjects()
     {
         gameObjects = new List<GameObject>();
-        gravityColliderList = new List<Collider2D>();
         foreach (Rigidbody2D rb in FindObjectsOfType<Rigidbody2D>())
         {
-            gameObjects.Add(rb.gameObject);
-            GameObject go = rb.gameObject;
-            Collider2D coll = go.GetComponent<PolygonCollider2D>();
-            if (coll != null)
-            {
-                gravityColliderList.Add(coll);
-            }
-            else {
-                coll = go.GetComponent<BoxCollider2D>();
-                if (coll != null)
-                {
-                    gravityColliderList.Add(coll);
-                }
-                else {
-                    coll = go.GetComponent<CircleCollider2D>();
-                    if (coll != null)
-                    {
-                        gravityColliderList.Add(coll);
-                    }
-                    else {
-                    }
-                }
-            }
+            gameObjects.Add(rb.gameObject);      
         }
         //Debug.Log("GM Collider List: " + gravityColliderList.Count);
         foreach (SavableMonoBehaviour smb in FindObjectsOfType<SavableMonoBehaviour>())

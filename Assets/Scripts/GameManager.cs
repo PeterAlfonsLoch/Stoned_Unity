@@ -226,8 +226,9 @@ public class GameManager : MonoBehaviour
     {
         //Destroy objects not spawned yet in the new selected state
         //chosenId is the previous current gamestate, which is in the future compared to gamestateId
-        foreach (GameObject go in gameStates[chosenId].getGameObjects())
+        for (int i = gameObjects.Count - 1; i > 0; i--)
         {
+            GameObject go = gameObjects[i];
             if (!gameStates[gamestateId].hasGameObject(go))
             {
                 if (go == null)

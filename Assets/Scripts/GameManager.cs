@@ -291,6 +291,7 @@ public class GameManager : MonoBehaviour
     public void cancelRewind()
     {
         rewindId = chosenId;
+        musicManager.endEventSong(timeRewindMusic);
     }
     void Rewind(int gamestateId)//rewinds one state at a time
     {

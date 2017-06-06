@@ -7,6 +7,7 @@ public class EnemySimple : MonoBehaviour
 
     public float speed = 1.0f;//units per second
     public float healsPerSecond = 5.0f;
+    public bool activeMove = false;//controls whether it can move or not
 
     private Vector2 direction = Vector2.left;
     private bool goingRight = true;//whether the bug is going right relative to its orientation
@@ -34,7 +35,7 @@ public class EnemySimple : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (isGrounded())
+        if (activeMove && isGrounded())
         {
             float tempSpeed = speed;
             if (rb2d.velocity.magnitude < speed / 4)
@@ -55,12 +56,13 @@ public class EnemySimple : MonoBehaviour
                 maxSpeedReached = rb2d.velocity.magnitude;
             }
             //Cliff detection
-            if (senseInFront() == null //there's a cliff up ahead
-                && !Utility.lineOfSight(gameObject, player) //nothing between it and the player
-                )
+            if (senseInFront() == null) //there's a cliff up ahead
             {
-                switchDirection();
-                rb2d.AddForce(rb2d.mass * direction * rb2d.velocity.magnitude * 4);
+                if (!Utility.lineOfSight(gameObject, player)) //nothing between it and the player
+                {
+                    switchDirection();
+                    rb2d.AddForce(rb2d.mass * direction * rb2d.velocity.magnitude * 4);
+                }
             }
         }
         if (rb2d.velocity.magnitude < 0.1f)

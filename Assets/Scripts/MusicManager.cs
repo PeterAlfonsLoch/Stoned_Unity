@@ -14,7 +14,8 @@ public class MusicManager : MonoBehaviour {
     [Range(0.0f,1.0f)]
     public float maxVolume = 0.7f;//the loudest it should be
     public float fadeTime = 2.0f;//how long it should take to fade in or out
-    private float fadeSpeed = 0;//how fast it fades in or out (determined by fadeTime)
+    public float eventFadeTime = 0.1f;//how long it takes to fade into and out of event songs
+    private float fadeSpeed = 0;//how fast it fades in or out (determined by fadeTime)    
     private bool lockCurrentSong = false;//true to keep the song from being set
 
     [Range(0, 1)]
@@ -81,6 +82,7 @@ public class MusicManager : MonoBehaviour {
     public void setEventSong(AudioSource newSong)
     {
         setCurrentSong(newSong);
+        fadeSpeed = 1.0f / eventFadeTime;
         lockCurrentSong = true;
     }
     public void endEventSong(AudioSource song)
@@ -89,6 +91,7 @@ public class MusicManager : MonoBehaviour {
         {
             lockCurrentSong = false;
             setCurrentSong(prevSong);
+            fadeSpeed = 1.0f / eventFadeTime;
         }
     }
     /// <summary>

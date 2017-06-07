@@ -1309,7 +1309,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1128537886809e74aa580c28186da36e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  secretHider: {fileID: 0}
+  secretHider: {fileID: 1771461493}
 --- !u!61 &49533072
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -5902,6 +5902,10 @@ Prefab:
     - target: {fileID: 1601795323856448, guid: 57be3babe57518c4bbde05cf4e021848, type: 2}
       propertyPath: m_Name
       value: House_Stable 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1437008530334802, guid: 57be3babe57518c4bbde05cf4e021848, type: 2}
+      propertyPath: m_Name
+      value: door Stable 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 57be3babe57518c4bbde05cf4e021848, type: 2}
@@ -13629,6 +13633,10 @@ Prefab:
       propertyPath: m_Name
       value: HA House Stable 2
       objectReference: {fileID: 0}
+    - target: {fileID: 1437008530334802, guid: 57be3babe57518c4bbde05cf4e021848, type: 2}
+      propertyPath: m_Name
+      value: door Stable 2
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 57be3babe57518c4bbde05cf4e021848, type: 2}
   m_IsPrefabParent: 0
@@ -14994,6 +15002,10 @@ Prefab:
     - target: {fileID: 1912812441731528, guid: 57be3babe57518c4bbde05cf4e021848, type: 2}
       propertyPath: m_Name
       value: HA House Stable 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 1437008530334802, guid: 57be3babe57518c4bbde05cf4e021848, type: 2}
+      propertyPath: m_Name
+      value: door Stable 4
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 57be3babe57518c4bbde05cf4e021848, type: 2}
@@ -23326,6 +23338,10 @@ Prefab:
       propertyPath: m_Name
       value: silo 1
       objectReference: {fileID: 0}
+    - target: {fileID: 1115348221702892, guid: ea3c5f3deef49894986841072bf414ea, type: 2}
+      propertyPath: m_Name
+      value: vent Silo 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: ea3c5f3deef49894986841072bf414ea, type: 2}
   m_IsPrefabParent: 0
@@ -29180,6 +29196,10 @@ Prefab:
     - target: {fileID: 1316320332574912, guid: ea3c5f3deef49894986841072bf414ea, type: 2}
       propertyPath: m_Name
       value: HA Silo 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1115348221702892, guid: ea3c5f3deef49894986841072bf414ea, type: 2}
+      propertyPath: m_Name
+      value: vent Silo 2
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: ea3c5f3deef49894986841072bf414ea, type: 2}

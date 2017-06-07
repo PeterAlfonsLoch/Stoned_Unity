@@ -27,11 +27,10 @@ public class PlayerController : MonoBehaviour
     private bool shouldGrantGIT = false;//whether or not to grant gravity immunity, true after teleport
     private Rigidbody2D rb2d;
     private PolygonCollider2D pc2d;
+    private GravityAccepter gravity;
     private Vector2 savedVelocity;
     private float savedAngularVelocity;
     private bool velocityNeedsReloaded = false;//because you can't set a Vector2 to null, using this to see when the velocity needs reloaded
-    private Vector3 gravityVector = new Vector3(0, 0);//the direction of gravity pull (for calculating grounded state)
-    private Vector3 sideVector = new Vector3(0, 0);//the direction perpendicular to the gravity direction (for calculating grounded state)
     private float halfWidth = 0;//half of Merky's sprite width
 
     private bool inCheckPoint = false;//whether or not the player is inside a checkpoint
@@ -41,6 +40,7 @@ public class PlayerController : MonoBehaviour
 
     private CameraController mainCamCtr;//the camera controller for the main camera
     private GestureManager gm;
+    private HardMaterial hm;
 
     private ForceTeleportAbility fta;
     private WallClimbAbility wca;
@@ -51,9 +51,12 @@ public class PlayerController : MonoBehaviour
     {
         rb2d = GetComponent<Rigidbody2D>();
         pc2d = GetComponent<PolygonCollider2D>();
+        gravity = GetComponent<GravityAccepter>();
         mainCamCtr = Camera.main.GetComponent<CameraController>();
         gm = GameObject.FindGameObjectWithTag("GestureManager").GetComponent<GestureManager>();
         halfWidth = GetComponent<SpriteRenderer>().bounds.extents.magnitude;
+        hm = GetComponent<HardMaterial>();
+        hm.shattered += shattered;
         fta = GetComponent<ForceTeleportAbility>();
         wca = GetComponent<WallClimbAbility>();
         sba = GetComponent<ShieldBubbleAbility>();
@@ -125,7 +128,7 @@ public class PlayerController : MonoBehaviour
     {
         int closestRotationIndex = 0;
         //Figure out current rotation
-        float gravityRot = Utility.RotationZ(gravityVector, Vector3.down);
+        float gravityRot = Utility.RotationZ(gravity.Gravity, Vector3.down);
         float currentRotation = transform.localEulerAngles.z - gravityRot;
         currentRotation = Utility.loopValue(currentRotation, 0, 360);
         //Figure out which default rotation is closest
@@ -167,7 +170,7 @@ public class PlayerController : MonoBehaviour
             if (airPorts > maxAirPorts)
             {
                 //2017-03-06: copied from https://docs.unity3d.com/Manual/AmountVectorMagnitudeInAnotherDirection.html
-                float upAmount = Vector3.Dot((targetPos - transform.position).normalized, -gravityVector.normalized);
+                float upAmount = Vector3.Dot((targetPos - transform.position).normalized, -gravity.Gravity.normalized);
                 teleportTime = Time.time + exhaustCoolDownTime * upAmount;
             }
             //Get new position
@@ -189,6 +192,8 @@ public class PlayerController : MonoBehaviour
                 }
             }
             teleportRangeParticalController.activateTeleportParticleSystem(true, 0);
+            //Health Regen
+            hm.addIntegrity(Vector2.Distance(oldPos,newPos));
             //Momentum Dampening
             if (rb2d.velocity.magnitude > 0.001f)//if Merky is moving
             {
@@ -391,17 +396,6 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    public void setGravityVector(Vector2 gravity)
-    {
-        if (gravity.x != gravityVector.x || gravity.y != gravityVector.y)
-        {
-            gravityVector = gravity;
-            //v = P2 - P1    //2016-01-10: copied from an answer by cjdev: http://answers.unity3d.com/questions/564166/how-to-find-perpendicular-line-in-2d.html
-            //P3 = (-v.y, v.x) / Sqrt(v.x ^ 2 + v.y ^ 2) * h
-            sideVector = new Vector3(-gravityVector.y, gravityVector.x) / Mathf.Sqrt(gravityVector.x * gravityVector.x + gravityVector.y * gravityVector.y);
-        }
-    }
-
     void checkGroundedState(bool exhaust)
     {
         if (isGrounded())
@@ -421,13 +415,13 @@ public class PlayerController : MonoBehaviour
     bool isGrounded()
     {
         groundedWall = false;
-        bool isgrounded = isGrounded(gravityVector);
+        bool isgrounded = isGrounded(gravity.Gravity);
         if (!isgrounded && wca.enabled)//if nothing found yet and wall jump is enabled
         {
-            isgrounded = isGrounded(Utility.PerpendicularRight(-gravityVector));//right side
+            isgrounded = isGrounded(Utility.PerpendicularRight(-gravity.Gravity));//right side
             if (!isgrounded)
             {
-                isgrounded = isGrounded(Utility.PerpendicularLeft(-gravityVector));//left side
+                isgrounded = isGrounded(Utility.PerpendicularLeft(-gravity.Gravity));//left side
             }
             if (isgrounded)
             {
@@ -539,6 +533,18 @@ public class PlayerController : MonoBehaviour
             //}
         }
         return pos + moveDir;//not adjusted because there's nothing to adjust for
+    }
+
+    /// <summary>
+    /// Delegate method called when hm's integrity reaches 0
+    /// </summary>
+    private void shattered()
+    {
+        gm.switchGestureProfile("Rewind");
+    }
+    public bool isIntact()
+    {
+        return hm.isIntact();
     }
 
     public void setIsInCheckPoint(bool iicp)

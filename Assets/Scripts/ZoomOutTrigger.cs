@@ -11,7 +11,7 @@ public class ZoomOutTrigger : MemoryMonoBehaviour {
         if (coll.gameObject.tag == "Player")
         {
             var camCtr = Camera.main.GetComponent<CameraController>();
-            camCtr.setScalePoint(camCtr.getScalePointIndex() + 1);//zoom out
+            camCtr.setScalePoint(CameraController.SCALEPOINT_DEFAULT);//zoom out
             GameManager.saveMemory(this);
             Destroy(gameObject);
         }

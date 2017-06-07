@@ -15,12 +15,12 @@ public class GameManager : MonoBehaviour
     public int amount = 0;
     public GameObject playerGhost;//this is to show Merky in the past (prefab)
     public GameObject npcTalkEffect;//the particle system for the visual part of NPC talking
+    public AudioSource timeRewindMusic;//the music to play while time rewinds
     private static GameObject lastTalkingNPC;//the last NPC to talk
     private int rewindId = 0;//the id to eventually load back to
     private List<GameState> gameStates = new List<GameState>();
     private List<SceneLoader> sceneLoaders = new List<SceneLoader>();
     private List<GameObject> gameObjects = new List<GameObject>();
-    public static List<Collider2D> gravityColliderList = new List<Collider2D>();
     //Memories
     private List<MemoryObject> memories = new List<MemoryObject>();
     //Checkpoints
@@ -29,9 +29,12 @@ public class GameManager : MonoBehaviour
     private static GameManager instance;
     private static GameObject playerObject;//the player object
     private CameraController camCtr;
+    private GestureManager gestureManager;
+    private MusicManager musicManager;
     private float actionTime = 0;//used to determine how often to rewind
     private const float rewindDelay = 0.05f;//how much to delay each rewind transition by
     private List<string> newlyLoadedScenes = new List<string>();
+    private int loadedSceneCount = 0;
     private string unloadedScene = null;
 
     // Use this for initialization
@@ -47,6 +50,8 @@ public class GameManager : MonoBehaviour
         cam.pinPoint();
         cam.recenter();
         cam.refocus();
+        gestureManager = FindObjectOfType<GestureManager>();
+        musicManager = FindObjectOfType<MusicManager>();
         chosenId = -1;
         if (!demoBuild && ES2.Exists("merky.txt"))
         {
@@ -88,6 +93,13 @@ public class GameManager : MonoBehaviour
     public static void removeObject(GameObject go)
     {
         instance.gameObjects.Remove(go);
+        if (go && go.transform.childCount > 0)
+        {
+            foreach(Transform t in go.transform)
+            {
+                instance.gameObjects.Remove(t.gameObject);
+            }
+        }
     }
 
     // Update is called once per frame
@@ -121,6 +133,7 @@ public class GameManager : MonoBehaviour
             foreach (string s in newlyLoadedScenes)
             {
                 LoadObjectsFromScene(SceneManager.GetSceneByName(s));
+                loadedSceneCount++;
             }
             newlyLoadedScenes.Clear();
         }
@@ -129,7 +142,7 @@ public class GameManager : MonoBehaviour
             refreshGameObjects();
             unloadedScene = null;
         }
-        if (gameStates.Count == 0)
+        if (gameStates.Count == 0 && loadedSceneCount > 0)
         {
             Save();
         }
@@ -144,37 +157,15 @@ public class GameManager : MonoBehaviour
     {
         refreshGameObjects();
         unloadedScene = s.name;
+        loadedSceneCount--;
     }
-
+    public static void refresh() { instance.refreshGameObjects(); }
     public void refreshGameObjects()
     {
         gameObjects = new List<GameObject>();
-        gravityColliderList = new List<Collider2D>();
         foreach (Rigidbody2D rb in FindObjectsOfType<Rigidbody2D>())
         {
-            gameObjects.Add(rb.gameObject);
-            GameObject go = rb.gameObject;
-            Collider2D coll = go.GetComponent<PolygonCollider2D>();
-            if (coll != null)
-            {
-                gravityColliderList.Add(coll);
-            }
-            else {
-                coll = go.GetComponent<BoxCollider2D>();
-                if (coll != null)
-                {
-                    gravityColliderList.Add(coll);
-                }
-                else {
-                    coll = go.GetComponent<CircleCollider2D>();
-                    if (coll != null)
-                    {
-                        gravityColliderList.Add(coll);
-                    }
-                    else {
-                    }
-                }
-            }
+            gameObjects.Add(rb.gameObject);      
         }
         //Debug.Log("GM Collider List: " + gravityColliderList.Count);
         foreach (SavableMonoBehaviour smb in FindObjectsOfType<SavableMonoBehaviour>())
@@ -203,7 +194,6 @@ public class GameManager : MonoBehaviour
             }
         }
     }
-
     public void Save()
     {
         gameStates.Add(new GameState(gameObjects));
@@ -236,15 +226,33 @@ public class GameManager : MonoBehaviour
     {
         //Destroy objects not spawned yet in the new selected state
         //chosenId is the previous current gamestate, which is in the future compared to gamestateId
-        foreach (GameObject go in gameStates[chosenId].getGameObjects())
+        for (int i = gameObjects.Count - 1; i > 0; i--)
         {
+            GameObject go = gameObjects[i];
             if (!gameStates[gamestateId].hasGameObject(go))
             {
-                destroyObject(go);//remove it from game objects list
+                if (go == null)
+                {
+                    destroyObject(go);
+                    continue;
+                }
+                foreach (SavableMonoBehaviour smb in go.GetComponents<SavableMonoBehaviour>())
+                {
+                    if (smb.isSpawnedObject())
+                    {
+                        destroyObject(go);//remove it from game objects list
+                    }
+                }
             }
         }
         //
         chosenId = gamestateId;
+        if (chosenId == rewindId)
+        {
+            //After rewind is finished, refresh the game object list
+            refreshGameObjects();
+            musicManager.endEventSong(timeRewindMusic);
+        }
         gameStates[gamestateId].load();
         for (int i = gameStates.Count - 1; i > gamestateId; i--)
         {
@@ -283,9 +291,11 @@ public class GameManager : MonoBehaviour
     public void cancelRewind()
     {
         rewindId = chosenId;
+        musicManager.endEventSong(timeRewindMusic);
     }
     void Rewind(int gamestateId)//rewinds one state at a time
     {
+        musicManager.setEventSong(timeRewindMusic);
         rewindId = gamestateId;
     }
     void LoadMemories()
@@ -361,18 +371,24 @@ public class GameManager : MonoBehaviour
         return (other.transform.position - playerObject.transform.position).sqrMagnitude <= range * range;
     }
 
-    public void showPlayerGhosts()
+    public static void showPlayerGhosts()
     {
-        foreach (GameState gs in gameStates)
+        foreach (GameState gs in instance.gameStates)
         {
-            gs.showRepresentation(playerGhost, chosenId);
+            if (gs.id != instance.chosenId || playerObject.GetComponent<PlayerController>().isIntact())
+            {//don't include last game state if merky is shattered
+                gs.showRepresentation(instance.playerGhost, instance.chosenId);
+            }
         }
     }
     public void hidePlayerGhosts()
     {
         foreach (GameState gs in gameStates)
         {
-            gs.hideRepresentation();
+            if (gs.id != instance.chosenId || playerObject.GetComponent<PlayerController>().isIntact())
+            {//don't include last game state if merky is shattered
+                gs.hideRepresentation();
+            }
         }
     }
     public void processTapGesture(Vector3 curMPWorld)
@@ -382,18 +398,20 @@ public class GameManager : MonoBehaviour
         GameState prevFinal = null;
         foreach (GameState gs in gameStates)
         {
-            if (gs.checkRepresentation(curMPWorld))
-            {
-                if (final == null || gs.id > final.id)//assuming the later ones have higher id values
+            if (gs.id != chosenId || playerObject.GetComponent<PlayerController>().isIntact())
+            {//don't include last game state if merky is shattered
+                if (gs.checkRepresentation(curMPWorld))
                 {
-                    prevFinal = final;//keep the second-to-latest one
-                    final = gs;//keep the latest one
+                    if (final == null || gs.id > final.id)//assuming the later ones have higher id values
+                    {
+                        prevFinal = final;//keep the second-to-latest one
+                        final = gs;//keep the latest one
+                    }
                 }
             }
         }
         if (final != null)
         {
-            hidePlayerGhosts();
             if (final.id == chosenId)
             {
                 if (prevFinal != null)
@@ -408,8 +426,16 @@ public class GameManager : MonoBehaviour
                 Rewind(final.id);
             }
         }
-        //leave this zoom level even if no past merky was chosen
-        camCtr.adjustScalePoint(-1);
+        else if (!playerObject.GetComponent<PlayerController>().isIntact())
+        {
+            Rewind(chosenId - 2);//go back to the latest safe past merky
+        }
+        gestureManager.switchGestureProfile("Main");
+        if (camCtr.getScalePointIndex() > CameraController.SCALEPOINT_DEFAULT)
+        {
+            //leave this zoom level even if no past merky was chosen
+            camCtr.setScalePoint(CameraController.SCALEPOINT_DEFAULT);
+        }
     }
 
     /// <summary>
@@ -426,12 +452,17 @@ public class GameManager : MonoBehaviour
             {
                 instance.npcTalkEffect.GetComponent<ParticleSystem>().Play();
             }
-            lastTalkingNPC = npc;
+            if (lastTalkingNPC != npc)
+            {
+                lastTalkingNPC = npc;
+                instance.musicManager.setQuiet(true);
+            }
         }
         else
         {
             if (npc == lastTalkingNPC)
             {
+                instance.musicManager.setQuiet(false);
                 instance.npcTalkEffect.GetComponent<ParticleSystem>().Stop();
             }
         }

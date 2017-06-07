@@ -17,8 +17,8 @@ public class GestureManager : SavableMonoBehaviour
     public float orthoZoomSpeed = 0.5f;
 
     //Gesture Profiles
-    public GestureProfile currentGP;//the current gesture profile
-    public Dictionary<string, GestureProfile> gestureProfiles = new Dictionary<string, GestureProfile>();//dict of valid gesture profiles
+    private GestureProfile currentGP;//the current gesture profile
+    private Dictionary<string, GestureProfile> gestureProfiles = new Dictionary<string, GestureProfile>();//dict of valid gesture profiles
 
     //Original Positions
     private Vector3 origMP;//"original mouse position": the mouse position at the last mouse down (or tap down) event
@@ -324,11 +324,11 @@ public class GestureManager : SavableMonoBehaviour
                 //
                 if (Input.GetAxis("Mouse ScrollWheel") < 0)
                 {
-                    cmaController.adjustScalePoint(1);
+                    currentGP.processPinchGesture(1);
                 }
                 else if (Input.GetAxis("Mouse ScrollWheel") > 0)
                 {
-                    cmaController.adjustScalePoint(-1);
+                    currentGP.processPinchGesture(-1);
                 }
                 //
                 //Pinch Touch Zoom
@@ -355,7 +355,7 @@ public class GestureManager : SavableMonoBehaviour
                     deltaMagnitudeQuo *= (int)Mathf.Sign(prevTouchDeltaMag - touchDeltaMag);
 
                     //Update the camera's scale point index
-                    cmaController.setScalePoint(origScalePoint + deltaMagnitudeQuo);
+                    currentGP.processPinchGesture(origScalePoint + deltaMagnitudeQuo - cmaController.getScalePointIndex());
                 }
             }
             else if (clickState == ClickState.Ended)
@@ -413,5 +413,18 @@ public class GestureManager : SavableMonoBehaviour
     public float getHoldThreshold()
     {
         return holdThreshold * holdThresholdScale;
+    }
+    /// <summary>
+    /// Switches the gesture profile to the profile with the given name
+    /// </summary>
+    /// <param name="gpName">The name of the GestureProfile</param>
+    public void switchGestureProfile(string gpName)
+    {
+        //Deactivate current
+        currentGP.deactivate();
+        //Switch from current to new
+        currentGP = gestureProfiles[gpName];
+        //Activate new
+        currentGP.activate();
     }
 }

@@ -6,19 +6,30 @@ public class GestureProfile {
     protected GameObject player;
     protected PlayerController plrController;
     protected Rigidbody2D rb2dPlayer;
-    //protected Camera cam;
-    //protected CameraController cmaController;
+    protected Camera cam;
+    protected CameraController cmaController;
     protected GameManager gm;
+    protected GestureManager gestureManager;
 
     public GestureProfile()
     {
         player = GameObject.FindGameObjectWithTag("Player");
         plrController = player.GetComponent<PlayerController>();
         rb2dPlayer = player.GetComponent<Rigidbody2D>();
-        //cam = Camera.main;
-        //cmaController = cam.GetComponent<CameraController>();
+        cam = Camera.main;
+        cmaController = cam.GetComponent<CameraController>();
         gm = GameObject.FindObjectOfType<GameManager>();
+        gestureManager = GameObject.FindObjectOfType<GestureManager>();
     }
+    /// <summary>
+    /// Called when this profile is set to the current one
+    /// </summary>
+    public virtual void activate() { }
+    /// <summary>
+    /// Called when the GestureManager switches off this profile to a different one
+    /// </summary>
+    public virtual void deactivate() { }
+
     public virtual void processTapGesture(GameObject go)
     {
         plrController.processTapGesture(go);
@@ -58,8 +69,13 @@ public class GestureProfile {
     {
 
     }
-    public void processPinchGesture()
+    public virtual void processPinchGesture(int adjustment)
     {
-
+        cmaController.adjustScalePoint(adjustment);
+        //GestureProfile switcher
+        if (cmaController.getScalePointIndex() == CameraController.SCALEPOINT_TIMEREWIND)
+        {
+            gestureManager.switchGestureProfile("Rewind");
+        }
     }
 }

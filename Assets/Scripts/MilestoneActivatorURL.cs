@@ -9,4 +9,10 @@ public class MilestoneActivatorURL : MilestoneActivator
     {
         Application.OpenURL(url);
     }
+    public override void acceptMemoryObject(MemoryObject memObj)
+    {
+        //don't do anything
+        //this way it won't activate the link when opening the game
+        //and it will activate the link once each session
+    }
 }

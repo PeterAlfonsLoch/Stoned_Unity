@@ -16730,6 +16730,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxVolume: 0.3
   fadeTime: 5
+  eventFadeTime: 0.1
   quietVolumeScaling: 0.3
 --- !u!1 &1121559818
 GameObject:

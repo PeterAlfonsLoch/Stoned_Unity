@@ -64,10 +64,13 @@ public class EnemySimple : MonoBehaviour
                     rb2d.AddForce(rb2d.mass * direction * rb2d.velocity.magnitude * 4);
                 }
             }
+            if (rb2d.velocity.magnitude < 0.01f)
+            {
+                switchDirection();
+            }
         }
         if (rb2d.velocity.magnitude < 0.1f)
         {
-            switchDirection();
             hm.addIntegrity(healsPerSecond * Time.deltaTime);
             if (hm.getIntegrity() == hm.maxIntegrity)
             {

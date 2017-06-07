@@ -981,7 +981,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cracked: 0
-  forceThreshold: 10
+  forceThreshold: 100
   breakSound: {fileID: 8300000, guid: bb2a37bffb821394d87697e4f3740389, type: 3}
   rubble: {fileID: 1602552233677018, guid: 2bfb7dcf231d7224eb16a72e31c7cb8e, type: 2}
   secretHider: {fileID: 1912812441731528}

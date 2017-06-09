@@ -8,6 +8,7 @@ public class HardMaterial : SavableMonoBehaviour {
     public static float MINIMUM_CRACKSOUND_THRESHOLD = 1.0f;//the minimum percent of damage done to make a sound
 
     public float hardness = 1.0f;
+	public float forceThreshold = 50.0f;//how much force it can withstand without cracking
     public float maxIntegrity = 100f;
     [Range(0,100)]
     [SerializeField]
@@ -17,6 +18,7 @@ public class HardMaterial : SavableMonoBehaviour {
     public List<GameObject> crackStages;
     private List<SpriteRenderer> crackSprites = new List<SpriteRenderer>();
     public List<AudioClip> crackSounds;
+	public List<HiddenArea> secretHiders;//the hidden areas to show when cracked
 
     public Shattered shattered;
 
@@ -62,6 +64,26 @@ public class HardMaterial : SavableMonoBehaviour {
                     break;
                 }
             }
+        }
+		else{
+			GameObject other = coll.gameObject;
+            Rigidbody2D rb2d = other.GetComponent<Rigidbody2D>();
+            if (rb2d != null)
+            {
+                float force = coll.relativeVelocity.magnitude * rb2d.mass;
+                checkForce(force);
+            }
+		}
+    }
+	
+    /// <summary>
+    /// Checks to see if a given force cracks it
+    /// </summary>
+	public void checkForce(float force)
+    {
+        if (force > forceThreshold)
+        {
+            addIntegrity(-100*(force-forceThreshold)/forceThreshold);
         }
     }
 
@@ -111,6 +133,14 @@ public class HardMaterial : SavableMonoBehaviour {
                 }
                 GameManager.refresh();
                 alreadyBroken = true;
+            }
+            foreach (HiddenArea ha in secretHiders)
+            {
+                //2017-06-08: copied from CrackedGroundChecker.setCracked()
+                if (ha != null && !ReferenceEquals(ha, null))//2016-11-26: reference equal null test copied from an answer by sindrijo: http://answers.unity3d.com/questions/13840/how-to-detect-if-a-gameobject-has-been-destroyed.html
+                {
+                    ha.nowDiscovered();
+                }
             }
             gameObject.SetActive(false);
             if (shattered != null)

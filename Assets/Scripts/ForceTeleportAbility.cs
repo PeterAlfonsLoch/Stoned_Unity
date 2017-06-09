@@ -43,11 +43,11 @@ public class ForceTeleportAbility : PlayerAbility
                 }
                 else
                 {
-                    CrackedGroundChecker cgc = hitColliders[i].gameObject.GetComponent<CrackedGroundChecker>();
-                    if (cgc != null)
+                    HardMaterial hm = hitColliders[i].gameObject.GetComponent<HardMaterial>();
+                    if (hm != null)
                     {
                         float force = forceAmount * (range - Utility.distanceToObject(pos, hitColliders[i].gameObject)) / Time.fixedDeltaTime;
-                        cgc.checkForce(force);
+                        hm.checkForce(force);
                     }
                     ShieldBubbleController sbc = hitColliders[i].gameObject.GetComponent<ShieldBubbleController>();
                     if (sbc != null)

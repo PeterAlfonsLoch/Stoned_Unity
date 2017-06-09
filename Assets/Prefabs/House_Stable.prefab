@@ -168,7 +168,7 @@ GameObject:
   - component: {fileID: 4324778308886384}
   - component: {fileID: 212657527334301190}
   - component: {fileID: 61426499065217936}
-  - component: {fileID: 114379441564137832}
+  - component: {fileID: 114966072503462862}
   m_Layer: 0
   m_Name: door
   m_TagString: Untagged
@@ -447,7 +447,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1601795323856448}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 154.959, y: 83.832, z: 0}
+  m_LocalPosition: {x: 148.72145, y: 89.83031, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4415324913052914}
@@ -969,23 +969,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   discovered: 0
---- !u!114 &114379441564137832
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1437008530334802}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1885aca8b85780148aa585cfa0eed4f9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  cracked: 0
-  forceThreshold: 100
-  breakSound: {fileID: 8300000, guid: bb2a37bffb821394d87697e4f3740389, type: 3}
-  rubble: {fileID: 1602552233677018, guid: 2bfb7dcf231d7224eb16a72e31c7cb8e, type: 2}
-  secretHider: {fileID: 1912812441731528}
-  secretHider2: {fileID: 0}
 --- !u!114 &114920680752467582
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -998,6 +981,32 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   secretHider: {fileID: 1912812441731528}
+--- !u!114 &114966072503462862
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1437008530334802}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: af84288d8f9003845a5900626b175615, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hardness: 1
+  forceThreshold: 100
+  maxIntegrity: 100
+  integrity: 0
+  crackedPrefab: {fileID: 1943429488560524, guid: 796582492798f234bb1d953535aa505f,
+    type: 2}
+  crackStages:
+  - {fileID: 1847318100393624, guid: 1ff4e76eb756aec45adc64763951e4bc, type: 2}
+  - {fileID: 1327082797259746, guid: 1ff4e76eb756aec45adc64763951e4bc, type: 2}
+  crackSounds:
+  - {fileID: 8300000, guid: 8616065873e7eb642ab0dfbe37df1067, type: 3}
+  - {fileID: 8300000, guid: 346a5e70b45559446b0ed9474af050f3, type: 3}
+  - {fileID: 8300000, guid: bb2a37bffb821394d87697e4f3740389, type: 3}
+  secretHiders:
+  - {fileID: 114018364432152548}
 --- !u!212 &212064198136915570
 SpriteRenderer:
   m_ObjectHideFlags: 1

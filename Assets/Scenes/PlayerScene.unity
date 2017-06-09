@@ -23668,7 +23668,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   hardness: 1
-  forceThreshold: 50
+  forceThreshold: 500
   maxIntegrity: 100
   integrity: 100
   crackedPrefab: {fileID: 1164755296733718, guid: 144b0957faeecea48b8b6798272d93eb,

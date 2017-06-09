@@ -23668,6 +23668,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   hardness: 1
+  forceThreshold: 50
   maxIntegrity: 100
   integrity: 100
   crackedPrefab: {fileID: 1164755296733718, guid: 144b0957faeecea48b8b6798272d93eb,
@@ -23680,6 +23681,7 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 8616065873e7eb642ab0dfbe37df1067, type: 3}
   - {fileID: 8300000, guid: 346a5e70b45559446b0ed9474af050f3, type: 3}
   - {fileID: 8300000, guid: 00e3fe6beabc955488cea1630b600673, type: 3}
+  secretHiders: []
 --- !u!114 &1792176475
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -70,7 +70,7 @@ public class HardMaterial : SavableMonoBehaviour {
             Rigidbody2D rb2d = other.GetComponent<Rigidbody2D>();
             if (rb2d != null)
             {
-                float force = coll.relativeVelocity.magnitude * rb2d.mass;
+                float force = rb2d.velocity.magnitude * rb2d.mass;
                 checkForce(force);
             }
 		}

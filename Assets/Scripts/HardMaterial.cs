@@ -117,7 +117,7 @@ public class HardMaterial : SavableMonoBehaviour {
             }
             gameObject.SetActive(true);
         }
-        else if (oldIntegrity > 0)
+        else if (oldIntegrity > 0 || gameObject.activeSelf)
         {
             if (!alreadyBroken)
             {

@@ -21,7 +21,7 @@ GameObject:
   - component: {fileID: 4827791084814242}
   - component: {fileID: 212182901704711208}
   - component: {fileID: 61113891603067634}
-  - component: {fileID: 114297010602104306}
+  - component: {fileID: 114540258747081270}
   m_Layer: 0
   m_Name: vent
   m_TagString: Untagged
@@ -194,7 +194,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1544791814763980}
   m_LocalRotation: {x: 0, y: 0, z: 0.7071068, w: 0.7071068}
-  m_LocalPosition: {x: 132.88, y: 88.08, z: 0}
+  m_LocalPosition: {x: 143.0583, y: 89.687965, z: 0}
   m_LocalScale: {x: 1, y: 2.6838856, z: 1}
   m_Children:
   - {fileID: 4213726775650938}
@@ -426,7 +426,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   secretHider: {fileID: 0}
---- !u!114 &114297010602104306
+--- !u!114 &114540258747081270
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -434,15 +434,24 @@ MonoBehaviour:
   m_GameObject: {fileID: 1115348221702892}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1885aca8b85780148aa585cfa0eed4f9, type: 3}
+  m_Script: {fileID: 11500000, guid: af84288d8f9003845a5900626b175615, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cracked: 0
+  hardness: 1
   forceThreshold: 100
-  breakSound: {fileID: 8300000, guid: bb2a37bffb821394d87697e4f3740389, type: 3}
-  rubble: {fileID: 111254, guid: 8eb4ed9bb79bb4247b0cbfea87b4ca60, type: 2}
-  secretHider: {fileID: 1316320332574912}
-  secretHider2: {fileID: 0}
+  maxIntegrity: 100
+  integrity: 0
+  crackedPrefab: {fileID: 1943429488560524, guid: 796582492798f234bb1d953535aa505f,
+    type: 2}
+  crackStages:
+  - {fileID: 1847318100393624, guid: 1ff4e76eb756aec45adc64763951e4bc, type: 2}
+  - {fileID: 1327082797259746, guid: 1ff4e76eb756aec45adc64763951e4bc, type: 2}
+  crackSounds:
+  - {fileID: 8300000, guid: 8616065873e7eb642ab0dfbe37df1067, type: 3}
+  - {fileID: 8300000, guid: 346a5e70b45559446b0ed9474af050f3, type: 3}
+  - {fileID: 8300000, guid: bb2a37bffb821394d87697e4f3740389, type: 3}
+  secretHiders:
+  - {fileID: 114954443456629734}
 --- !u!114 &114954443456629734
 MonoBehaviour:
   m_ObjectHideFlags: 1

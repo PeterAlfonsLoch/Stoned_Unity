@@ -13,7 +13,7 @@ OcclusionCullingSettings:
 --- !u!104 &2
 RenderSettings:
   m_ObjectHideFlags: 0
-  serializedVersion: 7
+  serializedVersion: 8
   m_Fog: 0
   m_FogColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
   m_FogMode: 3
@@ -25,6 +25,7 @@ RenderSettings:
   m_AmbientGroundColor: {r: 0.047, g: 0.043, b: 0.035, a: 1}
   m_AmbientIntensity: 1
   m_AmbientMode: 3
+  m_SubtractiveShadowColor: {r: 0.42, g: 0.478, b: 0.627, a: 1}
   m_SkyboxMaterial: {fileID: 0}
   m_HaloStrength: 0.5
   m_FlareStrength: 1
@@ -41,7 +42,7 @@ RenderSettings:
 --- !u!157 &3
 LightmapSettings:
   m_ObjectHideFlags: 0
-  serializedVersion: 7
+  serializedVersion: 9
   m_GIWorkflowMode: 1
   m_GISettings:
     serializedVersion: 2
@@ -53,7 +54,7 @@ LightmapSettings:
     m_EnableBakedLightmaps: 0
     m_EnableRealtimeLightmaps: 0
   m_LightmapEditorSettings:
-    serializedVersion: 4
+    serializedVersion: 8
     m_Resolution: 2
     m_BakeResolution: 40
     m_TextureWidth: 1024
@@ -66,13 +67,27 @@ LightmapSettings:
     m_LightmapParameters: {fileID: 0}
     m_LightmapsBakeMode: 1
     m_TextureCompression: 1
-    m_DirectLightInLightProbes: 1
     m_FinalGather: 0
     m_FinalGatherFiltering: 1
     m_FinalGatherRayCount: 256
     m_ReflectionCompression: 2
+    m_MixedBakeMode: 1
+    m_BakeBackend: 0
+    m_PVRSampling: 1
+    m_PVRDirectSampleCount: 32
+    m_PVRSampleCount: 500
+    m_PVRBounces: 2
+    m_PVRFiltering: 0
+    m_PVRFilteringMode: 1
+    m_PVRCulling: 1
+    m_PVRFilteringGaussRadiusDirect: 1
+    m_PVRFilteringGaussRadiusIndirect: 5
+    m_PVRFilteringGaussRadiusAO: 2
+    m_PVRFilteringAtrousColorSigma: 1
+    m_PVRFilteringAtrousNormalSigma: 1
+    m_PVRFilteringAtrousPositionSigma: 1
   m_LightingDataAsset: {fileID: 0}
-  m_RuntimeCPUUsage: 25
+  m_ShadowMaskMode: 2
 --- !u!196 &4
 NavMeshSettings:
   serializedVersion: 2
@@ -89,6 +104,8 @@ NavMeshSettings:
     minRegionArea: 2
     manualCellSize: 0
     cellSize: 0.16666667
+    manualTileSize: 0
+    tileSize: 256
     accuratePlacement: 0
   m_NavMeshData: {fileID: 0}
 --- !u!43 &7429377
@@ -559,6 +576,12 @@ GameObject:
 Transform:
   m_PrefabParentObject: {fileID: 434596, guid: 2964a113d33795e4fa2f7f2b88fa9f80, type: 2}
   m_PrefabInternal: {fileID: 197454723}
+--- !u!114 &197454726 stripped
+MonoBehaviour:
+  m_PrefabParentObject: {fileID: 114100129681113904, guid: 2964a113d33795e4fa2f7f2b88fa9f80,
+    type: 2}
+  m_PrefabInternal: {fileID: 197454723}
+  m_Script: {fileID: 11500000, guid: 65ceefcc30cb13142abcfa50f2853724, type: 3}
 --- !u!1001 &230945731
 Prefab:
   m_ObjectHideFlags: 0
@@ -2861,30 +2884,15 @@ MonoBehaviour:
   vertexColorType: 0
   vertexColor: {r: 1, g: 1, b: 1, a: 1}
   vertexGradient:
-    key0:
-      serializedVersion: 2
-      rgba: 4294967295
-    key1:
-      serializedVersion: 2
-      rgba: 4294967295
-    key2:
-      serializedVersion: 2
-      rgba: 0
-    key3:
-      serializedVersion: 2
-      rgba: 0
-    key4:
-      serializedVersion: 2
-      rgba: 0
-    key5:
-      serializedVersion: 2
-      rgba: 0
-    key6:
-      serializedVersion: 2
-      rgba: 0
-    key7:
-      serializedVersion: 2
-      rgba: 0
+    serializedVersion: 2
+    key0: {r: 1, g: 1, b: 1, a: 1}
+    key1: {r: 1, g: 1, b: 1, a: 1}
+    key2: {r: 0, g: 0, b: 0, a: 0}
+    key3: {r: 0, g: 0, b: 0, a: 0}
+    key4: {r: 0, g: 0, b: 0, a: 0}
+    key5: {r: 0, g: 0, b: 0, a: 0}
+    key6: {r: 0, g: 0, b: 0, a: 0}
+    key7: {r: 0, g: 0, b: 0, a: 0}
     ctime0: 0
     ctime1: 65535
     ctime2: 0
@@ -2982,6 +2990,7 @@ MeshRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 1492054691
+  m_SortingLayer: 1
   m_SortingOrder: 0
 --- !u!114 &757227225
 MonoBehaviour:
@@ -3065,6 +3074,10 @@ Prefab:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 104296, guid: 2964a113d33795e4fa2f7f2b88fa9f80, type: 2}
+      propertyPath: m_Name
+      value: HideableArea Reactor
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 2964a113d33795e4fa2f7f2b88fa9f80, type: 2}
   m_IsPrefabParent: 0
@@ -3076,6 +3089,12 @@ GameObject:
 Transform:
   m_PrefabParentObject: {fileID: 434596, guid: 2964a113d33795e4fa2f7f2b88fa9f80, type: 2}
   m_PrefabInternal: {fileID: 793869194}
+--- !u!114 &793869197 stripped
+MonoBehaviour:
+  m_PrefabParentObject: {fileID: 114100129681113904, guid: 2964a113d33795e4fa2f7f2b88fa9f80,
+    type: 2}
+  m_PrefabInternal: {fileID: 793869194}
+  m_Script: {fileID: 11500000, guid: 65ceefcc30cb13142abcfa50f2853724, type: 3}
 --- !u!1001 &829772046
 Prefab:
   m_ObjectHideFlags: 0
@@ -3411,30 +3430,15 @@ MonoBehaviour:
   vertexColorType: 0
   vertexColor: {r: 1, g: 1, b: 1, a: 1}
   vertexGradient:
-    key0:
-      serializedVersion: 2
-      rgba: 4294967295
-    key1:
-      serializedVersion: 2
-      rgba: 4294967295
-    key2:
-      serializedVersion: 2
-      rgba: 0
-    key3:
-      serializedVersion: 2
-      rgba: 0
-    key4:
-      serializedVersion: 2
-      rgba: 0
-    key5:
-      serializedVersion: 2
-      rgba: 0
-    key6:
-      serializedVersion: 2
-      rgba: 0
-    key7:
-      serializedVersion: 2
-      rgba: 0
+    serializedVersion: 2
+    key0: {r: 1, g: 1, b: 1, a: 1}
+    key1: {r: 1, g: 1, b: 1, a: 1}
+    key2: {r: 0, g: 0, b: 0, a: 0}
+    key3: {r: 0, g: 0, b: 0, a: 0}
+    key4: {r: 0, g: 0, b: 0, a: 0}
+    key5: {r: 0, g: 0, b: 0, a: 0}
+    key6: {r: 0, g: 0, b: 0, a: 0}
+    key7: {r: 0, g: 0, b: 0, a: 0}
     ctime0: 0
     ctime1: 65535
     ctime2: 0
@@ -3531,6 +3535,7 @@ MeshRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
+  m_SortingLayer: 0
   m_SortingOrder: 0
 --- !u!114 &841385469
 MonoBehaviour:
@@ -4194,6 +4199,11 @@ Prefab:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 114211760357809054, guid: 1ff4e76eb756aec45adc64763951e4bc,
+        type: 2}
+      propertyPath: secretHiders.Array.size
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 495822, guid: 1ff4e76eb756aec45adc64763951e4bc, type: 2}
       propertyPath: m_LocalPosition.x
       value: -55.3
@@ -4262,6 +4272,21 @@ Prefab:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 32.068
       objectReference: {fileID: 0}
+    - target: {fileID: 114211760357809054, guid: 1ff4e76eb756aec45adc64763951e4bc,
+        type: 2}
+      propertyPath: forceThreshold
+      value: 0.001
+      objectReference: {fileID: 0}
+    - target: {fileID: 114211760357809054, guid: 1ff4e76eb756aec45adc64763951e4bc,
+        type: 2}
+      propertyPath: secretHiders.Array.data[0]
+      value: 
+      objectReference: {fileID: 1706300973}
+    - target: {fileID: 114211760357809054, guid: 1ff4e76eb756aec45adc64763951e4bc,
+        type: 2}
+      propertyPath: integrity
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 1ff4e76eb756aec45adc64763951e4bc, type: 2}
   m_IsPrefabParent: 0
@@ -4320,30 +4345,15 @@ MonoBehaviour:
   vertexColorType: 0
   vertexColor: {r: 1, g: 1, b: 1, a: 1}
   vertexGradient:
-    key0:
-      serializedVersion: 2
-      rgba: 4294967295
-    key1:
-      serializedVersion: 2
-      rgba: 4294967295
-    key2:
-      serializedVersion: 2
-      rgba: 0
-    key3:
-      serializedVersion: 2
-      rgba: 0
-    key4:
-      serializedVersion: 2
-      rgba: 0
-    key5:
-      serializedVersion: 2
-      rgba: 0
-    key6:
-      serializedVersion: 2
-      rgba: 0
-    key7:
-      serializedVersion: 2
-      rgba: 0
+    serializedVersion: 2
+    key0: {r: 1, g: 1, b: 1, a: 1}
+    key1: {r: 1, g: 1, b: 1, a: 1}
+    key2: {r: 0, g: 0, b: 0, a: 0}
+    key3: {r: 0, g: 0, b: 0, a: 0}
+    key4: {r: 0, g: 0, b: 0, a: 0}
+    key5: {r: 0, g: 0, b: 0, a: 0}
+    key6: {r: 0, g: 0, b: 0, a: 0}
+    key7: {r: 0, g: 0, b: 0, a: 0}
     ctime0: 0
     ctime1: 65535
     ctime2: 0
@@ -4455,6 +4465,7 @@ MeshRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
+  m_SortingLayer: 0
   m_SortingOrder: 0
 --- !u!114 &1047303618
 MonoBehaviour:
@@ -5354,30 +5365,15 @@ MonoBehaviour:
   vertexColorType: 0
   vertexColor: {r: 1, g: 1, b: 1, a: 1}
   vertexGradient:
-    key0:
-      serializedVersion: 2
-      rgba: 4294967295
-    key1:
-      serializedVersion: 2
-      rgba: 4294967295
-    key2:
-      serializedVersion: 2
-      rgba: 0
-    key3:
-      serializedVersion: 2
-      rgba: 0
-    key4:
-      serializedVersion: 2
-      rgba: 0
-    key5:
-      serializedVersion: 2
-      rgba: 0
-    key6:
-      serializedVersion: 2
-      rgba: 0
-    key7:
-      serializedVersion: 2
-      rgba: 0
+    serializedVersion: 2
+    key0: {r: 1, g: 1, b: 1, a: 1}
+    key1: {r: 1, g: 1, b: 1, a: 1}
+    key2: {r: 0, g: 0, b: 0, a: 0}
+    key3: {r: 0, g: 0, b: 0, a: 0}
+    key4: {r: 0, g: 0, b: 0, a: 0}
+    key5: {r: 0, g: 0, b: 0, a: 0}
+    key6: {r: 0, g: 0, b: 0, a: 0}
+    key7: {r: 0, g: 0, b: 0, a: 0}
     ctime0: 0
     ctime1: 65535
     ctime2: 0
@@ -5517,6 +5513,7 @@ MeshRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
+  m_SortingLayer: 0
   m_SortingOrder: 0
 --- !u!114 &1175574382
 MonoBehaviour:
@@ -6333,6 +6330,11 @@ Prefab:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 114211760357809054, guid: 1ff4e76eb756aec45adc64763951e4bc,
+        type: 2}
+      propertyPath: secretHiders.Array.size
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 495822, guid: 1ff4e76eb756aec45adc64763951e4bc, type: 2}
       propertyPath: m_LocalPosition.x
       value: -121
@@ -6397,6 +6399,11 @@ Prefab:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 29.477001
       objectReference: {fileID: 0}
+    - target: {fileID: 114211760357809054, guid: 1ff4e76eb756aec45adc64763951e4bc,
+        type: 2}
+      propertyPath: secretHiders.Array.data[0]
+      value: 
+      objectReference: {fileID: 793869197}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 1ff4e76eb756aec45adc64763951e4bc, type: 2}
   m_IsPrefabParent: 0
@@ -6442,30 +6449,15 @@ MonoBehaviour:
   vertexColorType: 0
   vertexColor: {r: 1, g: 1, b: 1, a: 1}
   vertexGradient:
-    key0:
-      serializedVersion: 2
-      rgba: 4294967295
-    key1:
-      serializedVersion: 2
-      rgba: 4294967295
-    key2:
-      serializedVersion: 2
-      rgba: 0
-    key3:
-      serializedVersion: 2
-      rgba: 0
-    key4:
-      serializedVersion: 2
-      rgba: 0
-    key5:
-      serializedVersion: 2
-      rgba: 0
-    key6:
-      serializedVersion: 2
-      rgba: 0
-    key7:
-      serializedVersion: 2
-      rgba: 0
+    serializedVersion: 2
+    key0: {r: 1, g: 1, b: 1, a: 1}
+    key1: {r: 1, g: 1, b: 1, a: 1}
+    key2: {r: 0, g: 0, b: 0, a: 0}
+    key3: {r: 0, g: 0, b: 0, a: 0}
+    key4: {r: 0, g: 0, b: 0, a: 0}
+    key5: {r: 0, g: 0, b: 0, a: 0}
+    key6: {r: 0, g: 0, b: 0, a: 0}
+    key7: {r: 0, g: 0, b: 0, a: 0}
     ctime0: 0
     ctime1: 65535
     ctime2: 0
@@ -6668,6 +6660,7 @@ MeshRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
+  m_SortingLayer: 0
   m_SortingOrder: 0
 --- !u!114 &1496185465
 MonoBehaviour:
@@ -7475,6 +7468,12 @@ Transform:
 GameObject:
   m_PrefabParentObject: {fileID: 104296, guid: 2964a113d33795e4fa2f7f2b88fa9f80, type: 2}
   m_PrefabInternal: {fileID: 1706300970}
+--- !u!114 &1706300973 stripped
+MonoBehaviour:
+  m_PrefabParentObject: {fileID: 114100129681113904, guid: 2964a113d33795e4fa2f7f2b88fa9f80,
+    type: 2}
+  m_PrefabInternal: {fileID: 1706300970}
+  m_Script: {fileID: 11500000, guid: 65ceefcc30cb13142abcfa50f2853724, type: 3}
 --- !u!1001 &1714736185
 Prefab:
   m_ObjectHideFlags: 0
@@ -7936,11 +7935,16 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 1659163103
+  m_SortingLayer: -2
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: 5c1057872dd7c8748b1a3170ded16510, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
+  m_DrawMode: 0
+  m_Size: {x: 1, y: 1}
+  m_AdaptiveModeThreshold: 0.5
+  m_SpriteTileMode: 0
 --- !u!4 &1842448940
 Transform:
   m_ObjectHideFlags: 0
@@ -8142,30 +8146,15 @@ MonoBehaviour:
   vertexColorType: 0
   vertexColor: {r: 1, g: 1, b: 1, a: 1}
   vertexGradient:
-    key0:
-      serializedVersion: 2
-      rgba: 4294967295
-    key1:
-      serializedVersion: 2
-      rgba: 4294967295
-    key2:
-      serializedVersion: 2
-      rgba: 0
-    key3:
-      serializedVersion: 2
-      rgba: 0
-    key4:
-      serializedVersion: 2
-      rgba: 0
-    key5:
-      serializedVersion: 2
-      rgba: 0
-    key6:
-      serializedVersion: 2
-      rgba: 0
-    key7:
-      serializedVersion: 2
-      rgba: 0
+    serializedVersion: 2
+    key0: {r: 1, g: 1, b: 1, a: 1}
+    key1: {r: 1, g: 1, b: 1, a: 1}
+    key2: {r: 0, g: 0, b: 0, a: 0}
+    key3: {r: 0, g: 0, b: 0, a: 0}
+    key4: {r: 0, g: 0, b: 0, a: 0}
+    key5: {r: 0, g: 0, b: 0, a: 0}
+    key6: {r: 0, g: 0, b: 0, a: 0}
+    key7: {r: 0, g: 0, b: 0, a: 0}
     ctime0: 0
     ctime1: 65535
     ctime2: 0
@@ -8261,6 +8250,7 @@ MeshRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 1492054691
+  m_SortingLayer: 1
   m_SortingOrder: 0
 --- !u!114 &1919544854
 MonoBehaviour:
@@ -8286,6 +8276,11 @@ Prefab:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 114211760357809054, guid: 1ff4e76eb756aec45adc64763951e4bc,
+        type: 2}
+      propertyPath: secretHiders.Array.size
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 495822, guid: 1ff4e76eb756aec45adc64763951e4bc, type: 2}
       propertyPath: m_LocalPosition.x
       value: -38.5
@@ -8354,6 +8349,11 @@ Prefab:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 111.747
       objectReference: {fileID: 0}
+    - target: {fileID: 114211760357809054, guid: 1ff4e76eb756aec45adc64763951e4bc,
+        type: 2}
+      propertyPath: secretHiders.Array.data[0]
+      value: 
+      objectReference: {fileID: 197454726}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 1ff4e76eb756aec45adc64763951e4bc, type: 2}
   m_IsPrefabParent: 0

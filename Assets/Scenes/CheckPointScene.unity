@@ -604,6 +604,16 @@ Prefab:
       propertyPath: m_RootOrder
       value: 15
       objectReference: {fileID: 0}
+    - target: {fileID: 114268382721096676, guid: 848951c958e889444a9d8e68164981cf,
+        type: 2}
+      propertyPath: teleportLocation.y
+      value: 81.48142
+      objectReference: {fileID: 0}
+    - target: {fileID: 114268382721096676, guid: 848951c958e889444a9d8e68164981cf,
+        type: 2}
+      propertyPath: teleportLocation.x
+      value: 159.5721
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 848951c958e889444a9d8e68164981cf, type: 2}
   m_IsPrefabParent: 0

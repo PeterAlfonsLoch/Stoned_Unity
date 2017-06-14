@@ -9,6 +9,7 @@ public class AbilityGainEffect : MonoBehaviour {
     private new ParticleSystem particleSystem;
     private float originalEmission;
     private float originalArc;
+    private float originalStartLifetime;
     private Quaternion originalQuat;
 
     private float arcEmissionRatio;
@@ -19,13 +20,16 @@ public class AbilityGainEffect : MonoBehaviour {
         originalEmission = particleSystem.emission.rateOverTime.constant;
         originalArc = particleSystem.shape.arc;
         originalQuat = particleSystem.gameObject.transform.localRotation;
+        originalStartLifetime = particleSystem.main.startLifetime.constant;
         arcEmissionRatio = originalEmission / originalArc;
         setArc(0);
         if (animSpeed == 0)
         {
             animSpeed = 360 / animTime;
         }
-	}
+        ParticleSystem.MainModule psmm = particleSystem.main;
+        psmm.startLifetime = 0.1f;
+    }
 	
 	// Update is called once per frame
 	void Update () {

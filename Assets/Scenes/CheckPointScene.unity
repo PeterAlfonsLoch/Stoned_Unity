@@ -200,6 +200,7 @@ MonoBehaviour:
   particle: {fileID: 127114, guid: 84842629c9b04df48a7cd79dca5c22e9, type: 2}
   starAmount: 25
   starSpawnDuration: 25
+  abilityIndicatorName: AbilityIndicatorShieldBubble
   used: 0
 --- !u!4 &522853518
 Transform:
@@ -526,6 +527,7 @@ MonoBehaviour:
   particle: {fileID: 127114, guid: 84842629c9b04df48a7cd79dca5c22e9, type: 2}
   starAmount: 25
   starSpawnDuration: 25
+  abilityIndicatorName: AbilityIndicatorForceWave
   used: 0
 --- !u!61 &1076381731
 BoxCollider2D:
@@ -1128,6 +1130,7 @@ MonoBehaviour:
   particle: {fileID: 127114, guid: 84842629c9b04df48a7cd79dca5c22e9, type: 2}
   starAmount: 25
   starSpawnDuration: 25
+  abilityIndicatorName: AbilityIndicatorWallJump
   used: 0
 --- !u!4 &1769676883
 Transform:

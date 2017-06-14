@@ -9,6 +9,7 @@ TagManager:
   - HideableArea
   - Checkpoint_Root
   - UsesEnergy
+  - AbilityIndicator
   layers:
   - Default
   - TransparentFX

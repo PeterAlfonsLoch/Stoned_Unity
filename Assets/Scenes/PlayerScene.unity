@@ -13290,7 +13290,7 @@ GameObject:
   - component: {fileID: 856596824}
   m_Layer: 0
   m_Name: AbilityIndicatorShieldBubble
-  m_TagString: Untagged
+  m_TagString: AbilityIndicator
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -16745,7 +16745,7 @@ GameObject:
   - component: {fileID: 1121559820}
   m_Layer: 0
   m_Name: AbilityIndicatorWallJump
-  m_TagString: Untagged
+  m_TagString: AbilityIndicator
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -20018,6 +20018,7 @@ MonoBehaviour:
   particle: {fileID: 127114, guid: 84842629c9b04df48a7cd79dca5c22e9, type: 2}
   starAmount: 50
   starSpawnDuration: 50
+  abilityIndicatorName: 
   used: 0
   url: https://www.patreon.com/shieldgenerator7
 --- !u!61 &1414825759
@@ -23706,7 +23707,7 @@ GameObject:
   - component: {fileID: 1950273298}
   m_Layer: 0
   m_Name: AbilityIndicatorForceWave
-  m_TagString: Untagged
+  m_TagString: AbilityIndicator
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

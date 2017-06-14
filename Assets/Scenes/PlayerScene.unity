@@ -20019,6 +20019,7 @@ MonoBehaviour:
   starAmount: 50
   starSpawnDuration: 50
   abilityIndicatorName: 
+  disengagePoint: {x: 0, y: 0}
   used: 0
   url: https://www.patreon.com/shieldgenerator7
 --- !u!61 &1414825759

@@ -201,6 +201,7 @@ MonoBehaviour:
   starAmount: 25
   starSpawnDuration: 25
   abilityIndicatorName: AbilityIndicatorShieldBubble
+  disengagePoint: {x: 433.68, y: -153.27}
   used: 0
 --- !u!4 &522853518
 Transform:
@@ -528,6 +529,7 @@ MonoBehaviour:
   starAmount: 25
   starSpawnDuration: 25
   abilityIndicatorName: AbilityIndicatorForceWave
+  disengagePoint: {x: 196.17, y: 2.14}
   used: 0
 --- !u!61 &1076381731
 BoxCollider2D:
@@ -1131,6 +1133,7 @@ MonoBehaviour:
   starAmount: 25
   starSpawnDuration: 25
   abilityIndicatorName: AbilityIndicatorWallJump
+  disengagePoint: {x: -64.76, y: 65.51}
   used: 0
 --- !u!4 &1769676883
 Transform:

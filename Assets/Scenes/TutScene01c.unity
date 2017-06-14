@@ -23299,17 +23299,13 @@ Prefab:
       propertyPath: m_RootOrder
       value: 48
       objectReference: {fileID: 0}
-    - target: {fileID: 1316320332574912, guid: ea3c5f3deef49894986841072bf414ea, type: 2}
-      propertyPath: m_Name
-      value: HA Silo 1
-      objectReference: {fileID: 0}
     - target: {fileID: 1544791814763980, guid: ea3c5f3deef49894986841072bf414ea, type: 2}
       propertyPath: m_Name
       value: silo 1
       objectReference: {fileID: 0}
-    - target: {fileID: 1115348221702892, guid: ea3c5f3deef49894986841072bf414ea, type: 2}
-      propertyPath: m_Name
-      value: vent Silo 1
+    - target: {fileID: 1316320332574912, guid: ea3c5f3deef49894986841072bf414ea, type: 2}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: ea3c5f3deef49894986841072bf414ea, type: 2}
@@ -29198,6 +29194,38 @@ Prefab:
     - target: {fileID: 1115348221702892, guid: ea3c5f3deef49894986841072bf414ea, type: 2}
       propertyPath: m_Name
       value: vent Silo 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1316320332574912, guid: ea3c5f3deef49894986841072bf414ea, type: 2}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4382913039692142, guid: ea3c5f3deef49894986841072bf414ea, type: 2}
+      propertyPath: m_RootOrder
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 4571409912744096, guid: ea3c5f3deef49894986841072bf414ea, type: 2}
+      propertyPath: m_RootOrder
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 4664819869738592, guid: ea3c5f3deef49894986841072bf414ea, type: 2}
+      propertyPath: m_RootOrder
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 4827791084814242, guid: ea3c5f3deef49894986841072bf414ea, type: 2}
+      propertyPath: m_RootOrder
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 4664819869738592, guid: ea3c5f3deef49894986841072bf414ea, type: 2}
+      propertyPath: m_LocalPosition.x
+      value: 1.017
+      objectReference: {fileID: 0}
+    - target: {fileID: 4664819869738592, guid: ea3c5f3deef49894986841072bf414ea, type: 2}
+      propertyPath: m_LocalPosition.y
+      value: 0.004
+      objectReference: {fileID: 0}
+    - target: {fileID: 4024639383199436, guid: ea3c5f3deef49894986841072bf414ea, type: 2}
+      propertyPath: m_LocalPosition.x
+      value: 1.58
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: ea3c5f3deef49894986841072bf414ea, type: 2}

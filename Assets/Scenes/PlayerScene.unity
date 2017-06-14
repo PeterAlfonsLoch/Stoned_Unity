@@ -249,7 +249,7 @@ GameObject:
   - component: {fileID: 198174139}
   - component: {fileID: 198174140}
   - component: {fileID: 198174138}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Teleport Effects
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -280,7 +280,7 @@ ParticleSystem:
   simulationSpeed: 1
   looping: 1
   prewarm: 1
-  playOnAwake: 1
+  playOnAwake: 0
   autoRandomSeed: 1
   startDelay:
     serializedVersion: 2
@@ -3433,7 +3433,7 @@ GameObject:
   - component: {fileID: 217562836}
   - component: {fileID: 217562833}
   - component: {fileID: 217562834}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Force Wave Effects
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -6765,7 +6765,7 @@ GameObject:
   m_Component:
   - component: {fileID: 408598914}
   - component: {fileID: 408598913}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: merky_cracks 3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -6836,7 +6836,7 @@ GameObject:
   - component: {fileID: 506271487}
   - component: {fileID: 506271486}
   - component: {fileID: 506271485}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Shield Bubble Effects
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -13254,7 +13254,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 675152029}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Player Effects
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -13288,7 +13288,7 @@ GameObject:
   - component: {fileID: 856596825}
   - component: {fileID: 856596826}
   - component: {fileID: 856596824}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: AbilityIndicatorShieldBubble
   m_TagString: AbilityIndicator
   m_Icon: {fileID: 0}
@@ -16470,7 +16470,7 @@ GameObject:
   m_Component:
   - component: {fileID: 902355117}
   - component: {fileID: 902355116}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: merky_cracks 2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -16743,7 +16743,7 @@ GameObject:
   - component: {fileID: 1121559821}
   - component: {fileID: 1121559822}
   - component: {fileID: 1121559820}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: AbilityIndicatorWallJump
   m_TagString: AbilityIndicator
   m_Icon: {fileID: 0}
@@ -19925,7 +19925,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1363863461}
   - component: {fileID: 1363863460}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: merky_cracks 1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -20177,7 +20177,7 @@ GameObject:
   - component: {fileID: 1675184547}
   - component: {fileID: 1675184545}
   - component: {fileID: 1675184546}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Wall Jump Effects
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -23706,7 +23706,7 @@ GameObject:
   - component: {fileID: 1950273299}
   - component: {fileID: 1950273300}
   - component: {fileID: 1950273298}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: AbilityIndicatorForceWave
   m_TagString: AbilityIndicator
   m_Icon: {fileID: 0}

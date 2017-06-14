@@ -14,6 +14,7 @@ public class AbilityGainEffect : MonoBehaviour {
     private float originalArc;
     private float originalStartLifetime;
     private Quaternion originalQuat;
+    private int originalSpriteOrder;
 
     private float arcEmissionRatio;
     private bool isDisengaging = false;//true when the anim should wind down
@@ -25,14 +26,18 @@ public class AbilityGainEffect : MonoBehaviour {
         originalArc = particleSystem.shape.arc;
         originalQuat = particleSystem.gameObject.transform.localRotation;
         originalStartLifetime = particleSystem.main.startLifetime.constant;
+        originalSpriteOrder = particleSystem.GetComponent<Renderer>().sortingOrder;
         arcEmissionRatio = originalEmission / originalArc;
         setArc(0);
         if (animSpeed == 0)
         {
             animSpeed = 360 / animTime;
         }
+        //Start Lifetime
         ParticleSystem.MainModule psmm = particleSystem.main;
         psmm.startLifetime = 0.1f;
+        //Sorting Order
+        particleSystem.GetComponent<Renderer>().sortingOrder = originalSpriteOrder + 1;
     }
 	
 	// Update is called once per frame
@@ -72,6 +77,7 @@ public class AbilityGainEffect : MonoBehaviour {
         particleSystem.emissionRate = originalEmission;
         ParticleSystem.MainModule psmm = particleSystem.main;
         psmm.startLifetime = originalStartLifetime;
+        particleSystem.GetComponent<Renderer>().sortingOrder = originalSpriteOrder;
         Destroy(this);
     }
 }

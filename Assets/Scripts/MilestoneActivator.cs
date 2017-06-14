@@ -6,6 +6,8 @@ public abstract class MilestoneActivator : MemoryMonoBehaviour {
     public GameObject particle;
     public int starAmount = 25;
     public int starSpawnDuration = 25;
+    public string abilityIndicatorName;//used for AbilityGainEffect
+    public Vector2 disengagePoint;//used for AbilityGainEffect
     
     public bool used = false;
     private float minX, maxX, minY, maxY;
@@ -34,9 +36,24 @@ public abstract class MilestoneActivator : MemoryMonoBehaviour {
 
     public void activate(bool showFX)
     {
-        if (showFX && transform.parent != null)
+        if (showFX)
         {
-            sparkle();
+            if (transform.parent != null)
+            {
+                sparkle();
+            }
+            if (abilityIndicatorName != null)
+            {
+                foreach (GameObject abilityIndicator in GameObject.FindGameObjectsWithTag("AbilityIndicator"))
+                {
+                    if (abilityIndicator.name.Contains(abilityIndicatorName))
+                    {
+                        AbilityGainEffect age = abilityIndicator.AddComponent<AbilityGainEffect>();
+                        age.disengagePoint = this.disengagePoint;
+                        break;
+                    }
+                }
+            }
         }
         used = true;
         activateEffect();

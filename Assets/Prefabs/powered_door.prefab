@@ -90,7 +90,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 564c703b08430ed45a0a38bf1fc59a11, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  powerObj: {fileID: 0}
   efficiency: 2750
   maxEnergyPerSecond: 3
   currentEnergy: 0

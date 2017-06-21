@@ -4,8 +4,7 @@ using UnityEngine;
 
 public class PoweredWallController : SavableMonoBehaviour {
     //2017-01-24: several things copied from FloatCubeController
-
-    public GameObject powerObj;
+    
     public float efficiency = 100;//how much force one unit of energy can generate
     public float maxEnergyPerSecond;//the maximum amount of energy it can use per second
     public float currentEnergy;

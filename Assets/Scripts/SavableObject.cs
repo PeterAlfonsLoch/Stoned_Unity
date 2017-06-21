@@ -83,6 +83,8 @@ public class SavableObject
                 return typeof(PoweredWallController);
             case "PowerCubeController":
                 return typeof(PowerCubeController);
+            case "PowerConduit":
+                return typeof(PowerConduit);
             case "ExplosionOrbController":
                 return typeof(ExplosionOrbController);
             case "HardMaterial":

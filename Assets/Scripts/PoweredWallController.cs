@@ -11,6 +11,7 @@ public class PoweredWallController : SavableMonoBehaviour {
     public float currentEnergy;
 
     private Rigidbody2D rb;
+    private BoxCollider2D bc2d;
     private Vector3 upDirection;//used to determine the up direction of the powered door
 
     // Use this for initialization
@@ -18,6 +19,7 @@ public class PoweredWallController : SavableMonoBehaviour {
     {
         upDirection = transform.up;
         rb = GetComponent<Rigidbody2D>();
+        bc2d = GetComponent<BoxCollider2D>();
     }
 
     public override SavableObject getSavableObject()
@@ -31,8 +33,21 @@ public class PoweredWallController : SavableMonoBehaviour {
 
     void FixedUpdate()
     {
-        float amountGiven = powerObj.GetComponent<PowerCubeController>().giveEnergyToObject(maxEnergyPerSecond, Time.fixedDeltaTime);
-        currentEnergy += amountGiven;
+        RaycastHit2D[] rh2ds = new RaycastHit2D[10];
+        bc2d.Cast(Vector2.zero, rh2ds, 0, true);
+        foreach (RaycastHit2D rch2d in rh2ds)
+        {
+            if (rch2d && rch2d.collider != null)
+            {
+                GameObject other = rch2d.collider.gameObject;
+                PowerConduit pc = other.GetComponent<PowerConduit>();
+                if (pc != null)
+                {
+                    float amountGiven = pc.giveEnergyToObject(maxEnergyPerSecond, Time.fixedDeltaTime);
+                    currentEnergy += amountGiven;
+                }
+            }
+        }
         if (currentEnergy > 0)
         {
             float energyToUse = Mathf.Min(currentEnergy, maxEnergyPerSecond) * Time.fixedDeltaTime;

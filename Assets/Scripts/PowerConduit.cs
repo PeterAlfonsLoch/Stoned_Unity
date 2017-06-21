@@ -49,7 +49,7 @@ public class PowerConduit : SavableMonoBehaviour
         if (currentEnergyLevel < maxEnergyPerSecond)
         {
             RaycastHit2D[] rh2ds = new RaycastHit2D[100];
-            bc2d.Cast(Vector2.zero, rh2ds, 0, true);
+            bc2d.Cast(Vector2.zero, rh2ds, 0, false);
             foreach (RaycastHit2D rch2d in rh2ds)
             {
                 if (rch2d && rch2d.collider != null)

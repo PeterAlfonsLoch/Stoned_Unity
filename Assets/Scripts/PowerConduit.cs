@@ -80,6 +80,10 @@ public class PowerConduit : SavableMonoBehaviour
         {
             currentEnergyLevel = maxEnergyPerSecond;//to keep it from overloading, put in LastUpdate() to give objects a chance to use energy
         }
+        if (currentEnergyLevel < 0)
+        {
+            currentEnergyLevel = 0;
+        }
     }
 
     /// <summary>

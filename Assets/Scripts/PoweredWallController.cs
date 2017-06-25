@@ -13,12 +13,18 @@ public class PoweredWallController : SavableMonoBehaviour {
     private BoxCollider2D bc2d;
     private Vector3 upDirection;//used to determine the up direction of the powered door
 
+    public GameObject lightEffect;//the object attached to it that it uses to show it is lit up
+    private SpriteRenderer lightEffectRenderer;
+    private Color lightEffectColor;
+
     // Use this for initialization
     void Start ()
     {
         upDirection = transform.up;
         rb = GetComponent<Rigidbody2D>();
         bc2d = GetComponent<BoxCollider2D>();
+        lightEffectRenderer = lightEffect.GetComponent<SpriteRenderer>();
+        lightEffectColor = lightEffectRenderer.color;
     }
 
     public override SavableObject getSavableObject()
@@ -28,6 +34,18 @@ public class PoweredWallController : SavableMonoBehaviour {
     public override void acceptSavableObject(SavableObject savObj)
     {
         currentEnergy = (float)savObj.data["currentEnergy"];
+    }
+
+    private void Update()
+    {
+        //2017-06-25: copied from PowerConduit.Update()
+        float newHigh = 2.0f;//opaque
+        float newLow = 0.0f;//transparent
+        float curHigh = maxEnergyPerSecond;
+        float curLow = 0;
+        float newAlpha = ((currentEnergy - curLow) * (newHigh - newLow) / (curHigh - curLow)) + newLow;
+        lightEffectRenderer.color = new Color(lightEffectColor.r, lightEffectColor.g, lightEffectColor.b, newAlpha);
+
     }
 
     void FixedUpdate()

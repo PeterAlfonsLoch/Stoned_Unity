@@ -58,7 +58,7 @@ public class PowerConduit : SavableMonoBehaviour
                     PowerConduit pc = other.GetComponent<PowerConduit>();
                     if (pc != null && pc.currentEnergyLevel > currentEnergyLevel)
                     {
-                        float amountGiven = pc.giveEnergyToObject(maxEnergyPerSecond, Time.fixedDeltaTime);
+                        float amountGiven = pc.giveEnergyToObject(maxEnergyPerSecond-currentEnergyLevel, 1);
                         currentEnergyLevel += amountGiven;
                     }
                     else
@@ -66,7 +66,7 @@ public class PowerConduit : SavableMonoBehaviour
                         PowerCubeController pcc = other.GetComponent<PowerCubeController>();
                         if (pcc != null)
                         {
-                            float amountGiven = pcc.giveEnergyToObject(maxEnergyPerSecond, Time.fixedDeltaTime);
+                            float amountGiven = pcc.giveEnergyToObject(maxEnergyPerSecond - currentEnergyLevel, 1);
                             currentEnergyLevel += amountGiven;
                         }
                     }

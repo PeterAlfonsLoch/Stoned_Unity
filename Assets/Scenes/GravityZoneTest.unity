@@ -159,6 +159,10 @@ Prefab:
       propertyPath: m_LocalScale.y
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 1056538010247352, guid: 51161dbc3420a7547a7df227503043b4, type: 2}
+      propertyPath: m_Name
+      value: ME - powerwire
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 51161dbc3420a7547a7df227503043b4, type: 2}
   m_IsPrefabParent: 0
@@ -674,7 +678,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 1056538010247352, guid: 51161dbc3420a7547a7df227503043b4, type: 2}
       propertyPath: m_Name
-      value: powerwire (6)
+      value: ME - powerwire (6)
       objectReference: {fileID: 0}
     - target: {fileID: 4031994331652148, guid: 51161dbc3420a7547a7df227503043b4, type: 2}
       propertyPath: m_LocalScale.x
@@ -737,7 +741,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 1056538010247352, guid: 51161dbc3420a7547a7df227503043b4, type: 2}
       propertyPath: m_Name
-      value: powerwire (2)
+      value: ME - powerwire (2)
       objectReference: {fileID: 0}
     - target: {fileID: 4031994331652148, guid: 51161dbc3420a7547a7df227503043b4, type: 2}
       propertyPath: m_LocalScale.x
@@ -1376,7 +1380,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 1056538010247352, guid: 51161dbc3420a7547a7df227503043b4, type: 2}
       propertyPath: m_Name
-      value: powerwire (4)
+      value: ME - powerwire (4)
       objectReference: {fileID: 0}
     - target: {fileID: 4031994331652148, guid: 51161dbc3420a7547a7df227503043b4, type: 2}
       propertyPath: m_LocalScale.x
@@ -1710,7 +1714,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 1056538010247352, guid: 51161dbc3420a7547a7df227503043b4, type: 2}
       propertyPath: m_Name
-      value: powerwire (5)
+      value: ME - powerwire (5)
       objectReference: {fileID: 0}
     - target: {fileID: 4031994331652148, guid: 51161dbc3420a7547a7df227503043b4, type: 2}
       propertyPath: m_LocalScale.x
@@ -2024,7 +2028,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 1056538010247352, guid: 51161dbc3420a7547a7df227503043b4, type: 2}
       propertyPath: m_Name
-      value: powerwire (3)
+      value: ME - powerwire (3)
       objectReference: {fileID: 0}
     - target: {fileID: 4031994331652148, guid: 51161dbc3420a7547a7df227503043b4, type: 2}
       propertyPath: m_LocalScale.x
@@ -2087,7 +2091,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 1056538010247352, guid: 51161dbc3420a7547a7df227503043b4, type: 2}
       propertyPath: m_Name
-      value: powerwire (1)
+      value: ME - powerwire (1)
       objectReference: {fileID: 0}
     - target: {fileID: 4031994331652148, guid: 51161dbc3420a7547a7df227503043b4, type: 2}
       propertyPath: m_LocalScale.x

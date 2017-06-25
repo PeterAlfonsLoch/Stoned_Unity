@@ -777,7 +777,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 1056538010247352, guid: 51161dbc3420a7547a7df227503043b4, type: 2}
       propertyPath: m_Name
-      value: powerwire (1)
+      value: VD - powerwire (1)
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 51161dbc3420a7547a7df227503043b4, type: 2}
@@ -2062,7 +2062,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 1056538010247352, guid: 51161dbc3420a7547a7df227503043b4, type: 2}
       propertyPath: m_Name
-      value: powerwire (1)
+      value: VD - powerwire (2)
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 51161dbc3420a7547a7df227503043b4, type: 2}
@@ -3570,6 +3570,10 @@ Prefab:
     - target: {fileID: 4031994331652148, guid: 51161dbc3420a7547a7df227503043b4, type: 2}
       propertyPath: m_LocalEulerAnglesHint.z
       value: -38.634003
+      objectReference: {fileID: 0}
+    - target: {fileID: 1056538010247352, guid: 51161dbc3420a7547a7df227503043b4, type: 2}
+      propertyPath: m_Name
+      value: VD - powerwire (3)
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 51161dbc3420a7547a7df227503043b4, type: 2}
@@ -7786,6 +7790,10 @@ Prefab:
     - target: {fileID: 4031994331652148, guid: 51161dbc3420a7547a7df227503043b4, type: 2}
       propertyPath: m_LocalEulerAnglesHint.z
       value: -27.744001
+      objectReference: {fileID: 0}
+    - target: {fileID: 1056538010247352, guid: 51161dbc3420a7547a7df227503043b4, type: 2}
+      propertyPath: m_Name
+      value: VD - powerwire
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 51161dbc3420a7547a7df227503043b4, type: 2}

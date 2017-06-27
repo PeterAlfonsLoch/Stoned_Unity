@@ -81,8 +81,6 @@ public class SavableObject
                 return typeof(ShieldBubbleController);
             case "PoweredWallController":
                 return typeof(PoweredWallController);
-            case "PowerCubeController":
-                return typeof(PowerCubeController);
             case "PowerConduit":
                 return typeof(PowerConduit);
             case "ExplosionOrbController":

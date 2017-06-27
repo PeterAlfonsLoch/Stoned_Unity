@@ -38,7 +38,7 @@ GameObject:
   - component: {fileID: 212599593727750228}
   - component: {fileID: 50813431971967492}
   - component: {fileID: 61629140867813518}
-  - component: {fileID: 114464742908626300}
+  - component: {fileID: 114172328976398964}
   m_Layer: 0
   m_Name: powercube
   m_TagString: UsesEnergy
@@ -66,7 +66,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1332349059410604}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 397.07, y: -245.2, z: 0}
+  m_LocalPosition: {x: 439.69, y: -144.52, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4222051895646896}
@@ -118,7 +118,7 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1.4357071, y: 1.1623415}
   m_EdgeRadius: 0
---- !u!114 &114464742908626300
+--- !u!114 &114172328976398964
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -126,12 +126,16 @@ MonoBehaviour:
   m_GameObject: {fileID: 1332349059410604}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1f40ac4d0f9633f4ab2c7db8d3bf2b19, type: 3}
+  m_Script: {fileID: 11500000, guid: 45d9e88ebc3576e4197ee8379882afb5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   lightEffect: {fileID: 1299874186869088}
-  maxEnergyConsumptionPerSecond: 3
+  maxEnergyPerSecond: 3
   currentEnergyLevel: 0
+  givesEnergy: 1
+  takesEnergy: 0
+  convertsToEnergy: 1
+  usesEnergy: 0
 --- !u!212 &212487501239623860
 SpriteRenderer:
   m_ObjectHideFlags: 1

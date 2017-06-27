@@ -10,6 +10,10 @@ public class PowerConduit : SavableMonoBehaviour
     public GameObject lightEffect;//the object attached to it that it uses to show it is lit up
     public float maxEnergyPerSecond = 2;//(energy units per second) the max amount of energy that it can produce/move per second
     public float currentEnergyLevel = 0;//the current amount of energy it has to spend
+    public bool givesEnergy = true;//whether this can give power to other PowerConduits
+    public bool takesEnergy = true;//whether this can take power from other PowerConduits
+    public bool convertsToEnergy = false;//whether this can convert other sources to energy
+    public bool usesEnergy = false;//whether this uses energy to power some mechanism
 
     private SpriteRenderer lightEffectRenderer;
     private Color lightEffectColor;
@@ -46,7 +50,7 @@ public class PowerConduit : SavableMonoBehaviour
     }
     void FixedUpdate()
     {
-        if (currentEnergyLevel < maxEnergyPerSecond)
+        if (takesEnergy && currentEnergyLevel < maxEnergyPerSecond)
         {
             RaycastHit2D[] rh2ds = new RaycastHit2D[100];
             bc2d.Cast(Vector2.zero, rh2ds, 0, false);
@@ -56,17 +60,11 @@ public class PowerConduit : SavableMonoBehaviour
                 {
                     GameObject other = rch2d.collider.gameObject;
                     PowerConduit pc = other.GetComponent<PowerConduit>();
-                    if (pc != null && pc.currentEnergyLevel > currentEnergyLevel)
+                    if (pc != null)
                     {
-                        float amountGiven = pc.giveEnergyToObject(maxEnergyPerSecond-currentEnergyLevel, 1);
-                        currentEnergyLevel += amountGiven;
-                    }
-                    else
-                    {
-                        PowerCubeController pcc = other.GetComponent<PowerCubeController>();
-                        if (pcc != null)
+                        if (pc.givesEnergy && (!pc.takesEnergy || pc.currentEnergyLevel > currentEnergyLevel))
                         {
-                            float amountGiven = pcc.giveEnergyToObject(maxEnergyPerSecond - currentEnergyLevel, 1);
+                            float amountGiven = pc.giveEnergyToObject(maxEnergyPerSecond - currentEnergyLevel, 1);
                             currentEnergyLevel += amountGiven;
                         }
                     }
@@ -95,7 +93,10 @@ public class PowerConduit : SavableMonoBehaviour
     /// <returns></returns>
     public float takeEnergyFromSource(float maxAvailable, float deltaTime)
     {
-
+        if (!takesEnergy)
+        {
+            throw new System.MethodAccessException("PowerConduit.takeEnergyFromSource(..) should not be called on this object because its takesEnergy var is: " + takesEnergy);
+        }
         float amountTaken = Mathf.Min(maxEnergyPerSecond - currentEnergyLevel, maxAvailable);
         currentEnergyLevel += amountTaken;
         return amountTaken;
@@ -109,6 +110,45 @@ public class PowerConduit : SavableMonoBehaviour
     /// <returns></returns>
     public float giveEnergyToObject(float amountRequested, float deltaTime)
     {
+        if (!givesEnergy)
+        {
+            throw new System.MethodAccessException("PowerConduit.giveEnergyToObject(..) should not be called on this object because its givesEnergy var is: " + givesEnergy);
+        }
+        float amountGiven = Mathf.Min(amountRequested * deltaTime, currentEnergyLevel);
+        currentEnergyLevel -= amountGiven;
+        return amountGiven;
+    }
+    /// <summary>
+    /// Given the max amount of energy available to convert,
+    /// it returns the amount of energy it converts
+    /// Used to create energy for a power system
+    /// </summary>
+    /// <param name="maxAvailable"></param>
+    /// <param name="deltaTime">so it can convert from per second to per frame</param>
+    /// <returns></returns>
+    public float convertSourceToEnergy(float maxAvailable, float deltaTime)
+    {
+        if (!convertsToEnergy)
+        {
+            throw new System.MethodAccessException("PowerConduit.convertSourceToEnergy(..) should not be called on this object because its convertsToEnergy var is: " + convertsToEnergy);
+        }
+        float amountTaken = Mathf.Min(maxEnergyPerSecond - currentEnergyLevel, maxAvailable);
+        currentEnergyLevel += amountTaken;
+        return amountTaken;
+    }
+    /// <summary>
+    /// Given the amount of energy requested (per second),
+    /// it returns how much it can give to be used
+    /// Used to power a mechanism, reducing the energy in a power system
+    /// </summary>
+    /// <param name="amountRequested"></param>
+    /// <param name="deltaTime">so it can convert from per second to per frame</param>
+    /// <returns></returns>
+    public float useEnergy(float amountRequested, float deltaTime)
+    {
+        if (!usesEnergy) {
+            throw new System.MethodAccessException("PowerConduit.useEnergy(..) should not be called on this object because its usesEnergy var is: " + usesEnergy);
+        }
         float amountGiven = Mathf.Min(amountRequested * deltaTime, currentEnergyLevel);
         currentEnergyLevel -= amountGiven;
         return amountGiven;

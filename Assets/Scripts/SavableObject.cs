@@ -79,8 +79,6 @@ public class SavableObject
                 return typeof(Rigidbody2DLock);
             case "ShieldBubbleController":
                 return typeof(ShieldBubbleController);
-            case "PoweredWallController":
-                return typeof(PoweredWallController);
             case "PowerConduit":
                 return typeof(PowerConduit);
             case "ExplosionOrbController":

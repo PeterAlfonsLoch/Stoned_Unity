@@ -142,13 +142,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 45d9e88ebc3576e4197ee8379882afb5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  lightEffect: {fileID: 0}
-  maxEnergyPerSecond: 2
+  lightEffect: {fileID: 1242605026810654}
+  maxEnergyPerSecond: 3
   currentEnergyLevel: 0
-  givesEnergy: 1
+  givesEnergy: 0
   takesEnergy: 1
   convertsToEnergy: 0
-  usesEnergy: 0
+  usesEnergy: 1
 --- !u!212 &212205165329322442
 SpriteRenderer:
   m_ObjectHideFlags: 1

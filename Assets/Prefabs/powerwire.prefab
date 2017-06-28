@@ -22,7 +22,7 @@ GameObject:
   - component: {fileID: 212363082144642938}
   - component: {fileID: 61718238891493050}
   - component: {fileID: 114034851790906558}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: powerwire
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -38,7 +38,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4234559661309688}
   - component: {fileID: 212664258961869532}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: powerwire_glow
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -111,6 +111,10 @@ MonoBehaviour:
   lightEffect: {fileID: 1343623926243616}
   maxEnergyPerSecond: 3
   currentEnergyLevel: 0
+  givesEnergy: 1
+  takesEnergy: 1
+  convertsToEnergy: 0
+  usesEnergy: 0
 --- !u!212 &212363082144642938
 SpriteRenderer:
   m_ObjectHideFlags: 1

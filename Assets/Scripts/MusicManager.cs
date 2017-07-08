@@ -32,7 +32,10 @@ public class MusicManager : MonoBehaviour {
         {
             bool finished = true;
             float shift = fadeSpeed * Time.deltaTime;
-            currentSong.volume += shift * volumeScaling;
+            if (currentSong)
+            {
+                currentSong.volume += shift * volumeScaling;
+            }
             if (prevSong)
             {
                 prevSong.volume -= shift * volumeScaling;
@@ -45,11 +48,11 @@ public class MusicManager : MonoBehaviour {
                     finished = false;
                 }
             }
-            else if (currentSong.volume < maxVolume)
+            else if (currentSong && currentSong.volume < maxVolume)
             {
                 finished = false;
             }
-            if (currentSong.volume > maxVolume)
+            if (currentSong && currentSong.volume > maxVolume)
             {
                 currentSong.volume = maxVolume * volumeScaling;
             }
@@ -62,14 +65,17 @@ public class MusicManager : MonoBehaviour {
 
     public void setCurrentSong(AudioSource newSong)
     {
-        if (newSong != currentSong)
+        if (newSong != currentSong || newSong == null)
         {
             if (!lockCurrentSong)
             {
                 prevSong = currentSong;
                 currentSong = newSong;
-                currentSong.volume = 0 * volumeScaling;
-                currentSong.Play();
+                if (currentSong != null)
+                {
+                    currentSong.volume = 0 * volumeScaling;
+                    currentSong.Play();
+                }
                 fadeSpeed = 1.0f / fadeTime;
             }
             else

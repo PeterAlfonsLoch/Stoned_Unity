@@ -30,23 +30,10 @@ public class ShieldOrbController : MonoBehaviour
         {
             if ((currentSB==null || ReferenceEquals(currentSB,null)) && sba.canSpawnShieldBubble(transform.position, sba.maxRange))
             {
-                if (generatesUponContact && isBeingTriggered())
-                {
-                    Debug.Log("Collision!");
-                    if (chargeTime >= sba.maxHoldTime)
-                    {
-                        trigger();
-                    }
-                }
                 if (chargesAutomatically)
                 {
                     charge(Time.deltaTime);
                 }
-            }
-            else
-            {
-                sba.dropHoldGesture();
-
             }
         }
     }
@@ -105,10 +92,7 @@ public class ShieldOrbController : MonoBehaviour
             }
             chargeTime = 0;
         }
-        else
-        {
-            sba.dropHoldGesture();
-        }
+        sba.dropHoldGesture();
     }
 
 }

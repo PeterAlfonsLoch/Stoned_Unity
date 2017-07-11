@@ -9,6 +9,7 @@ public class ShieldOrbController : MonoBehaviour
     private RaycastHit2D[] rh2ds = new RaycastHit2D[1];//used in Update() for a method call. Not actually updated
 
     private float chargeTime = 0.0f;//amount of time spent charging
+    private GameObject currentSB;//the current shield this orb has made, used to make sure only one shield is active per orb at a time
 
     //Tutorial toggles
     public bool generatesUponContact = true;//false = requires mouseup (tap up) to explode
@@ -27,7 +28,7 @@ public class ShieldOrbController : MonoBehaviour
     {
         if (generatesAtAll)
         {
-            if (sba.canSpawnShieldBubble(transform.position, sba.maxRange))
+            if ((currentSB==null || ReferenceEquals(currentSB,null)) && sba.canSpawnShieldBubble(transform.position, sba.maxRange))
             {
                 if (generatesUponContact && isBeingTriggered())
                 {
@@ -66,7 +67,12 @@ public class ShieldOrbController : MonoBehaviour
         //Shield Orbs require to be at full capacity to deploy a shield
         if (sba.maxHoldTime <= chargeTime)
         {
-            sba.processHoldGesture(transform.position, chargeTime, true);
+            GameObject newSB;
+            sba.processHoldGesture(transform.position, chargeTime, true, out newSB);
+            if (newSB != null)
+            {
+                currentSB = newSB;
+            }
             chargeTime = 0;
         }
         else

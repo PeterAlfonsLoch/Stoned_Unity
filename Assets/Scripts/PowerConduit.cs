@@ -18,6 +18,7 @@ public class PowerConduit : SavableMonoBehaviour
     private SpriteRenderer lightEffectRenderer;
     private Color lightEffectColor;
     private BoxCollider2D bc2d;
+    private RaycastHit2D[] rh2ds = new RaycastHit2D[100];//used for detection of other PowerConduits
 
     // Use this for initialization
     void Start()
@@ -52,21 +53,18 @@ public class PowerConduit : SavableMonoBehaviour
     {
         if (takesEnergy && currentEnergyLevel < maxEnergyPerSecond)
         {
-            RaycastHit2D[] rh2ds = new RaycastHit2D[100];
-            bc2d.Cast(Vector2.zero, rh2ds, 0, false);
-            foreach (RaycastHit2D rch2d in rh2ds)
+            int collisionAmount = bc2d.Cast(Vector2.zero, rh2ds, 0, false);
+            for (int i = 0; i < collisionAmount; i++)
             {
-                if (rch2d && rch2d.collider != null)
+                RaycastHit2D rch2d = rh2ds[i];
+                GameObject other = rch2d.collider.gameObject;
+                PowerConduit pc = other.GetComponent<PowerConduit>();
+                if (pc != null)
                 {
-                    GameObject other = rch2d.collider.gameObject;
-                    PowerConduit pc = other.GetComponent<PowerConduit>();
-                    if (pc != null)
+                    if (pc.givesEnergy && (!pc.takesEnergy || pc.currentEnergyLevel > currentEnergyLevel || usesEnergy))
                     {
-                        if (pc.givesEnergy && (!pc.takesEnergy || pc.currentEnergyLevel > currentEnergyLevel))
-                        {
-                            float amountGiven = pc.giveEnergyToObject(maxEnergyPerSecond - currentEnergyLevel, 1);
-                            currentEnergyLevel += amountGiven;
-                        }
+                        float amountGiven = pc.giveEnergyToObject(maxEnergyPerSecond - currentEnergyLevel, 1);
+                        currentEnergyLevel += amountGiven;
                     }
                 }
             }

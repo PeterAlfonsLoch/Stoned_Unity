@@ -6,7 +6,7 @@ public class ShieldOrbController : MonoBehaviour
     //2017-03-13: copied from ExplosionOrbController
     private CircleCollider2D cc2D;
     private ShieldBubbleAbility sba;
-    private RaycastHit2D[] rh2ds = new RaycastHit2D[1];//used in Update() for a method call. Not actually updated
+    private RaycastHit2D[] rh2ds = new RaycastHit2D[5];//used in Update() for a method call. Not actually updated
 
     private float chargeTime = 0.0f;//amount of time spent charging
     private GameObject currentSB;//the current shield this orb has made, used to make sure only one shield is active per orb at a time
@@ -51,9 +51,39 @@ public class ShieldOrbController : MonoBehaviour
         }
     }
 
+    private void OnTriggerEnter2D(Collider2D collider)
+    {
+        if (generatesAtAll)
+        {
+            if ((currentSB == null || ReferenceEquals(currentSB, null)) && sba.canSpawnShieldBubble(transform.position, sba.maxRange))
+            {
+                if (generatesUponContact)
+                {
+                    if (chargeTime >= sba.maxHoldTime)
+                    {
+                        trigger();
+                    }
+                }
+            }
+            else
+            {
+                Debug.Log("Can't generate because shield already exists. SOC: " + gameObject.name);
+            }
+        }
+    }
+
     public bool isBeingTriggered()
     {
-        return cc2D.Cast(Vector2.zero, rh2ds, 0, true) > 0 && !rh2ds[0].collider.isTrigger;
+        int count = cc2D.Cast(Vector2.zero, rh2ds, 0, true);
+        if (count <= 0) { return false; }
+        for (int i=0; i<count; i++)
+        {
+            if (!rh2ds[i].collider.isTrigger)
+            {
+                return true;
+            }
+        }
+        return false;
     }
 
     public void charge(float deltaChargeTime)

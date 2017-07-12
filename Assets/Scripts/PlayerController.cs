@@ -3,15 +3,19 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
-
+    //Settings
     public float range = 3;
     public float baseRange = 3;
     public float exhaustRange = 1;
     public int maxAirPorts = 0;
     public float exhaustCoolDownTime = 0.5f;//the cool down time for teleporting while exhausted in seconds
+    [Range(0, 1)]
+    public float gravityImmuneTimeAmount = 0.2f;//amount of time Merky is immune to gravity after landing (in seconds)
+
+    //Processing
     public float teleportTime = 0f;//the earliest time that Merky can teleport
-    public float gravityImmuneTime = 0f;//Merky is immune to gravity until this time
-    public const float gravityImmuneTimeAmount = 0.2f;//amount of time Merky is immune to gravity after landing (in seconds)
+    private float gravityImmuneTime = 0f;//Merky is immune to gravity until this time
+    
     
     public GameObject teleportStreak;
     public bool useStreak = false;

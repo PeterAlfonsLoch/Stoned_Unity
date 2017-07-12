@@ -77,7 +77,7 @@ public class PlayerController : MonoBehaviour
         {
         }
         else {
-            rb2d.isKinematic = false;
+            gravity.AcceptsGravity = true;
             if (velocityNeedsReloaded)
             {
                 rb2d.velocity = savedVelocity;
@@ -105,7 +105,7 @@ public class PlayerController : MonoBehaviour
         gravityImmuneTime = Time.time + gravityImmuneTimeAmount;
         savedVelocity = rb2d.velocity;
         savedAngularVelocity = rb2d.angularVelocity;
-        rb2d.isKinematic = true;
+        gravity.AcceptsGravity = false;
         velocityNeedsReloaded = true;
         rb2d.velocity = new Vector3(0, 0);
         rb2d.angularVelocity = 0f;

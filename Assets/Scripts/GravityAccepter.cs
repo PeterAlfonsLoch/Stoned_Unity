@@ -27,4 +27,10 @@ public class GravityAccepter : MonoBehaviour {
         get { return sideVector; }
         private set { sideVector = value; }
     }
+    private bool acceptsGravity = true;
+    public bool AcceptsGravity
+    {
+        get { return acceptsGravity; }
+        set { acceptsGravity = value; }
+    }
 }

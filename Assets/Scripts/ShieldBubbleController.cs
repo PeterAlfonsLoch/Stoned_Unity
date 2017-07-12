@@ -45,8 +45,8 @@ public class ShieldBubbleController : SavableMonoBehaviour
         return "ShieldBubble";
     }
 
-// Update is called once per frame
-void Update()
+    // Update is called once per frame
+    void FixedUpdate()
     {
         //2017-01-24: copied from WeightSwitchActivator.FixedUpdate()
         Collider2D[] hitColliders = Physics2D.OverlapCircleAll(transform.position, range);
@@ -55,9 +55,10 @@ void Update()
             GameObject hc = hitColliders[i].gameObject;
             if (!hc.Equals(gameObject))
             {
-                if (hc.tag == "UsesEnergy")
+                PowerConduit pc = hc.GetComponent<PowerConduit>();
+                if (pc != null && pc.convertsToEnergy)
                 {
-                    float amountTaken = hc.GetComponent<PowerCubeController>().takeEnergyFromSource(energy, Time.deltaTime);
+                    float amountTaken = pc.convertSourceToEnergy(energy, Time.fixedTime);
                     adjustEnergy(-amountTaken);
                 }
             }

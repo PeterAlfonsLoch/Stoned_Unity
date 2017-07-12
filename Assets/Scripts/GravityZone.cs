@@ -51,15 +51,22 @@ public class GravityZone : MonoBehaviour
                 continue;
             }
             Vector3 vector = gravityVector * rb2d.mass;
-            rb2d.AddForce(vector);
-            //Inform the gravity accepters
-            if (mainGravityZone)
+            GravityAccepter ga = rb2d.gameObject.GetComponent<GravityAccepter>();
+            if (ga)
             {
-                GravityAccepter ga = rb2d.gameObject.GetComponent<GravityAccepter>();
-                if (ga != null)
+                if (ga.AcceptsGravity)
+                {
+                    rb2d.AddForce(vector);
+                }
+                //Inform the gravity accepter of the direction
+                if (mainGravityZone)
                 {
                     ga.Gravity = this.gravityVector;
                 }
+            }
+            else
+            {
+                rb2d.AddForce(vector);
             }
         }
         //Check to see if the camera rotation needs updated

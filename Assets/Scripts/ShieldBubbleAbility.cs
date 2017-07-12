@@ -29,6 +29,12 @@ public class ShieldBubbleAbility : PlayerAbility
 
     public override void processHoldGesture(Vector2 pos, float holdTime, bool finished)
     {
+        GameObject go;//not used
+        processHoldGesture(pos, holdTime, finished, out go);
+    }
+    public void processHoldGesture(Vector2 pos, float holdTime, bool finished, out GameObject spawnedShield)
+    {
+        spawnedShield = null;
         float range = maxRange * holdTime * GestureManager.holdTimeScaleRecip / maxHoldTime;
         if (range > maxRange)
         {
@@ -44,6 +50,7 @@ public class ShieldBubbleAbility : PlayerAbility
                 {
                     GameManager.addObject(newSB);
                 }
+                spawnedShield = newSB;
                 AudioSource.PlayClipAtPoint(shieldBubbleSound, pos);
             }
             else

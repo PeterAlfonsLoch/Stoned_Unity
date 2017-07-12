@@ -5,7 +5,7 @@ using UnityEngine;
 public class NPCMetalController : NPCController {
 
     public GameObject powerCube;//the cube to check to see if it's powered or not
-    PowerCubeController pcc;
+    PowerConduit pc;
     public float powerConsumptionRate = 3.0f;
 
     private float lastPowerReturned;//the last amount of power it got
@@ -13,7 +13,7 @@ public class NPCMetalController : NPCController {
     protected override void Start()
     {
         base.Start();
-        pcc = powerCube.GetComponent<PowerCubeController>();
+        pc = GetComponent<PowerConduit>();
     }
 
     protected override bool greetOnlyOnce()
@@ -23,7 +23,7 @@ public class NPCMetalController : NPCController {
 
     protected override bool canGreet()
     {
-        lastPowerReturned = pcc.giveEnergyToObject(powerConsumptionRate, Time.deltaTime);
+        lastPowerReturned = pc.useEnergy(powerConsumptionRate, Time.deltaTime);
         return lastPowerReturned > 0;
     }
 
